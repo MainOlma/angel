@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Angel Cakes",
   "main": "index.js",
+  "homepage": "https://mainolma.github.io/angel/",
   "dependencies": {
     "core-js": "^3.6.4",
     "parcel-bundler": "^1.12.4",
@@ -14,6 +15,8 @@
   },
   "scripts": {
     "start": "parcel index.html",
+    "predeploy": "rm -rf dist && parcel build index.html --public-url /angel/",
+    "deploy": "gh-pages -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "kmpny",
