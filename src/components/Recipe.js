@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
-import {useParams, Link} from "react-router-dom";
+import {useParams, Link, useRouteMatch} from "react-router-dom";
 import Markdown from 'react-markdown';
 
 export default function Recipe(props) {
     let {id, recipeId} = useParams();
+    let {path, url} = useRouteMatch();
     let rec, ingridientsIds, ingridients;
     const [second, setSecond] = useState(null);
 
@@ -27,7 +28,7 @@ export default function Recipe(props) {
 
     return (
         <div className='recipe'>
-            {!props.second && <Link to={`/recipes/${id}`}>Назад</Link>}
+            {!props.second && <Link to={`${props.match.url}`}>Назад</Link>}
             <h1>{rec?.name}</h1>
             <Markdown escapeHtml={true}
                       source={rec?.howto}/>

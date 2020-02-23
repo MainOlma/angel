@@ -68,7 +68,7 @@ function HelloMessage(props) {
             <Router>
             <div>
                 <Route path='/' exact component={LoginPage} />
-                    {categories && recipes && ingridients && composition?
+                {categories && recipes && ingridients && composition?
                 <Route path={`/recipes/:id`}
                        render={(props) => <Categorys {...props}
                                                      tree={categories}
@@ -80,9 +80,6 @@ function HelloMessage(props) {
 
             </div>
             </Router>
-
-
-
         );
 
 }

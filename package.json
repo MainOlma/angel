@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "parcel index.html",
-    "predeploy": "rm -rf dist && parcel build index.html --no-content-hash --public-url /angel/",
+    "predeploy": "rm -rf dist && parcel build *.html --no-content-hash --public-url /angel/",
     "deploy": "gh-pages -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
