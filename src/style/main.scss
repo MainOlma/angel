@@ -11,3 +11,11 @@ body{
   width: fit-content;
   text-align: center;
 }
+
+.recipe {
+  padding: 5px;
+  border: 1px solid gray;
+  p.link{
+    border-bottom: 1px solid greenyellow;
+  }
+}

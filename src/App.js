@@ -16,12 +16,15 @@ import {
 } from "react-router-dom";
 import  Person from './components/Person'
 import Categorys from "./components/Categorys";
+import LoginPage from "./components/LoginPage";
 
 
 function HelloMessage(props) {
     const [url,setUrl] = useState(null);
     const [categories,setCategories] = useState(null);
     const [recipes,setRecipes] = useState(null);
+    const [ingridients,setIngridients] = useState(null);
+    const [composition,setComposition] = useState(null);
 
 
     useEffect(() => {
@@ -39,16 +42,21 @@ function HelloMessage(props) {
         firebase.initializeApp(firebaseConfig);
         firebase.database().ref('/').once('value')
             .then((snapshot) => {
-                const cats = snapshot.child('categories').val()  || 'Anonymous';
+                const cats = snapshot.child('recipie_categories').val()  || 'Anonymous';
                 const recipes = snapshot.child('recipies').val();
-                localStorage.setItem('categories', JSON.stringify(cats));
-                localStorage.setItem('recipes', JSON.stringify(recipes));
-            //this.setState({categories: cats || localStorage.categories})
-                //this.setState({url: useRouteMatch()})
-                //let url=useRouteMatch();
+                const ingridients = snapshot.child('recipie_ingridients').val();
+                const composition = snapshot.child('recipie_composition').val();
 
-                setCategories(cats || localStorage.categories)
+
+                localStorage.setItem('recipie_categories', JSON.stringify(cats));
+                localStorage.setItem('recipes', JSON.stringify(recipes));
+                localStorage.setItem('recipie_ingridients', JSON.stringify(ingridients));
+                localStorage.setItem('recipie_composition', JSON.stringify(composition));
+
+                setCategories(cats || localStorage.recipie_categories)
                 setRecipes(recipes )
+                setIngridients(ingridients )
+                setComposition(composition )
         });
 
     }, []);
@@ -58,36 +66,17 @@ function HelloMessage(props) {
         //const items = categories ? categories : JSON.parse(localStorage.categories||'[]');
         return (
             <Router>
-            <div className='greetings'>
-                <img src={Logo} width={291} height={109}/>
-                <h3>Хей гайз 🤚 </h3>
-                <h3>Чтобы войти, введи пароль</h3>
-                {/*
-                    this.state ?
-                    <div>{JSON.stringify(this.state.categories)} from fb</div> :
-                        <div>{localStorage.categories} from ls</div>
+            <div>
+                <Route path='/' exact component={LoginPage} />
+                    {categories && recipes && ingridients && composition?
+                <Route path={`/recipes/:id`}
+                       render={(props) => <Categorys {...props}
+                                                     tree={categories}
+                                                     recs={recipes}
+                                                     ingridients={ingridients}
+                                                     composition={composition}
 
-                <CategoryList items={items} />*/}
-
-                {/*<Router>
-                    <Switch>
-                        <Route path="/:id">
-                            {this.state?
-                                <Person tree={this.state.categories}/> :
-                                null
-                            }
-
-                        </Route>
-                        <Route path="/">
-                            <Redirect to="/0" />
-                        </Route>
-                    </Switch>
-                </Router>*/}
-
-
-                    {categories && recipes?
-                <Route path={`*/:id`} render={(props) => <Categorys {...props} tree={categories} recs={recipes}/> }/>:
-                    null}
+                       /> }/>: null}
 
             </div>
             </Router>

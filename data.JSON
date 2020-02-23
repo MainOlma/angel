@@ -1,0 +1,95 @@
+{
+  "recipie_categories": [
+    {
+      "cat_id": 0,
+      "img": "/img/cats/0.png",
+      "name": "Выпечка",
+      "parent_category": 0
+    },
+    {
+      "cat_id": 1,
+      "img": "/img/cats/1.png",
+      "name": "Сборка",
+      "parent_category": 0
+    },
+    {
+      "cat_id": 2,
+      "img": "/img/cats/2.png",
+      "name": "Начинки",
+      "parent_category": 0
+    },
+    {
+      "cat_id": 3,
+      "img": "/img/cats/3.png",
+      "name": "Заготовки",
+      "parent_category": 0
+    },
+    {
+      "cat_id": 4,
+      "img": "/img/cats/4.png",
+      "name": "Кремы",
+      "parent_category": 0
+    },
+    {
+      "cat_id": 5,
+      "img": "/img/cats/5.png",
+      "name": "Крема масляные",
+      "parent_category": 4
+    }
+  ],
+  "recipie_composition": [
+    {
+      "ing_id": 0,
+      "quantity": 100,
+      "rec_id": 0
+    },
+    {
+      "ing_id": 1,
+      "quantity": 50,
+      "rec_id": 0
+    }
+  ],
+  "images": [
+    {
+      "img_id": 0,
+      "name": "Общий вид",
+      "src": "https://images.unsplash.com/photo-1551879403-6adb554966fd"
+    }
+  ],
+  "recipie_ingridients": [
+    {
+      "ing_id": 0,
+      "name": "Сахар",
+      "rec_id": false,
+      "units": "г"
+    },
+    {
+      "ing_id": 1,
+      "name": "Крем сметанный",
+      "rec_id": 1,
+      "units": "г"
+    }
+  ],
+  "recipie_images": [
+    {
+      "img_id": 0,
+      "rec_id": 0
+    }
+  ],
+  "recipies": [
+    {
+      "cat_id": 0,
+      "desc": "Описание торта",
+      "howto": "Порядок выполнения",
+      "name": "Торт Радуга",
+      "rec_id": 0
+    },
+    {
+      "cat_id": 3,
+      "desc": "Описание крема",
+      "howto": "Порядок выполнения",
+      "name": "Крем Сметанный",
+      "rec_id": 1
+    }
+  ]
+}
