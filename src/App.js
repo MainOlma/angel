@@ -32,10 +32,10 @@ function HelloMessage(props) {
                 // User is signed in.
                 firebase.database().ref('/').once('value')
                     .then((snapshot) => {
-                        const cats = snapshot.child('recipie_categories').val() || 'Anonymous';
-                        const recipes = snapshot.child('recipies').val();
-                        const ingridients = snapshot.child('recipie_ingridients').val();
-                        const composition = snapshot.child('recipie_composition').val();
+                        const cats = Object.values(snapshot.child('recipie_categories').val()) || 'Anonymous';
+                        const recipes = Object.values(snapshot.child('recipies').val());
+                        const ingridients = Object.values(snapshot.child('recipie_ingridients').val());
+                        const composition = Object.values(snapshot.child('recipie_composition').val());
 
                         localStorage.setItem('recipie_categories', JSON.stringify(cats));
                         localStorage.setItem('recipes', JSON.stringify(recipes));

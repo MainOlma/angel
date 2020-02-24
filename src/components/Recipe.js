@@ -10,8 +10,8 @@ export default function Recipe(props) {
 
     if (props.recs) {
         if (props.second) recipeId = props.second
-        rec = props.recs.find(rec => rec.rec_id === parseInt(recipeId));
-        ingridientsIds = props.composition.filter(ing => ing.rec_id === parseInt(recipeId));
+        rec = props.recs.find(rec => rec.rec_id == recipeId);
+        ingridientsIds = props.composition.filter(ing => ing.rec_id == recipeId);
         ingridients = ingridientsIds.map(ing => props.ingridients.find(i => i.ing_id === ing.ing_id))
     }
 
