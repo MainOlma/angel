@@ -62,9 +62,10 @@ function Categorys(props) {
 
     return (
         <div>
+            <Link to={`${props.match.url}`}>Назад</Link>
             <Switch>
                 <Route path={`${props.match.path}/:recipeId`}>
-                    <Recipe {...props} recs={childrens_recs}/>
+                    <Recipe {...props}/>
                 </Route>
                 <Route path={`${props.match.path}`}>
 
