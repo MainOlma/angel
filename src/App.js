@@ -20,6 +20,8 @@ import Recipe from "./components/Recipe";
 function HelloMessage(props) {
     const [url, setUrl] = useState(null);
     const [categories, setCategories] = useState(null);
+    const [images, setImages] = useState(null);
+    const [recipieImages, setRecipieImages] = useState(null);
     const [recipes, setRecipes] = useState(null);
     const [ingridients, setIngridients] = useState(null);
     const [composition, setComposition] = useState(null);
@@ -37,16 +39,22 @@ function HelloMessage(props) {
                         const recipes = Object.values(snapshot.child('recipies').val());
                         const ingridients = Object.values(snapshot.child('recipie_ingridients').val());
                         const composition = Object.values(snapshot.child('recipie_composition').val());
+                        const images = Object.values(snapshot.child('images').val());
+                        const recipieImages = Object.values(snapshot.child('recipie_images').val());
 
                         localStorage.setItem('recipie_categories', JSON.stringify(cats));
                         localStorage.setItem('recipes', JSON.stringify(recipes));
                         localStorage.setItem('recipie_ingridients', JSON.stringify(ingridients));
                         localStorage.setItem('recipie_composition', JSON.stringify(composition));
+                        localStorage.setItem('images', JSON.stringify(images));
+                        localStorage.setItem('recipieImages', JSON.stringify(recipieImages));
 
                         setCategories(cats || localStorage.recipie_categories);
                         setRecipes(recipes);
                         setIngridients(ingridients);
                         setComposition(composition);
+                        setImages(images);
+                        setRecipieImages(recipieImages);
                     });
 
             } else {
@@ -60,13 +68,16 @@ function HelloMessage(props) {
         <Router basename={process.env.NODE_ENV=='production' ? '/angel' : ''}>
             <div>
                 <Route path='/' exact component={LoginPage}/>
-                {categories && recipes && ingridients && composition && user ?
+                {categories && recipes && ingridients && composition && user && images && recipieImages?
                     <Route path={`/recipes*/:id`}
                            render={(props) => <Categorys {...props}
                                                          tree={categories}
                                                          recs={recipes}
                                                          ingridients={ingridients}
-                                                         composition={composition}/>}
+                                                         composition={composition}
+                                                         images={images}
+                                                         recipieImages={recipieImages}
+                           />}
                     /> : null}
             </div>
         </Router>

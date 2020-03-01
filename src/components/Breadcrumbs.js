@@ -14,11 +14,16 @@ const Breadcrumbs = withBreadcrumbs(routes)(({tree, breadcrumbs}) => {
     const name = (key) => tree.find(cat => cat.cat_id == key)?.name
 
     return (
-        <React.Fragment>
-            {breadcrumbs.filter(({match}) => match.params.id != undefined).map(({breadcrumb, key, match}) => {
-                return (<span>&nbsp;<Link to={key}>{name(match.params.id)}</Link>&nbsp;</span>)
+        <div className={'breadcrumbs'}>
+            <Link to='/'>
+                <img src={'/img/logo_s.png'} width={154} heigth={57}/>
+            </Link>
+            {breadcrumbs.filter(({match}) => match.params.id != undefined)
+                .filter(({match}) =>name(match.params.id) != undefined)
+                .map(({breadcrumb, key, match}) => {
+                return (<span> → <Link to={key}>{name(match.params.id)}</Link>&nbsp;</span>)
             })}
-        </React.Fragment>
+        </div>
     )
 });
 

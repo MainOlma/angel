@@ -70,22 +70,25 @@ function Categorys(props) {
                 : <div>
                     <div>
                         <h2>Cats</h2>
-                        <ul>
+                        <div className={'categories'}>
                             {childrens_cats.length > 0 &&
                             childrens_cats.map(cat => (
-                                <li key={cat.cat_id}>
-                                    <Link to={`${props.match.url}/${cat.cat_id}`}>{cat.name}</Link>
-                                </li>
+                                <div className={'category'} key={cat.cat_id}>
+                                    <Link to={`${props.match.url}/${cat.cat_id}`}>
+                                        <img src={cat.img || '/img/default_cat.png'} width={559} height={228}/>
+                                        <span>{cat.name}</span>
+                                    </Link>
+                                </div>
                             ))
                             }
-                            <li><input
+                            <div className={'category'}><input
                                 value={catName}
                                 onChange={e => {
                                     setCatName(e.target.value);
                                 }}/>
                                 <button onClick={onAddCategory}>+</button>
-                            </li>
-                        </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <div>
