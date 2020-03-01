@@ -11,12 +11,13 @@ const routes = [
 
 const Breadcrumbs = withBreadcrumbs(routes)(({tree, breadcrumbs}) => {
 
-    const name = (key) => tree.find(cat => cat.cat_id == key)?.name
+    const name = (key) => tree.find(cat => cat.cat_id == key)?.name;
+    const basename= process.env.NODE_ENV=='production' ? '/angel' : '';
 
     return (
         <div className={'breadcrumbs'}>
             <Link to='/'>
-                <img src={'/img/logo_s.png'} width={154} heigth={57}/>
+                <img src={basename+'/img/logo_s.png'} width={154} heigth={57}/>
             </Link>
             {breadcrumbs.filter(({match}) => match.params.id != undefined)
                 .filter(({match}) =>name(match.params.id) != undefined)

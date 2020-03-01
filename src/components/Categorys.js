@@ -22,6 +22,7 @@ function Categorys(props) {
     let [childrens_recs, setChildrens_recs] = useState([]);
     const [catName, setCatName] = useState('');
     const [recName, setRecName] = useState('');
+    const basename= process.env.NODE_ENV=='production' ? '/angel' : '';
 
     useEffect(() => {
         setChildrens_cats(props.tree.filter(cat => cat.parent_category == id));
@@ -75,7 +76,7 @@ function Categorys(props) {
                             childrens_cats.map(cat => (
                                 <div className={'category'} key={cat.cat_id}>
                                     <Link to={`${props.match.url}/${cat.cat_id}`}>
-                                        <img src={cat.img || '/img/default_cat.png'} width={559} height={228}/>
+                                        <img src={basename + (cat.img || '/img/default_cat.png')} width={559} height={228}/>
                                         <span>{cat.name}</span>
                                     </Link>
                                 </div>

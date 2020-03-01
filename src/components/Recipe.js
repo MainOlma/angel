@@ -9,6 +9,7 @@ export default function Recipe(props) {
     let {path, url} = useRouteMatch();
     let rec, ingridientsIds, ingridients, imagesIds, recipieImages;
     const [second, setSecond] = useState(null);
+    const basename= process.env.NODE_ENV=='production' ? '/angel' : '';
 
     if (props.recs) {
         if (props.second) recipeId = props.second
@@ -86,7 +87,7 @@ export default function Recipe(props) {
                         recipieImages.map((img, i) => {
                             return (
                                 <div className={'image'} key={i}>
-                                    <img src={img.src}/>
+                                    <img src={basename+img.src}/>
                                 </div>
                             )
                         })
