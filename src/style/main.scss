@@ -138,6 +138,10 @@ body, html {
   a{
     text-decoration:none;
   }
+
+  a:last-child {
+    margin-left: auto;
+  }
 }
 
 .categories{

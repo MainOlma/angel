@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 
 import withBreadcrumbs from "react-router-breadcrumbs-hoc";
+import firebase from '../components/Base'
 
 const routes = [
     {path: '/recipes*/:id', breadcrumb: 'mmm'},
@@ -24,6 +25,11 @@ const Breadcrumbs = withBreadcrumbs(routes)(({tree, breadcrumbs}) => {
                 .map(({breadcrumb, key, match}) => {
                 return (<span> → <Link to={key}>{name(match.params.id)}</Link>&nbsp;</span>)
             })}
+            <Link to='/' onClick={() => firebase.auth().signOut().then(function() {
+                // Sign-out successful.
+            }).catch(function(error) {
+                // An error happened.
+            })}>Выйти</Link>
         </div>
     )
 });
