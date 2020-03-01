@@ -2,18 +2,46 @@ import React, {useState, useEffect} from "react";
 import {useParams, Link, useRouteMatch} from "react-router-dom";
 import Markdown from 'react-markdown';
 import Breadcrumbs from "./Breadcrumbs";
+import base from "./Base";
 
 export default function Recipe(props) {
     let {id, recipeId} = useParams();
     recipeId = id
     let {path, url} = useRouteMatch();
-    let rec, ingridientsIds, ingridients, imagesIds, recipieImages;
+    let rec, cat, ingridientsIds, ingridients, imagesIds, recipieImages;
     const [second, setSecond] = useState(null);
     const basename= process.env.NODE_ENV=='production' ? '/angel' : '';
+
+    const [recName, setRecName] = useState('');
+    const [recHowTo, setRecHowTo] = useState('');
+
+    const onUpdateRec = () => {
+        const recData = {
+            rec_id: recipeId,
+            howto: recHowTo,
+            cat_id: cat,
+            desc: rec.desc,
+            name: recName
+        };
+        const updates = {};
+        updates['/recipies/' + recipeId] = recData;
+
+        return base.database().ref().update(updates, function(error) {
+            if (error) {
+                // The write failed...
+            } else {
+                // Data saved successfully!
+                window.location.reload(true);
+            }
+        });
+
+    };
 
     if (props.recs) {
         if (props.second) recipeId = props.second
         rec = props.recs.find(rec => rec.rec_id == recipeId);
+        cat = rec.cat_id
+
         ingridientsIds = props.composition.filter(ing => ing.rec_id == recipeId);
         imagesIds = props.recipieImages.filter(img => img.rec_id == recipeId);
         ingridients = ingridientsIds.map(ing => {
@@ -47,7 +75,12 @@ export default function Recipe(props) {
 
     useEffect(() => {
         if (props.second) recipeId = second;
+
     })
+    useEffect(() => {
+        setRecName(rec.name)
+        setRecHowTo(rec.howto)
+    }, [])
 
 
     return (
@@ -94,7 +127,24 @@ export default function Recipe(props) {
                     }
                 </div>
                 }
+
+                <div className={'edit'}>
+                    <input
+                        value={recName}
+                        placeholder={rec.name}
+                        onChange={e => {
+                            setRecName(e.target.value);
+                        }}/>
+                    <input
+                        value={recHowTo}
+                        placeholder={rec.howto}
+                        onChange={e => {
+                            setRecHowTo(e.target.value);
+                        }}/>
+                    <button onClick={onUpdateRec}>Update</button>
+                </div>
             </div>
+
 
 
             {second &&

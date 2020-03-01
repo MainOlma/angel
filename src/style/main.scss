@@ -2,11 +2,11 @@
 
 body, html {
   font-family: 'Roboto', sans-serif;
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
 }
 
-#root{
+#root {
   padding: 1em;
 }
 
@@ -37,12 +37,12 @@ body, html {
     margin: 0;
   }
 
-  .main,.sub{
+  .main, .sub {
     padding: 5px;
     flex: 1 1 0px
   }
 
-  .main.half{
+  .main.half {
     width: 50%;
   }
 
@@ -58,16 +58,16 @@ body, html {
     text-align: left;
   }
 
-  table  tr {
+  table tr {
     border-bottom: 1px solid #5f4239;
   }
 
-  .imageList{
+  .imageList {
     justify-content: center;
     display: flex;
   }
 
-  .howTo{
+  .howTo {
     margin-bottom: 1em;
     overflow-x: auto;
     white-space: nowrap;
@@ -80,22 +80,22 @@ body, html {
     justify-content: space-between;
     padding-top: 1em;
 
-    .first{
-      width:100%;
+    .first {
+      width: 100%;
     }
 
 
-    .second{
+    .second {
       flex-basis: 50%;
     }
   }
 
-  .full .first{
+  .full .first {
     width: 50%;
   }
 
   .sub {
-    .recipe{
+    .recipe {
       flex-direction: column;
     }
   }
@@ -128,15 +128,15 @@ body, html {
 
 }
 
-.breadcrumbs{
+.breadcrumbs {
   font-size: 32px;
   line-height: 38px;
   display: flex;
   align-items: center;
   flex-direction: row;
 
-  a{
-    text-decoration:none;
+  a {
+    text-decoration: none;
   }
 
   a:last-child {
@@ -144,25 +144,40 @@ body, html {
   }
 }
 
-.categories{
+.categories {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 
-  .category{
-    width:50%;
-    position:relative;
+  .category {
+    width: 50%;
+    position: relative;
     overflow: hidden;
 
-    span{
+    span {
       position: absolute;
       top: 0;
       left: 0;
       font-size: 43px;
       line-height: 51px;
     }
-    a{
-      color:white;
+
+    a {
+      color: white;
     }
+  }
+}
+
+.edit {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  input {
+    width: 200px;
+  }
+
+  button {
+    width: 100px;
   }
 }
