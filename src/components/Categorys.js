@@ -10,6 +10,8 @@ import {
     useRouteMatch
 } from "react-router-dom";
 import base from './Base';
+import Breadcrumbs from './Breadcrumbs'
+
 
 function Categorys(props) {
 
@@ -62,20 +64,17 @@ function Categorys(props) {
 
     return (
         <div>
-            <Link to={`${props.match.url}`}>Назад</Link>
-            <Switch>
-                <Route path={`${props.match.path}/:recipeId`}>
-                    <Recipe {...props}/>
-                </Route>
-                <Route path={`${props.match.path}`}>
-
+            <Breadcrumbs tree={props.tree}/>
+            {props?.location?.state?.recipe ?
+                <Recipe {...props}/>
+                : <div>
                     <div>
                         <h2>Cats</h2>
                         <ul>
                             {childrens_cats.length > 0 &&
                             childrens_cats.map(cat => (
                                 <li key={cat.cat_id}>
-                                    <Link to={`${cat.cat_id}`}>{cat.name}</Link>
+                                    <Link to={`${props.match.url}/${cat.cat_id}`}>{cat.name}</Link>
                                 </li>
                             ))
                             }
@@ -83,43 +82,39 @@ function Categorys(props) {
                                 value={catName}
                                 onChange={e => {
                                     setCatName(e.target.value);
-                                }}
-                            />
+                                }}/>
                                 <button onClick={onAddCategory}>+</button>
                             </li>
                         </ul>
                     </div>
 
+                    <div>
+                        <h2>Recs</h2>
+                        <ul>
+                            {childrens_recs.length > 0 &&
+                            childrens_recs.map(rec => (
+                                <li key={rec.rec_id}>
+                                    <Link
+                                        to={{
+                                            pathname: `${props.match.url}/${rec.rec_id}`,
+                                            state: {recipe: true}
+                                        }}>{rec.name}</Link>
 
-                    {
-                        <div>
-                            <h2>Recs</h2>
-                            <ul>
-                                {childrens_recs.length > 0 &&
-                                childrens_recs.map(rec => (
-                                    <li key={rec.rec_id}>
-                                        <Link to={`${props.match.url}/${rec.rec_id}`}>{rec.name}</Link>
-                                    </li>
-                                ))
-                                }
-                                <li><input
-                                    value={recName}
-                                    onChange={e => {
-                                        setRecName(e.target.value);
-                                    }}
-                                />
-                                    <button onClick={onAddRecipe}>+</button>
                                 </li>
-                            </ul>
-                        </div>
-                    }
-                </Route>
-
-
-            </Switch>
-
-        </div>
-    );
+                            ))
+                            }
+                            <li><input
+                                value={recName}
+                                onChange={e => {
+                                    setRecName(e.target.value);
+                                }}/>
+                                <button onClick={onAddRecipe}>+</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>);
 }
 
 export default Categorys;

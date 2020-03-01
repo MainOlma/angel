@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from "react";
 import {useParams, Link, useRouteMatch} from "react-router-dom";
 import Markdown from 'react-markdown';
+import Breadcrumbs from "./Breadcrumbs";
 
 export default function Recipe(props) {
     let {id, recipeId} = useParams();
+    recipeId = id
     let {path, url} = useRouteMatch();
     let rec, ingridientsIds, ingridients;
     const [second, setSecond] = useState(null);
@@ -30,6 +32,7 @@ export default function Recipe(props) {
         setSecond(id)
 
     }
+
     function HideIng() {
         props.parentCallback("Close second recipe!")
 
@@ -46,7 +49,6 @@ export default function Recipe(props) {
 
     return (
         <div className='recipe'>
-            {!props.second && <Link to={`${props.match.url}`}>Назад</Link>}
             {props.second && <div className='close' onClick={HideIng}>Close</div>}
             <div className='main'>
                 <h1>{rec?.name}</h1>
@@ -60,7 +62,7 @@ export default function Recipe(props) {
                                         {ing.rec_id ?
                                             <div className='name link'
                                                  onClick={() => ShowIng(ing.rec_id)}><span>{ing.name}</span></div>
-                                            : <div className='name' >{ing.name}</div>
+                                            : <div className='name'>{ing.name}</div>
                                         }
                                         <div className='quantity'>{ing.quantity} {ing.units}</div>
                                     </div>
@@ -76,7 +78,8 @@ export default function Recipe(props) {
 
             </div>
 
-            {second && <div className='sub'><Recipe {...props} second={second} parentCallback = {callbackFunction}/></div>}
+            {second &&
+            <div className='sub'><Recipe {...props} second={second} parentCallback={callbackFunction}/></div>}
 
         </div>
     )

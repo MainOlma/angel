@@ -15,6 +15,7 @@ import {
 import Categorys from "./components/Categorys";
 import LoginPage from "./components/LoginPage";
 import firebase from './components/Base'
+import Recipe from "./components/Recipe";
 
 function HelloMessage(props) {
     const [url, setUrl] = useState(null);
@@ -60,7 +61,7 @@ function HelloMessage(props) {
             <div>
                 <Route path='/' exact component={LoginPage}/>
                 {categories && recipes && ingridients && composition && user ?
-                    <Route path={`/recipes/:id`}
+                    <Route path={`/recipes*/:id`}
                            render={(props) => <Categorys {...props}
                                                          tree={categories}
                                                          recs={recipes}
