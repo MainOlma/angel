@@ -2,6 +2,8 @@ import React, {useState, useEffect} from "react";
 import {useParams, Link, useRouteMatch} from "react-router-dom";
 import Markdown from 'react-markdown';
 import Breadcrumbs from "./Breadcrumbs";
+import CKEditor from '@ckeditor/ckeditor5-react';
+import BalloonEditor from '@ckeditor/ckeditor5-build-balloon';
 
 export default function Recipe(props) {
     let {id, recipeId} = useParams();
