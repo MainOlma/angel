@@ -2,8 +2,7 @@ import React, {useState, useEffect} from "react";
 import {useParams, Link, useRouteMatch} from "react-router-dom";
 import Markdown from 'react-markdown';
 import Breadcrumbs from "./Breadcrumbs";
-import CKEditor from '@ckeditor/ckeditor5-react';
-import BalloonEditor from '@ckeditor/ckeditor5-build-balloon';
+import CKEditor from 'ckeditor4-react';
 import base from "./Base";
 
 export default function Recipe(props) {
@@ -80,8 +79,9 @@ export default function Recipe(props) {
 
     })
     useEffect(() => {
-        setRecName(rec.name)
-        setRecHowTo(rec.howto)
+        setRecName(rec.name);
+        setRecHowTo(rec.howto);
+        console.log("effect: ", recHowTo)
     }, [])
 
 
@@ -137,12 +137,19 @@ export default function Recipe(props) {
                         onChange={e => {
                             setRecName(e.target.value);
                         }}/>
-                    <input
+                    {/*<input
                         value={recHowTo}
                         placeholder={rec.howto}
                         onChange={e => {
                             setRecHowTo(e.target.value);
-                        }}/>
+                        }}/>*/}
+                    <CKEditor
+                        data={rec.howto}
+                        onChange={e => {
+                            setRecHowTo(e.editor.getData());
+                        }}
+                    />
+
                     <button onClick={onUpdateRec}>Update</button>
                 </div>
             </div>
