@@ -3,7 +3,9 @@ import {useParams, Link, useRouteMatch} from "react-router-dom";
 import Markdown from 'react-markdown';
 import Breadcrumbs from "./Breadcrumbs";
 import CKEditor from 'ckeditor4-react';
+import Button from '@material-ui/core/Button';
 import base from "./Base";
+import ETable from "./ETable";
 
 export default function Recipe(props) {
     let {id, recipeId} = useParams();
@@ -15,6 +17,7 @@ export default function Recipe(props) {
 
     const [recName, setRecName] = useState('');
     const [recHowTo, setRecHowTo] = useState('');
+    const [ings, setIngs] = useState('');
 
     const onUpdateRec = () => {
         const recData = {
@@ -55,7 +58,8 @@ export default function Recipe(props) {
                 units: details.units,
             })
 
-        })
+        });
+
         recipieImages = imagesIds.map(id => props.images.find(img => img.img_id == id.img_id))
     }
 
@@ -81,6 +85,7 @@ export default function Recipe(props) {
     useEffect(() => {
         setRecName(rec.name);
         setRecHowTo(rec.howto);
+        setIngs(ingridients);
         console.log("effect: ", recHowTo)
     }, [])
 
@@ -149,8 +154,9 @@ export default function Recipe(props) {
                             setRecHowTo(e.editor.getData());
                         }}
                     />
+                    {ings && <ETable ingridients={ings}/>}
 
-                    <button onClick={onUpdateRec}>Update</button>
+                    <Button onClick={onUpdateRec}>Update</Button>
                 </div>
             </div>
 
