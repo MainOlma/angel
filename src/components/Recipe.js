@@ -5,6 +5,7 @@ import Breadcrumbs from "./Breadcrumbs";
 import CKEditor from 'ckeditor4-react';
 import Button from '@material-ui/core/Button';
 import base from "./Base";
+import {updateRec} from "./DbActions";
 import ETable from "./ETable";
 
 export default function Recipe(props) {
@@ -27,18 +28,9 @@ export default function Recipe(props) {
             desc: rec.desc,
             name: recName
         };
-        const updates = {};
-        updates['/recipies/' + recipeId] = recData;
-
-        return base.database().ref().update(updates, function(error) {
-            if (error) {
-                // The write failed...
-            } else {
-                // Data saved successfully!
-                window.location.reload(true);
-            }
-        });
-
+        updateRec(recipeId, recData);
+        setRecName(recName);
+        setRecHowTo(recHowTo);
     };
 
     if (props.recs) {
@@ -51,11 +43,14 @@ export default function Recipe(props) {
         ingridients = ingridientsIds.map(ing => {
             const details = props.ingridients.find(i => i.ing_id === ing.ing_id)
             return ({
-                id: ing.ing_id,
+                ing_id: ing.ing_id,
+                comp_id: ing.comp_id,
+                ing_rec_id: details.rec_id,
+                rec_id: ing.rec_id,
                 name: details.name,
                 quantity: ing.quantity,
-                rec_id: details.rec_id,
                 units: details.units,
+
             })
 
         });
@@ -86,7 +81,6 @@ export default function Recipe(props) {
         setRecName(rec.name);
         setRecHowTo(rec.howto);
         setIngs(ingridients);
-        console.log("effect: ", recHowTo)
     }, [])
 
 
@@ -95,17 +89,17 @@ export default function Recipe(props) {
             {props.second && <div className='close' onClick={HideIng}>Close</div>}
             <div className={second ? 'main half' : 'main full'}>
                 <div className={'first'}>
-                    <h1>{rec?.name}</h1>
+                    <h1>{recName}</h1>
 
-                    {ingridients.length > 0 &&
+                    {ings.length > 0 &&
                     <div>
                         <div className='ingridients'>
-                            {ingridients.map((ing, i) => {
+                            {ings.map((ing, i) => {
                                     return (
                                         <div className='ingridient' key={i}>
                                             {ing.rec_id ?
                                                 <div className='name link'
-                                                     onClick={() => ShowIng(ing.rec_id)}><span>{ing.name}</span></div>
+                                                     onClick={() => ShowIng(ing.ing_rec_id)}><span>{ing.name}</span></div>
                                                 : <div className='name'>{ing.name}</div>
                                             }
                                             <div className='quantity'>{ing.quantity} {ing.units}</div>
@@ -118,7 +112,7 @@ export default function Recipe(props) {
                     }
 
                     <div className={'howTo'}><Markdown escapeHtml={false}
-                                                       source={rec?.howto}/></div>
+                                                       source={recHowTo}/></div>
 
                 </div>
                 {recipieImages.length > 0 &&
@@ -142,21 +136,16 @@ export default function Recipe(props) {
                         onChange={e => {
                             setRecName(e.target.value);
                         }}/>
-                    {/*<input
-                        value={recHowTo}
-                        placeholder={rec.howto}
-                        onChange={e => {
-                            setRecHowTo(e.target.value);
-                        }}/>*/}
                     <CKEditor
                         data={rec.howto}
                         onChange={e => {
                             setRecHowTo(e.editor.getData());
                         }}
                     />
-                    {ings && <ETable ingridients={ings}/>}
+                    <Button  className={'update'} onClick={onUpdateRec}>Сохранить</Button>
+                    {ings && <ETable ingridients={ings} allIngridients={props.ingridients} currentRec={recipeId}/>}
+                    <Link to={'/ingridients'}>База ингридиентов</Link>
 
-                    <Button onClick={onUpdateRec}>Update</Button>
                 </div>
             </div>
 

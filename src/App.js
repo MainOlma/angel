@@ -16,6 +16,7 @@ import Categorys from "./components/Categorys";
 import LoginPage from "./components/LoginPage";
 import firebase from './components/Base'
 import Recipe from "./components/Recipe";
+import Ingridients from "./components/Ingridients";
 
 function HelloMessage(props) {
     const [url, setUrl] = useState(null);
@@ -33,8 +34,8 @@ function HelloMessage(props) {
             if (user) {
                 setUser(firebase.auth().currentUser);
                 // User is signed in.
-                firebase.database().ref('/').once('value')
-                    .then((snapshot) => {
+                firebase.database().ref('/').on('value',
+                   (snapshot) => {
                         const cats = Object.values(snapshot.child('recipie_categories').val()) || 'Anonymous';
                         const recipes = Object.values(snapshot.child('recipies').val());
                         const ingridients = Object.values(snapshot.child('recipie_ingridients').val());
@@ -68,6 +69,7 @@ function HelloMessage(props) {
         <Router basename={process.env.NODE_ENV=='production' ? '/angel' : ''}>
             <div>
                 <Route path='/' exact component={LoginPage}/>
+                <Route path={'/ingridients'} component={Ingridients} />
                 {categories && recipes && ingridients && composition && user && images && recipieImages?
                     <Route path={`/recipes*/:id`}
                            render={(props) => <Categorys {...props}

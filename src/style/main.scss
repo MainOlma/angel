@@ -169,7 +169,7 @@ body, html {
 }
 
 .edit {
-  width: 50%;
+  width: 700px;
   display: flex;
   flex-direction: column;
 
@@ -177,7 +177,7 @@ body, html {
     width: 200px;
   }
 
-  button {
+  button.update {
     width: 100px;
   }
 }
