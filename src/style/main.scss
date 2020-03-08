@@ -154,6 +154,10 @@ body, html {
     position: relative;
     overflow: hidden;
 
+    img{
+      background: black;
+    }
+
     span {
       position: absolute;
       top: 0;

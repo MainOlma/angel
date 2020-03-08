@@ -69,7 +69,7 @@ function HelloMessage(props) {
         <Router basename={process.env.NODE_ENV=='production' ? '/angel' : ''}>
             <div>
                 <Route path='/' exact component={LoginPage}/>
-                <Route path={'/ingridients'} component={Ingridients} />
+                <Route path={'/ingridients'} render={() => <Ingridients ingridients={ingridients} recipes={recipes}/>}/>
                 {categories && recipes && ingridients && composition && user && images && recipieImages?
                     <Route path={`/recipes*/:id`}
                            render={(props) => <Categorys {...props}
