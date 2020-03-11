@@ -65,6 +65,11 @@ body, html {
   .imageList {
     justify-content: center;
     display: flex;
+    flex-direction: column;
+
+    .image img{
+      width: 100%;
+    }
   }
 
   .howTo {

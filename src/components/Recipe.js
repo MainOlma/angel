@@ -4,9 +4,11 @@ import Markdown from 'react-markdown';
 import Breadcrumbs from "./Breadcrumbs";
 import CKEditor from 'ckeditor4-react';
 import Button from '@material-ui/core/Button';
-import base from "./Base";
+
 import {updateRec} from "./DbActions";
 import ETable from "./ETable";
+import ImageUpload from "./ImageUpload";
+import ImageList from "./ImageList";
 
 export default function Recipe(props) {
     let {id, recipeId} = useParams();
@@ -115,8 +117,9 @@ export default function Recipe(props) {
                                                        source={recHowTo}/></div>
 
                 </div>
-                {recipieImages.length > 0 &&
+
                 <div className={'imageList second'}>
+                    <ImageList recipeId={recipeId}/>
                     {
                         recipieImages.map((img, i) => {
                             return (
@@ -127,7 +130,7 @@ export default function Recipe(props) {
                         })
                     }
                 </div>
-                }
+
 
                 <div className={'edit'}>
                     <input
@@ -145,6 +148,7 @@ export default function Recipe(props) {
                     <Button  className={'update'} onClick={onUpdateRec}>Сохранить</Button>
                     {ings && <ETable ingridients={ings} allIngridients={props.ingridients} currentRec={recipeId}/>}
                     <Link to={'/ingridients'}>База ингридиентов</Link>
+                    <ImageUpload recipeId={recipeId}/>
 
                 </div>
             </div>
