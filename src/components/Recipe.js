@@ -14,11 +14,14 @@ export default function Recipe(props) {
     let {id, recipeId} = useParams();
     recipeId = id
     let {path, url} = useRouteMatch();
-    let rec, cat, ingridientsIds, ingridients, imagesIds, recipieImages;
+    let rec, cat, ingridientsIds, ingridients=[], imagesIds, recipieImages;
     const [second, setSecond] = useState(null);
     const basename= process.env.NODE_ENV=='production' ? '/angel' : '';
 
     const [recName, setRecName] = useState('');
+
+    const [summary, setSummary] = useState(0);
+    const [summaryNew, setNewSummary] = useState(0);
     const [recHowTo, setRecHowTo] = useState('');
     const [ings, setIngs] = useState('');
 
@@ -28,10 +31,12 @@ export default function Recipe(props) {
             howto: recHowTo,
             cat_id: cat,
             desc: rec.desc,
-            name: recName
+            name: recName,
+            loss: loss
         };
         updateRec(recipeId, recData);
         setRecName(recName);
+        setLoss(loss);
         setRecHowTo(recHowTo);
     };
 
@@ -50,7 +55,7 @@ export default function Recipe(props) {
                 ing_rec_id: details.rec_id,
                 rec_id: ing.rec_id,
                 name: details.name,
-                quantity: ing.quantity,
+                quantity: +ing.quantity,
                 units: details.units,
 
             })
@@ -59,6 +64,7 @@ export default function Recipe(props) {
 
         recipieImages = imagesIds.map(id => props.images.find(img => img.img_id == id.img_id))
     }
+    const [loss, setLoss] = useState(rec?.loss);
 
 
     function ShowIng(id) {
@@ -78,12 +84,23 @@ export default function Recipe(props) {
     useEffect(() => {
         if (props.second) recipeId = second;
 
-    })
+    });
+
     useEffect(() => {
+        debugger
         setRecName(rec.name);
+        setLoss(rec.loss);
         setRecHowTo(rec.howto);
         setIngs(ingridients);
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        debugger
+        const sum = (ingridients.reduce((acc, val)=>+acc+val.quantity, 0)*(1 - loss/100)).toFixed(1);
+        setSummary(sum);
+        setNewSummary(sum)
+
+    },[ingridients.length]);
 
 
     return (
@@ -96,6 +113,8 @@ export default function Recipe(props) {
                     {ings.length > 0 &&
                     <div>
                         <div className='ingridients'>
+                            <span>Потери {loss}</span>
+                            <span>Выход <input placeholder={summary} value={summaryNew} onChange={e => {setNewSummary(e.target.value)}}/></span>
                             {ings.map((ing, i) => {
                                     return (
                                         <div className='ingridient' key={i}>
@@ -104,7 +123,7 @@ export default function Recipe(props) {
                                                      onClick={() => ShowIng(ing.ing_rec_id)}><span>{ing.name}</span></div>
                                                 : <div className='name'>{ing.name}</div>
                                             }
-                                            <div className='quantity'>{ing.quantity} {ing.units}</div>
+                                            <div className='quantity'>{(ing.quantity*summaryNew/summary).toFixed(1)} {ing.units}</div>
                                         </div>
                                     )
                                 }
@@ -133,11 +152,21 @@ export default function Recipe(props) {
 
 
                 <div className={'edit'}>
+                    <label htmlFor="name">Название: </label>
                     <input
+                        name={'name'}
                         value={recName}
                         placeholder={rec.name}
                         onChange={e => {
                             setRecName(e.target.value);
+                        }}/>
+                    <label htmlFor="loss">Потери: </label>
+                    <input
+                        name={'loss'}
+                        value={loss}
+                        placeholder={rec.loss}
+                        onChange={e => {
+                            setLoss(e.target.value);
                         }}/>
                     <CKEditor
                         data={rec.howto}
