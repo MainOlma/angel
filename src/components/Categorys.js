@@ -38,7 +38,8 @@ function Categorys(props) {
             howto: "Empty How To",
             cat_id: id,
             desc: "Empty Description",
-            name: recName
+            name: recName,
+            loss: "0"
         };
         const updates = {};
         updates['/recipies/' + newKey] = recData;
@@ -100,7 +101,7 @@ function Categorys(props) {
                                 <li key={rec.rec_id}>
                                     <Link
                                         to={{
-                                            pathname: `${props.match.url}/${rec.rec_id}`,
+                                            pathname: `${props.match.url}/recipe/${rec.rec_id}`,
                                             state: {recipe: true}
                                         }}>{rec.name}</Link>
 

@@ -69,7 +69,6 @@ export default function Ingridients(props) {
             newIngridient(newIngr)
         }
         if (changed) {
-
             changedRows = rows.map((row,i) => (changed[i] ? { ...row, ...changed[i] } : row));
             const chagedIngridient = changedRows
                 .find((row,i) => changed[i]!=undefined ? { ...row, ...changed[i] } : null);
@@ -84,6 +83,7 @@ export default function Ingridients(props) {
 
         }
         setRows(changedRows);
+
     };
 
     return (
@@ -93,8 +93,7 @@ export default function Ingridients(props) {
             columns={[
                 {name: 'ing_id', title: 'ID'},
                 {name: 'name', title: 'Название'},
-                {name: 'rec_id', title: 'Ссылка на Рецепт'},
-                {name: 'units', title: 'Единицы измерения'},
+                {name: 'rec_id', title: 'Ссылка на Рецепт'}
             ]}>
             <BooleanTypeProvider
                 for={booleanColumns}

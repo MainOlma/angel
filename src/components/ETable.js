@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Paper from '@material-ui/core/Paper';
 import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
@@ -74,7 +74,7 @@ export default function ETable(props) {
         if (changed) {
 
             changedRows = rows.map((row,i) => (changed[i] ? { ...row, ...changed[i] } : row));
-            const chagedIngridient = changedRows.find((row,i) => (changed[i] ? { ...row, ...changed[i] } : row))
+            const chagedIngridient = changedRows.find((row,i) => (changed[i]!=undefined  ? { ...row, ...changed[i] } : null))
             updateComposition(chagedIngridient)
 
         }
@@ -86,6 +86,7 @@ export default function ETable(props) {
 
         }
         setRows(changedRows);
+        props.needUpdate('true')
     };
 
     return (
@@ -94,8 +95,7 @@ export default function ETable(props) {
             rows={rows}
             columns={[
                 {name: 'ing_id', title: 'Ингридиент'},
-                {name: 'quantity', title: 'Кол-во'},
-                {name: 'units', title: ''},
+                {name: 'quantity', title: 'Кол-во'}
             ]}>
             <BooleanTypeProvider
                 for={booleanColumns}

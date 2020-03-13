@@ -17,6 +17,7 @@ import LoginPage from "./components/LoginPage";
 import firebase from './components/Base'
 import Recipe from "./components/Recipe";
 import Ingridients from "./components/Ingridients";
+import Rules from "./components/Rules";
 
 function HelloMessage(props) {
     const [url, setUrl] = useState(null);
@@ -27,6 +28,7 @@ function HelloMessage(props) {
     const [ingridients, setIngridients] = useState(null);
     const [composition, setComposition] = useState(null);
     const [user, setUser] = useState(null);
+    const state=[0];
 
     useEffect(() => {
 
@@ -36,6 +38,7 @@ function HelloMessage(props) {
                 // User is signed in.
                 firebase.database().ref('/').on('value',
                    (snapshot) => {
+                    debugger;
                         const cats = Object.values(snapshot.child('recipie_categories').val()) || 'Anonymous';
                         const recipes = Object.values(snapshot.child('recipies').val());
                         const ingridients = Object.values(snapshot.child('recipie_ingridients').val());
@@ -56,6 +59,7 @@ function HelloMessage(props) {
                         setComposition(composition);
                         setImages(images);
                         setRecipieImages(recipieImages);
+                        state.push(1)
                     });
 
             } else {
@@ -63,14 +67,26 @@ function HelloMessage(props) {
             }
         });
 
-    }, []);
+    }, state.length);
 
     return (
         <Router basename={process.env.NODE_ENV=='production' ? '/angel' : ''}>
             <div>
-                <Route path='/' exact component={LoginPage}/>
+                <Route path='/' exact render={()=><LoginPage user={user}/>}/>
                 <Route path={'/ingridients'} render={() => <Ingridients ingridients={ingridients} recipes={recipes}/>}/>
+                <Route path={'/rules'} render={() => <Rules/>}/>
                 {categories && recipes && ingridients && composition && user && images && recipieImages?
+                <Switch>
+
+                    <Route path={`/recipes*/:id/recipe/:recipeId`}
+                           render={(props)=><Recipe {...props}
+                                                    tree={categories}
+                                                    recs={recipes}
+                                                    ingridients={ingridients}
+                                                    composition={composition}
+                                                    images={images}
+                                                    recipieImages={recipieImages}/>}/>
+
                     <Route path={`/recipes*/:id`}
                            render={(props) => <Categorys {...props}
                                                          tree={categories}
@@ -80,7 +96,9 @@ function HelloMessage(props) {
                                                          images={images}
                                                          recipieImages={recipieImages}
                            />}
-                    /> : null}
+                    />
+
+                </Switch> : null}
             </div>
         </Router>
     );

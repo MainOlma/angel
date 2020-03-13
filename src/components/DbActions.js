@@ -13,7 +13,7 @@ export function updateComposition(chagedIngridient) {
         ing_id: ing_id,
         quantity: quantity,
         rec_id: rec_id,
-    }
+    };
     const updates = {};
     updates['/recipie_composition/' + comp_id] = composition;
     updateDb(updates);
@@ -37,16 +37,15 @@ export function newComposition(newComposition) {
 
 export function deleteComposition(idComposition) {
     base.database().ref().child('recipie_composition/' + idComposition).remove();
-    window.location.reload(true);
+    //window.location.reload(true);
 }
 
 export function updateIngridient(chagedIngridient) {
-    const {rec_id, ing_id, name, units} = chagedIngridient;
+    const {rec_id, ing_id, name} = chagedIngridient;
     const ingridient = {
         ing_id: ing_id,
         name: name,
-        rec_id: rec_id,
-        units: units,
+        rec_id: rec_id
     };
     const updates = {};
     updates['/recipie_ingridients/' + ing_id] = ingridient;
@@ -57,13 +56,12 @@ export function deleteIngridient(idIngridient) {
 }
 
 export function newIngridient(newIngridient) {
-    const {rec_id, units, name} = newIngridient;
+    const {rec_id, name} = newIngridient;
     const newKey = base.database().ref().child('recipie_ingridients').push().key;
     const ingridient = {
         ing_id: newKey,
         name: name,
-        rec_id: rec_id,
-        units: units,
+        rec_id: rec_id
     }
     const updates = {};
     updates['/recipie_ingridients/' + newKey] = ingridient;
