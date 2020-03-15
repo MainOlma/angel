@@ -23,7 +23,7 @@ const Breadcrumbs = withBreadcrumbs(routes)(({tree, breadcrumbs}) => {
             {breadcrumbs.filter(({match}) => match.params.id != undefined)
                 .filter(({match}) =>name(match.params.id) != undefined)
                 .map(({breadcrumb, key, match},i) => {
-                return (<span> → <Link to={key} key={i}>{name(match.params.id)}</Link>&nbsp;</span>)
+                return (<span key={i}> → <Link to={key} >{name(match.params.id)}</Link>&nbsp;</span>)
             })}
             <Link to='/' onClick={() => firebase.auth().signOut().then(function() {
                 // Sign-out successful.

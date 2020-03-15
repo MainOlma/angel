@@ -32,7 +32,7 @@ export function newComposition(newComposition) {
     const updates = {};
     updates['/recipie_composition/' + newKey] = composition;
     updateDb(updates);
-    window.location.reload(true);
+    //window.location.reload(true);
 }
 
 export function deleteComposition(idComposition) {

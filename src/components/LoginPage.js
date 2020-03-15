@@ -6,7 +6,7 @@ import firebase from "./Base";
 
 
 export default function LoginPage(props) {
-    const basename = process.env.NODE_ENV == 'production' ? '/angel' : '';
+    const basename = process.env.NODE_ENV == 'production' ? '' : '/angel';
     const [user, setUser] = useState(false)
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) { setUser(user)} else setUser(false)});

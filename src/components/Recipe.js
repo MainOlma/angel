@@ -40,8 +40,8 @@ export default function Recipe(props) {
         setLoss(loss);
         setRecHowTo(recHowTo);
     };
-    const needUpdate=()=>{
-        setIngs(getIngridients())
+    const needUpdate=(changedRows)=>{
+        setIngs(changedRows)
     };
 
     const getIngridients =()=>{
@@ -94,7 +94,7 @@ export default function Recipe(props) {
         setRecName(rec.name);
         setLoss(rec.loss);
         setRecHowTo(rec.howto);
-        setIngs(ingridients);
+        setIngs(getIngridients());
     }, []);
 
     useEffect(() => {
@@ -159,7 +159,7 @@ export default function Recipe(props) {
                     </div>
 
 
-                    <div className={'edit'}>
+                    {props.admin && <div className={'edit'}>
                         <label htmlFor="name">Название: </label>
                         <input
                             name={'name'}
@@ -183,11 +183,11 @@ export default function Recipe(props) {
                             }}
                         />
                         <Button className={'update'} onClick={onUpdateRec}>Сохранить</Button>
-                        {ings.length>0 && <ETable ingridients={ings} allIngridients={props.ingridients} currentRec={recipeId} needUpdate={needUpdate}/>}
+                        <ETable ingridients={ings} allIngridients={props.ingridients} currentRec={recipeId} needUpdate={needUpdate}/>
                         <Link to={'/ingridients'}>База ингридиентов</Link>
                         <ImageUpload recipeId={recipeId}/>
 
-                    </div>
+                    </div>}
                 </div>
 
 

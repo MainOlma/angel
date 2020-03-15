@@ -28,23 +28,37 @@ function HelloMessage(props) {
     const [ingridients, setIngridients] = useState(null);
     const [composition, setComposition] = useState(null);
     const [user, setUser] = useState(null);
-    const state=[0];
+    const [admin, setAdmin] = useState(null);
+    const state = [0];
+
+    function isAdmin(email) {
+        let role = false
+        firebase.database().ref().once('value').then(function (snapshot) {
+            const users = Object.values(snapshot.child('users').val());
+            role = users.find(user => user.email == email);
+        });
+        return role ? role.admin : false
+    }
 
     useEffect(() => {
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
+
+
                 setUser(firebase.auth().currentUser);
                 // User is signed in.
                 firebase.database().ref('/').on('value',
-                   (snapshot) => {
-                    debugger;
+                    (snapshot) => {
+
                         const cats = Object.values(snapshot.child('recipie_categories').val()) || 'Anonymous';
                         const recipes = Object.values(snapshot.child('recipies').val());
                         const ingridients = Object.values(snapshot.child('recipie_ingridients').val());
                         const composition = Object.values(snapshot.child('recipie_composition').val());
                         const images = Object.values(snapshot.child('images').val());
                         const recipieImages = Object.values(snapshot.child('recipie_images').val());
+                        const users = Object.values(snapshot.child('users').val());
+                        const role = users.find(u => u.email == user.email);
 
                         localStorage.setItem('recipie_categories', JSON.stringify(cats));
                         localStorage.setItem('recipes', JSON.stringify(recipes));
@@ -53,12 +67,13 @@ function HelloMessage(props) {
                         localStorage.setItem('images', JSON.stringify(images));
                         localStorage.setItem('recipieImages', JSON.stringify(recipieImages));
 
-                        setCategories(cats || localStorage.recipie_categories);
+                        setCategories(cats /*|| localStorage.recipie_categories*/);
                         setRecipes(recipes);
                         setIngridients(ingridients);
                         setComposition(composition);
                         setImages(images);
                         setRecipieImages(recipieImages);
+                        setAdmin(role && role.admin);
                         state.push(1)
                     });
 
@@ -67,38 +82,40 @@ function HelloMessage(props) {
             }
         });
 
-    }, state.length);
+    }, [state.length]);
 
     return (
-        <Router basename={process.env.NODE_ENV=='production' ? '/angel' : ''}>
+        <Router basename={process.env.NODE_ENV == 'production' ? '/angel' : ''}>
             <div>
-                <Route path='/' exact render={()=><LoginPage user={user}/>}/>
+                <Route path='/' exact render={() => <LoginPage user={user}/>}/>
                 <Route path={'/ingridients'} render={() => <Ingridients ingridients={ingridients} recipes={recipes}/>}/>
                 <Route path={'/rules'} render={() => <Rules/>}/>
-                {categories && recipes && ingridients && composition && user && images && recipieImages?
-                <Switch>
+                {categories && recipes && ingridients && composition && user && admin!=null && images && recipieImages ?
+                    <Switch>
 
-                    <Route path={`/recipes*/:id/recipe/:recipeId`}
-                           render={(props)=><Recipe {...props}
-                                                    tree={categories}
-                                                    recs={recipes}
-                                                    ingridients={ingridients}
-                                                    composition={composition}
-                                                    images={images}
-                                                    recipieImages={recipieImages}/>}/>
+                        <Route path={`/recipes*/:id/recipe/:recipeId`}
+                               render={(props) => <Recipe {...props}
+                                                          admin={admin}
+                                                          tree={categories}
+                                                          recs={recipes}
+                                                          ingridients={ingridients}
+                                                          composition={composition}
+                                                          images={images}
+                                                          recipieImages={recipieImages}/>}/>
 
-                    <Route path={`/recipes*/:id`}
-                           render={(props) => <Categorys {...props}
-                                                         tree={categories}
-                                                         recs={recipes}
-                                                         ingridients={ingridients}
-                                                         composition={composition}
-                                                         images={images}
-                                                         recipieImages={recipieImages}
-                           />}
-                    />
+                        <Route path={`/recipes*/:id`}
+                               render={(props) => <Categorys {...props}
+                                                             admin={admin}
+                                                             tree={categories}
+                                                             recs={recipes}
+                                                             ingridients={ingridients}
+                                                             composition={composition}
+                                                             images={images}
+                                                             recipieImages={recipieImages}
+                               />}
+                        />
 
-                </Switch> : null}
+                    </Switch> : null}
             </div>
         </Router>
     );

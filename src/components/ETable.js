@@ -23,6 +23,9 @@ export default function ETable(props) {
     const [editingStateColumnExtensions] = useState([
         { columnName: 'units', editingEnabled: false },
     ]);
+    useEffect(() => {
+        setRows(props.ingridients)
+    })
 
     const BooleanEditor = ({ value, onValueChange }) => (
         <Select
@@ -86,7 +89,7 @@ export default function ETable(props) {
 
         }
         setRows(changedRows);
-        props.needUpdate('true')
+        props.needUpdate(changedRows)
     };
 
     return (

@@ -14,7 +14,6 @@ import Breadcrumbs from './Breadcrumbs'
 
 
 function Categorys(props) {
-
     let {id} = useParams();
     let {path, url} = useRouteMatch();
     const arr = [id]
@@ -22,7 +21,7 @@ function Categorys(props) {
     let [childrens_recs, setChildrens_recs] = useState([]);
     const [catName, setCatName] = useState('');
     const [recName, setRecName] = useState('');
-    const basename= process.env.NODE_ENV=='production' ? '/angel' : '';
+    const basename = process.env.NODE_ENV == 'production' ? '/angel' : '';
 
     useEffect(() => {
         setChildrens_cats(props.tree.filter(cat => cat.parent_category == id));
@@ -67,58 +66,57 @@ function Categorys(props) {
     return (
         <div>
             <Breadcrumbs tree={props.tree}/>
-            {props?.location?.state?.recipe ?
-                <Recipe {...props}/>
-                : <div>
-                    <div>
-                        <h2>Cats</h2>
-                        <div className={'categories'}>
-                            {childrens_cats.length > 0 &&
-                            childrens_cats.map(cat => (
-                                <div className={'category'} key={cat.cat_id}>
-                                    <Link to={`${props.match.url}/${cat.cat_id}`}>
-                                        <img src={basename + (cat.img || '/img/default_cat.png')} width={559} height={228}/>
-                                        <span>{cat.name}</span>
-                                    </Link>
-                                </div>
-                            ))
-                            }
-                            <div className={'category'}><input
-                                value={catName}
-                                onChange={e => {
-                                    setCatName(e.target.value);
-                                }}/>
-                                <button onClick={onAddCategory}>+</button>
+
+            <div>
+                <div>
+                    <h2>Cats</h2>
+                    <div className={'categories'}>
+                        {childrens_cats.length > 0 &&
+                        childrens_cats.map(cat => (
+                            <div className={'category'} key={cat.cat_id}>
+                                <Link to={`${props.match.url}/${cat.cat_id}`}>
+                                    <img src={basename + (cat.img || '/img/default_cat.png')} width={559} height={228}/>
+                                    <span>{cat.name}</span>
+                                </Link>
                             </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h2>Recs</h2>
-                        <ul>
-                            {childrens_recs.length > 0 &&
-                            childrens_recs.map(rec => (
-                                <li key={rec.rec_id}>
-                                    <Link
-                                        to={{
-                                            pathname: `${props.match.url}/recipe/${rec.rec_id}`,
-                                            state: {recipe: true}
-                                        }}>{rec.name}</Link>
-
-                                </li>
-                            ))
-                            }
-                            <li><input
-                                value={recName}
-                                onChange={e => {
-                                    setRecName(e.target.value);
-                                }}/>
-                                <button onClick={onAddRecipe}>+</button>
-                            </li>
-                        </ul>
+                        ))
+                        }
+                        {props.admin && <div className={'category'}><input
+                            value={catName}
+                            onChange={e => {
+                                setCatName(e.target.value);
+                            }}/>
+                            <button onClick={onAddCategory}>+</button>
+                        </div>}
                     </div>
                 </div>
-            }
+
+                <div>
+                    <h2>Recs</h2>
+                    <ul>
+                        {childrens_recs.length > 0 &&
+                        childrens_recs.map(rec => (
+                            <li key={rec.rec_id}>
+                                <Link
+                                    to={{
+                                        pathname: `${props.match.url}/recipe/${rec.rec_id}`,
+                                        state: {recipe: true}
+                                    }}>{rec.name}</Link>
+
+                            </li>
+                        ))
+                        }
+                        {props.admin && <li><input
+                            value={recName}
+                            onChange={e => {
+                                setRecName(e.target.value);
+                            }}/>
+                            <button onClick={onAddRecipe}>+</button>
+                        </li>}
+                    </ul>
+                </div>
+            </div>
+
         </div>);
 }
 

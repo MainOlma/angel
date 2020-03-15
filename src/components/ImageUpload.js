@@ -48,7 +48,7 @@ class ImageUpload extends React.Component {
                         <i className="fas fa-image fa-fw" aria-hidden="true"></i>
                         <input className="upload" type="file" onChange={this._handleImageChange} multiple/>
                     </label>
-                    <button type="submit" onclick={this._handleSubmit}>Upload Images</button>
+                    <button type="submit" onClick={this._handleSubmit}>Upload Images</button>
                 </form>
                 {imagesPreviewUrls.map(function (imagePreviewUrl, i) {
                     return <img key={i} src={imagePreviewUrl}/>
