@@ -28,6 +28,10 @@ function Categorys(props) {
         setChildrens_recs(props.recs.filter(rec => rec.cat_id == id));
     }, arr)
 
+    useEffect(()=>{
+        setCatName(props.tree.find(cat => cat.cat_id == id)?.name || '')
+    })
+
 
     const onAddRecipe = () => {
         // Get a key for a new Post.
@@ -65,8 +69,8 @@ function Categorys(props) {
 
     return (
         <div>
-            <Breadcrumbs tree={props.tree}/>
-
+            <Breadcrumbs tree={props.tree} id={id}/>
+            <h1>{catName}</h1>
             <div>
                 <div>
                     <h2>Cats</h2>

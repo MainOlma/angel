@@ -10,7 +10,7 @@ const routes = [
     {path: '/recipes*/:id', breadcrumb: 'mmm'},
 ];
 
-const Breadcrumbs = withBreadcrumbs(routes)(({tree, breadcrumbs}) => {
+const Breadcrumbs =  withBreadcrumbs(routes)(({tree,id, breadcrumbs}) => {
 
     const name = (key) => tree.find(cat => cat.cat_id == key)?.name;
     const basename= process.env.NODE_ENV=='production' ? '/angel' : '';
@@ -22,6 +22,7 @@ const Breadcrumbs = withBreadcrumbs(routes)(({tree, breadcrumbs}) => {
             </Link>
             {breadcrumbs.filter(({match}) => match.params.id != undefined)
                 .filter(({match}) =>name(match.params.id) != undefined)
+                .filter(({match}) =>match.params.id != id)
                 .map(({breadcrumb, key, match},i) => {
                 return (<span key={i}> → <Link to={key} >{name(match.params.id)}</Link>&nbsp;</span>)
             })}
