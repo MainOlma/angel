@@ -4,7 +4,6 @@ import Markdown from 'react-markdown';
 import Breadcrumbs from "./Breadcrumbs";
 import CKEditor from 'ckeditor4-react';
 import Button from '@material-ui/core/Button';
-
 import {updateRec} from "./DbActions";
 import ETable from "./ETable";
 import ImageUpload from "./ImageUpload";
@@ -12,30 +11,30 @@ import ImageList from "./ImageList";
 
 export default function Recipe(props) {
     let {id, recipeId} = useParams();
-    //recipeId = id
     let {path, url} = useRouteMatch();
     let rec, cat, ingridientsIds, ingridients = [], imagesIds, recipieImages;
     const [second, setSecond] = useState(null);
+    const [ID, setID] = useState(props.second || recipeId);
+    const [CAT, setCAT] = useState('');
+    const [DESC, setDesc] = useState('');
     const basename = process.env.NODE_ENV == 'production' ? '/angel' : '';
-
     const [recName, setRecName] = useState('');
-
     const [summary, setSummary] = useState(0);
     const [summaryNew, setNewSummary] = useState(0);
     const [recHowTo, setRecHowTo] = useState('');
-
     const [ings, setIngs] = useState([]);
+    const [loss, setLoss] = useState(rec?.loss);
 
     const onUpdateRec = () => {
         const recData = {
-            rec_id: recipeId,
+            rec_id: ID,
             howto: recHowTo,
-            cat_id: cat,
-            desc: rec.desc,
+            cat_id: CAT,
+            desc: DESC,
             name: recName,
-            loss: loss != undefined ? loss : 0
+            loss: (loss != undefined || typeof loss == 'number') ? loss : 0
         };
-        updateRec(recipeId, recData);
+        updateRec(ID, recData);
         setRecName(recName);
         setLoss(loss);
         setRecHowTo(recHowTo);
@@ -45,7 +44,7 @@ export default function Recipe(props) {
     };
 
     const getIngridients =()=>{
-        const ingridientsIds = props.composition.filter(ing => ing.rec_id == recipeId);
+        const ingridientsIds = props.composition.filter(ing => ing.rec_id == ID);
         return  ingridientsIds.map(ing => {
             const details = props.ingridients.find(i => i.ing_id === ing.ing_id)
             return ({
@@ -60,71 +59,68 @@ export default function Recipe(props) {
         });
     };
 
-    if (props.recs) {
-        if (props.second) recipeId = props.second
-        rec = props.recs.find(rec => rec.rec_id == recipeId);
-        cat = rec.cat_id
-        imagesIds = props.recipieImages.filter(img => img.rec_id == recipeId);
-        ingridients = getIngridients();
-        recipieImages = imagesIds.map(id => props.images.find(img => img.img_id == id.img_id))
-    }
-    const [loss, setLoss] = useState(rec?.loss);
-
-
     function ShowIng(id) {
         setSecond(id)
-
     }
 
     function HideIng() {
         props.parentCallback("Close second recipe!")
-
     }
 
     function callbackFunction(childData) {
-        setSecond(false)
+        setSecond(null)
     }
 
     useEffect(() => {
-        if (props.second) recipeId = second;
-
-    });
+        props.second && setID(props.second)
+    },[props.second]);
 
     useEffect(() => {
+        if (props.recs) {
+            if (props.second) recipeId = props.second
+            rec = props.recs.find(rec => rec.rec_id == ID);
+            cat = rec.cat_id
+            setCAT(cat);
+            setDesc(rec.desc);
+            imagesIds = props.recipieImages.filter(img => img.rec_id == ID);
+            ingridients = getIngridients();
+            recipieImages = imagesIds.map(id => props.images.find(img => img.img_id == id.img_id))
+        }
         setRecName(rec.name);
         setLoss(rec.loss);
         setRecHowTo(rec.howto);
         setIngs(getIngridients());
-    }, []);
+    }, [ID]);
 
     useEffect(() => {
-        const sum = (ingridients.reduce((acc, val) => +acc + val.quantity, 0) * (1 - loss / 100)).toFixed(1);
+        const sum = (ings.reduce((acc, val) => +acc + val.quantity, 0) * (1 - loss / 100)).toFixed(1);
         setSummary(sum);
-        setNewSummary(sum)
-        setIngs(getIngridients());
-    }, [ings.length]);
+        setNewSummary(sum);
+    }, [ings.map(d => d.name+d.quantity).join(','),loss]);
 
 
     return (
         <div>
-            <Breadcrumbs tree={props.tree}/>
+            {!props.second && <Breadcrumbs tree={props.tree}/>}
             <div className='recipe'>
                 {props.second && <div className='close' onClick={HideIng}>Close</div>}
                 <div className={second ? 'main half' : 'main full'}>
                     <div className={'first'}>
                         <h1>{recName}</h1>
 
-                        {ingridients.length > 0 &&
+                        {ings.length > 0 &&
                         <div>
                             <div className='ingridients'>
                                 <span>Потери {loss}</span>
-                                <span>Выход <input placeholder={summary} value={summaryNew} onChange={e => {
-                                    setNewSummary(e.target.value)
+                                <span>Выход <input placeholder={summary} value={summaryNew}
+                                                   onChange={e => {
+                                                       const val = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+                                                       setNewSummary(val);
                                 }}/></span>
                                 {ings.map((ing, i) => {
                                         return (
                                             <div className='ingridient' key={i}>
-                                                {ing.rec_id ?
+                                                {ing.ing_rec_id ?
                                                     <div className='name link'
                                                          onClick={() => ShowIng(ing.ing_rec_id)}><span>{ing.name}</span>
                                                     </div>
@@ -164,28 +160,31 @@ export default function Recipe(props) {
                         <input
                             name={'name'}
                             value={recName}
-                            placeholder={rec.name}
+                            placeholder={recName}
                             onChange={e => {
                                 setRecName(e.target.value);
                             }}/>
-                        <label htmlFor="loss">Потери: </label>
+                        <label htmlFor="loss">Потери (%): </label>
                         <input
                             name={'loss'}
                             value={loss}
-                            placeholder={rec.loss}
+                            placeholder={loss}
                             onChange={e => {
-                                setLoss(e.target.value);
+                                let val = parseInt(e.target.value);
+                                val = val<0 ?  0 : val;
+                                val = val>=100 ?  99 : val;
+                                setLoss((typeof val == 'number' &&  val<=100 && val>=0) ? val : '');
                             }}/>
-                        <CKEditor
-                            data={rec.howto}
+                        {recHowTo && <CKEditor
+                            data={recHowTo}
                             onChange={e => {
                                 setRecHowTo(e.editor.getData());
                             }}
-                        />
+                        />}
                         <Button className={'update'} onClick={onUpdateRec}>Сохранить</Button>
-                        <ETable ingridients={ings} allIngridients={props.ingridients} currentRec={recipeId} needUpdate={needUpdate}/>
+                        <ETable ingridients={ings} allIngridients={props.ingridients} currentRec={ID} needUpdate={needUpdate}/>
                         <Link to={'/ingridients'}>База ингридиентов</Link>
-                        <ImageUpload recipeId={recipeId}/>
+                        <ImageUpload recipeId={ID}/>
 
                     </div>}
                 </div>

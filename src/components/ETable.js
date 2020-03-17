@@ -25,7 +25,7 @@ export default function ETable(props) {
     ]);
     useEffect(() => {
         setRows(props.ingridients)
-    })
+    });
 
     const BooleanEditor = ({ value, onValueChange }) => (
         <Select
