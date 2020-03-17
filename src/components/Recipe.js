@@ -45,7 +45,9 @@ export default function Recipe(props) {
 
     const getIngridients =()=>{
         const ingridientsIds = props.composition.filter(ing => ing.rec_id == ID);
-        return  ingridientsIds.map(ing => {
+        return  ingridientsIds
+            .filter (ing => props.ingridients.find(i => i.ing_id == ing.ing_id))
+            .map(ing => {
             const details = props.ingridients.find(i => i.ing_id === ing.ing_id)
             return ({
                 ing_id: ing.ing_id,
