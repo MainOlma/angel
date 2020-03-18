@@ -81,6 +81,14 @@ export function newIngridient(newIngridient) {
     updateDb(updates);
 }
 
+export function newImage(file, path) {
+    const storageRef = base.storage().ref();
+    const imagesRef = storageRef.child(path);
+    imagesRef.put(file).then(function(snapshot) {
+        console.log('Uploaded file!', imagesRef.fullPath);
+    });
+}
+
 function updateDb(updates) {
     return base.database().ref().update(updates, function (error) {
         if (error) {

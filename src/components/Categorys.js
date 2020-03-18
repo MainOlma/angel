@@ -3,6 +3,8 @@ import {Link, useParams} from "react-router-dom";
 import base from './Base';
 import Breadcrumbs from './Breadcrumbs'
 import {newCategory, newRecipie, deleteCategory} from "./DbActions";
+import ImageUpload from "./ImageUpload";
+import ImageFromDb from "./ImageFromDb";
 
 
 function Categorys(props) {
@@ -61,6 +63,7 @@ function Categorys(props) {
         <div>
             <Breadcrumbs tree={props.tree} id={id}/>
             {id!=0 && <h1>{currentCategoryName}</h1>}
+            {props.admin && <ImageUpload key ={id} categoryId={id}/>}
             <div>
                 <div>
                     <h2>Cats</h2>
@@ -69,7 +72,7 @@ function Categorys(props) {
                         childrens_cats.map(cat => (
                             <div className={'category'} key={cat.cat_id}>
                                 <Link to={`${props.match.url}/${cat.cat_id}`}>
-                                    <img src={basename + (cat.img || '/img/default_cat.png')} width={559} height={228}/>
+                                    <ImageFromDb categoryId={cat.cat_id} basename={basename} default={'/img/default_cat.png'}/>
                                     <span className={'name'}>{cat.name}</span>
                                     {props.admin &&
                                         <button className={'delete'}
