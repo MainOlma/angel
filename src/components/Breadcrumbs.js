@@ -17,12 +17,13 @@ const Breadcrumbs =  withBreadcrumbs(routes)(({tree,id, breadcrumbs}) => {
 
     return (
         <div className={'breadcrumbs'}>
-            <Link to='/'>
+            <Link to='/recipes/0'>
                 <img src={basename+'/img/logo_s.png'} width={154} heigth={57}/>
             </Link>
             {breadcrumbs.filter(({match}) => match.params.id != undefined)
-                .filter(({match}) =>name(match.params.id) != undefined)
-                .filter(({match}) =>match.params.id != id)
+                .filter(({match}) => name(match.params.id) != undefined)
+                .filter(({match}) => match.params.id != id)
+                .filter(({match}) => match.params.id != 0)
                 .map(({breadcrumb, key, match},i) => {
                 return (<span key={i}> → <Link to={key} >{name(match.params.id)}</Link>&nbsp;</span>)
             })}

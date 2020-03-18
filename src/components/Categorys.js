@@ -60,7 +60,7 @@ function Categorys(props) {
     return (
         <div>
             <Breadcrumbs tree={props.tree} id={id}/>
-            <h1>{currentCategoryName}</h1>
+            {id!=0 && <h1>{currentCategoryName}</h1>}
             <div>
                 <div>
                     <h2>Cats</h2>
