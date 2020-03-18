@@ -21,18 +21,18 @@ export default function Ingridients(props) {
     const [editingStateColumnExtensions] = useState([
         { columnName: 'ing_id', editingEnabled: false },
     ]);
-    useEffect(() => {
 
+    useEffect(() => {
         setRows(props.ingridients);
         setRecs(props.recipes);
-    })
+    });
 
     const BooleanEditor = ({ value, onValueChange }) => (
         <Select
-            input={<Input />}
-            value={value!=undefined ? value : ''}
-            onChange={event => {onValueChange(event.target.value)}}
-            style={{ width: '100%' }}
+            input = {<Input />}
+            value = {value!=undefined ? value : ''}
+            onChange = {event => {onValueChange(event.target.value)}}
+            style = {{ width: '100%' }}
         >
             {
                 props.recipes.map(((rec, i) =>  (<MenuItem key ={i} value={rec.rec_id} name={rec.name}>
@@ -46,13 +46,14 @@ export default function Ingridients(props) {
 
     const BooleanTypeProvider = props => (
         <DataTypeProvider
-            formatterComponent={BooleanFormatter}
-            editorComponent={BooleanEditor}
+            formatterComponent = {BooleanFormatter}
+            editorComponent = {BooleanEditor}
             {...props}
         />
     );
     const commitChanges = ({ added, changed, deleted }) => {
         let changedRows;
+
         if (added) {
             const startingAddedId = rows.length > 0 ? rows.length  : 0;
             changedRows = [
@@ -60,14 +61,14 @@ export default function Ingridients(props) {
                 ...added.map((row, index) => ({
                     //id: startingAddedId + index,
                     rec_id: props.recipes.find(rec => rec.rec_id==row.rec_id)?.rec_id || false,
-
                     ...row,
                 })),
             ];
 
-            const newIngr=changedRows[startingAddedId]
+            const newIngr = changedRows[startingAddedId]
             newIngridient(newIngr)
         }
+
         if (changed) {
             changedRows = rows.map((row,i) => (changed[i] ? { ...row, ...changed[i] } : row));
             const chagedIngridient = changedRows
@@ -75,15 +76,15 @@ export default function Ingridients(props) {
             updateIngridient(chagedIngridient)
 
         }
+
         if (deleted) {
             const deletedSet = new Set(deleted);
             changedRows = rows.filter((row,i) => !deletedSet.has(i));
             const deletedRow =  rows[deleted[0]].ing_id
             deleteIngridient(deletedRow)
-
         }
-        setRows(changedRows);
 
+        setRows(changedRows);
     };
 
     return (
@@ -96,11 +97,11 @@ export default function Ingridients(props) {
                 {name: 'rec_id', title: 'Ссылка на Рецепт'}
             ]}>
             <BooleanTypeProvider
-                for={booleanColumns}
+                for = {booleanColumns}
             />
             <EditingState
-                onCommitChanges={commitChanges}
-                columnExtensions={editingStateColumnExtensions}
+                onCommitChanges = {commitChanges}
+                columnExtensions = {editingStateColumnExtensions}
             />
             <Table/>
             <TableHeaderRow/>

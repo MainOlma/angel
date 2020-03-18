@@ -1,40 +1,29 @@
 import React, {useState, useEffect} from "react";
-import Recipe from "./Recipe";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    Redirect,
-    useParams,
-    useRouteMatch
-} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import base from './Base';
 import Breadcrumbs from './Breadcrumbs'
+import {newCategory, newRecipie, deleteCategory} from "./DbActions";
 
 
 function Categorys(props) {
     let {id} = useParams();
-    let {path, url} = useRouteMatch();
-    const arr = [id]
     let [childrens_cats, setChildrens_cats] = useState([]);
     let [childrens_recs, setChildrens_recs] = useState([]);
     const [catName, setCatName] = useState('');
+    const [currentCategoryName, setCurrentCategoryName] = useState('');
     const [recName, setRecName] = useState('');
     const basename = process.env.NODE_ENV == 'production' ? '/angel' : '';
 
     useEffect(() => {
         setChildrens_cats(props.tree.filter(cat => cat.parent_category == id));
         setChildrens_recs(props.recs.filter(rec => rec.cat_id == id));
-    }, arr)
+    }, [id]);
 
-    useEffect(()=>{
-        setCatName(props.tree.find(cat => cat.cat_id == id)?.name || '')
-    })
-
+    useEffect(() => {
+        setCurrentCategoryName(props.tree.find(cat => cat.cat_id == id)?.name || '')
+    });
 
     const onAddRecipe = () => {
-        // Get a key for a new Post.
         const newKey = base.database().ref().child('recipies').push().key;
         const recData = {
             rec_id: newKey,
@@ -44,15 +33,11 @@ function Categorys(props) {
             name: recName,
             loss: "0"
         };
-        const updates = {};
-        updates['/recipies/' + newKey] = recData;
+        newRecipie(newKey, recData);
         setChildrens_recs([...childrens_recs, recData]);
-
-        return base.database().ref().update(updates);
     };
 
     const onAddCategory = () => {
-        // Get a key for a new Post.
         const newKey = base.database().ref().child('recipie_categories').push().key;
         const catData = {
             cat_id: newKey,
@@ -60,17 +45,22 @@ function Categorys(props) {
             parent_category: id,
             name: catName
         };
-        const updates = {};
-        updates['/recipie_categories/' + newKey] = catData;
+        newCategory(newKey, catData);
         setChildrens_cats([...childrens_cats, catData]);
+    };
 
-        return base.database().ref().update(updates);
+    const onDeleteCategory = (id, name) => {
+        if (window.confirm(`Выхотите удалить категорию ${name}?`)) {
+            deleteCategory(id);
+            const without_deleted = childrens_cats.filter((d, i) => d.cat_id != id);
+            setChildrens_cats(without_deleted)
+        }
     };
 
     return (
         <div>
             <Breadcrumbs tree={props.tree} id={id}/>
-            <h1>{catName}</h1>
+            <h1>{currentCategoryName}</h1>
             <div>
                 <div>
                     <h2>Cats</h2>
@@ -80,7 +70,16 @@ function Categorys(props) {
                             <div className={'category'} key={cat.cat_id}>
                                 <Link to={`${props.match.url}/${cat.cat_id}`}>
                                     <img src={basename + (cat.img || '/img/default_cat.png')} width={559} height={228}/>
-                                    <span>{cat.name}</span>
+                                    <span className={'name'}>{cat.name}</span>
+                                    {props.admin &&
+                                        <button className={'delete'}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    onDeleteCategory(cat.cat_id, cat.name)
+                                                }
+                                                }>
+                                            Delete
+                                        </button>}
                                 </Link>
                             </div>
                         ))

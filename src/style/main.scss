@@ -163,9 +163,17 @@ body, html {
       background: black;
     }
 
-    span {
+    span.name {
       position: absolute;
       top: 0;
+      left: 0;
+      font-size: 43px;
+      line-height: 51px;
+    }
+
+    button.delete {
+      position: absolute;
+      bottom: 2px;
       left: 0;
       font-size: 43px;
       line-height: 51px;

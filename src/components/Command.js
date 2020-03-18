@@ -1,37 +1,10 @@
 import React, { useState } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Input from '@material-ui/core/Input';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import {DataTypeProvider,EditingState,} from '@devexpress/dx-react-grid';
-import {
-    Grid,
-    Table,
-    TableHeaderRow,
-    TableEditRow,
-    TableEditColumn,
-} from '@devexpress/dx-react-grid-material-ui';
-import {updateComposition, newComposition, deleteComposition} from "./DbActions"
-const styles = theme => ({
-    lookupEditCell: {
-        padding: theme.spacing(1),
-    },
-    dialog: {
-        width: 'calc(100% - 16px)',
-    },
-    inputRoot: {
-        width: '100%',
-    },
-    selectMenu: {
-        position: 'absolute !important',
-    },
-});
 
 const AddButton = ({ onExecute }) => (
     <div style={{ textAlign: 'center' }}>

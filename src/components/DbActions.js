@@ -1,5 +1,21 @@
 import base from "./Base"
 
+export function newCategory(id, catData) {
+    const updates = {};
+    updates['/recipie_categories/' + id] = catData;
+    updateDb(updates)
+}
+
+export function deleteCategory(id) {
+    base.database().ref().child('recipie_categories/' + id).remove();
+}
+
+export function newRecipie(id, recData) {
+    const updates = {};
+    updates['/recipies/' + id] = recData;
+    updateDb(updates)
+}
+
 export function updateRec(id, recData) {
     const updates = {};
     updates['/recipies/' + id] = recData;
@@ -17,7 +33,6 @@ export function updateComposition(chagedIngridient) {
     const updates = {};
     updates['/recipie_composition/' + comp_id] = composition;
     updateDb(updates);
-
 }
 
 export function newComposition(newComposition) {
@@ -32,12 +47,10 @@ export function newComposition(newComposition) {
     const updates = {};
     updates['/recipie_composition/' + newKey] = composition;
     updateDb(updates);
-    //window.location.reload(true);
 }
 
 export function deleteComposition(idComposition) {
     base.database().ref().child('recipie_composition/' + idComposition).remove();
-    //window.location.reload(true);
 }
 
 export function updateIngridient(chagedIngridient) {
@@ -66,7 +79,6 @@ export function newIngridient(newIngridient) {
     const updates = {};
     updates['/recipie_ingridients/' + newKey] = ingridient;
     updateDb(updates);
-    //window.location.reload(true);
 }
 
 function updateDb(updates) {
@@ -77,7 +89,6 @@ function updateDb(updates) {
         } else {
             console.log('successfully')
             // Data saved successfully!
-            //window.location.reload(true);
         }
     });
 }
