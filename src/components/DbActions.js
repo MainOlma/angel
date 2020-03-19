@@ -74,6 +74,7 @@ export function updateIngridient(chagedIngridient) {
     updates['/recipie_ingridients/' + ing_id] = ingridient;
     updateDb(updates);
 }
+
 export function deleteIngridient(idIngridient) {
     base.database().ref().child('recipie_ingridients/' + idIngridient).remove();
 }
@@ -94,9 +95,22 @@ export function newIngridient(newIngridient) {
 export function newImage(file, path) {
     const storageRef = base.storage().ref();
     const imagesRef = storageRef.child(path);
-    imagesRef.put(file).then(function(snapshot) {
+    imagesRef.put(file).then(function (snapshot) {
         console.log('Uploaded file!', imagesRef.fullPath);
     });
+}
+
+export function getPageContent(id, callback) {
+    return base.database().ref('/pages/').on('value',
+        (snapshot) => {
+            callback(snapshot.child(id).val());
+        })
+}
+
+export  function savePageContent(id, content) {
+    const updates = {};
+    updates['/pages/' + id] = content;
+    updateDb(updates);
 }
 
 function updateDb(updates) {
