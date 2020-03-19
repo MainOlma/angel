@@ -10,6 +10,12 @@ export function deleteCategory(id) {
     base.database().ref().child('recipie_categories/' + id).remove();
 }
 
+export function updateCategory(id, catData) {
+    const updates = {};
+    updates['/recipie_categories/' + id] = catData;
+    updateDb(updates)
+}
+
 export function newRecipie(id, recData) {
     const updates = {};
     updates['/recipies/' + id] = recData;

@@ -12,7 +12,7 @@ export const SortableList = props => {
 
     useEffect(() => {
         const changedList = state.map((row, i) => (i != row.order ? {...row, order: i} : row));
-        setState(changedList)
+        setState(changedList);
         updateOrder(changedList)
     }, [state.map(it => it.rec_id).join(",")]);
 

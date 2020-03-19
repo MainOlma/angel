@@ -6,6 +6,7 @@ import {newCategory, newRecipie, deleteCategory} from "./DbActions";
 import ImageUpload from "./ImageUpload";
 import ImageFromDb from "./ImageFromDb";
 import {SortableList} from "./SortableList";
+import {SortableGrid} from "./SortableGrid";
 
 
 function Categorys(props) {
@@ -60,34 +61,23 @@ function Categorys(props) {
         }
     };
 
+
     return (
         <div className={'catalog'}>
             <Breadcrumbs tree={props.tree} id={id}/>
-            {id!=0 && <h1>{currentCategoryName}</h1>}
-            {props.admin && <ImageUpload key ={id} categoryId={id}/>}
+            {id != 0 && <h1>{currentCategoryName}</h1>}
+            {props.admin && <ImageUpload key={id} categoryId={id}/>}
             <div>
                 <div className={'categoriesList'}>
                     <h2>Cats</h2>
-                    <div className={'categories'}>
                         {childrens_cats.length > 0 &&
-                        childrens_cats.map(cat => (
-                            <div className={'category'} key={cat.cat_id}>
-                                <Link to={`${props.match.url}/${cat.cat_id}`}>
-                                    <ImageFromDb categoryId={cat.cat_id} default={basename+'/img/default_cat.png'}/>
-                                    <span className={'name'}>{cat.name}</span>
-                                    {props.admin &&
-                                        <button className={'delete'}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    onDeleteCategory(cat.cat_id, cat.name)
-                                                }
-                                                }>
-                                            Delete
-                                        </button>}
-                                </Link>
-                            </div>
-                        ))
+                        <SortableGrid data={childrens_cats.sort((a, b) => a.order - b.order)}
+                                      url={props.match.url}
+                                      basename={basename}
+                                      admin={props.admin}
+                                      onDelete={(id,name)=>onDeleteCategory(id,name)}/>
                         }
+
                         {props.admin && <div className={'category'}><input
                             value={catName}
                             onChange={e => {
@@ -95,15 +85,14 @@ function Categorys(props) {
                             }}/>
                             <button onClick={onAddCategory}>+</button>
                         </div>}
-                    </div>
                 </div>
 
                 <div className={'recipesList'}>
                     <h2>Recs</h2>
                     <ul>
                         {childrens_recs.length > 0 &&
-                            <SortableList data={childrens_recs.sort((a,b) => a.order-b.order)}
-                                          url={props.match.url}/>
+                        <SortableList data={childrens_recs.sort((a, b) => a.order - b.order)}
+                                      url={props.match.url}/>
                         }
                         {props.admin && <li><input
                             value={recName}
