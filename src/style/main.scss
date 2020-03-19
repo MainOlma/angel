@@ -148,39 +148,47 @@ body, html {
     margin-left: auto;
   }
 }
-
-.categories {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-
-  .category {
-    width: 50%;
-    position: relative;
-    overflow: hidden;
-
-    img{
-      background: black;
+.catalog {
+  .recipesList{
+    li{
+      padding: 5px 0;
     }
 
-    span.name {
-      position: absolute;
-      top: 0;
-      left: 0;
-      font-size: 43px;
-      line-height: 51px;
-    }
+  }
 
-    button.delete {
-      position: absolute;
-      bottom: 2px;
-      left: 0;
-      font-size: 43px;
-      line-height: 51px;
-    }
+  .categories {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 
-    a {
-      color: white;
+    .category {
+      width: 50%;
+      position: relative;
+      overflow: hidden;
+
+      img {
+        background: black;
+      }
+
+      span.name {
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 43px;
+        line-height: 51px;
+      }
+
+      button.delete {
+        position: absolute;
+        bottom: 2px;
+        left: 0;
+        font-size: 43px;
+        line-height: 51px;
+      }
+
+      a {
+        color: white;
+      }
     }
   }
 }

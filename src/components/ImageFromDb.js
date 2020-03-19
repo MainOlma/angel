@@ -24,5 +24,5 @@ export default function ImageFromDb(props) {
             // Uh-oh, an error occurred!
         });
     }, []);
-    return images.map((img, i) => <img key={i} src={props.basename+img} width={559} height={228}/>);
+    return images.map((img, i) => <img key={i} src={img} width={559} height={228} alt={'image'}/>);
 }

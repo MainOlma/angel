@@ -5,6 +5,7 @@ import Breadcrumbs from './Breadcrumbs'
 import {newCategory, newRecipie, deleteCategory} from "./DbActions";
 import ImageUpload from "./ImageUpload";
 import ImageFromDb from "./ImageFromDb";
+import {SortableList} from "./SortableList";
 
 
 function Categorys(props) {
@@ -60,19 +61,19 @@ function Categorys(props) {
     };
 
     return (
-        <div>
+        <div className={'catalog'}>
             <Breadcrumbs tree={props.tree} id={id}/>
             {id!=0 && <h1>{currentCategoryName}</h1>}
             {props.admin && <ImageUpload key ={id} categoryId={id}/>}
             <div>
-                <div>
+                <div className={'categoriesList'}>
                     <h2>Cats</h2>
                     <div className={'categories'}>
                         {childrens_cats.length > 0 &&
                         childrens_cats.map(cat => (
                             <div className={'category'} key={cat.cat_id}>
                                 <Link to={`${props.match.url}/${cat.cat_id}`}>
-                                    <ImageFromDb categoryId={cat.cat_id} basename={basename} default={'/img/default_cat.png'}/>
+                                    <ImageFromDb categoryId={cat.cat_id} default={basename+'/img/default_cat.png'}/>
                                     <span className={'name'}>{cat.name}</span>
                                     {props.admin &&
                                         <button className={'delete'}
@@ -97,20 +98,12 @@ function Categorys(props) {
                     </div>
                 </div>
 
-                <div>
+                <div className={'recipesList'}>
                     <h2>Recs</h2>
                     <ul>
                         {childrens_recs.length > 0 &&
-                        childrens_recs.map(rec => (
-                            <li key={rec.rec_id}>
-                                <Link
-                                    to={{
-                                        pathname: `${props.match.url}/recipe/${rec.rec_id}`,
-                                        state: {recipe: true}
-                                    }}>{rec.name}</Link>
-
-                            </li>
-                        ))
+                            <SortableList data={childrens_recs.sort((a,b) => a.order-b.order)}
+                                          url={props.match.url}/>
                         }
                         {props.admin && <li><input
                             value={recName}
@@ -121,6 +114,7 @@ function Categorys(props) {
                         </li>}
                     </ul>
                 </div>
+
             </div>
 
         </div>);
