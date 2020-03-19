@@ -24,7 +24,9 @@ export const SortableList = props => {
     }
 
     return (
-        <ReactSortable list={state} setList={setState}>
+        <ReactSortable list={state}
+                       setList={setState}
+                       sort={props.admin ? true : false}>
             {state.map(item => (
                 <li key={item.rec_id}>
                     <Link

@@ -25,7 +25,10 @@ export const SortableGrid = props => {
     }
 
     return (
-        <ReactSortable list={state} setList={setState} className={'categories'}>
+        <ReactSortable list={state}
+                       setList={setState}
+                       className={'categories'}
+                       sort={props.admin ? true : false}>
             {state.map(item => (
                 <div className={'category'} key={item.cat_id}>
                     <Link to={`${props.url}/${item.cat_id}`}>

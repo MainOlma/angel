@@ -89,7 +89,7 @@ function HelloMessage(props) {
             <div>
                 <Route path='/' exact render={() => <LoginPage user={user}/>}/>
                 <Route path={'/ingridients'} render={() => <Ingridients ingridients={ingridients} recipes={recipes}/>}/>
-                <Route path={'/rules'} render={() => <Rules/>}/>
+                <Route path={'/rules'} render={() => <Rules admin={admin}/>}/>
                 {categories && recipes && ingridients && composition && user && admin!=null && images && recipieImages ?
                     <Switch>
 
