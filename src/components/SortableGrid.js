@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {ReactSortable} from "react-sortablejs";
 import {updateCategory} from "./DbActions";
-import {Link, useParams} from "react-router-dom";
+import {Link} from "react-router-dom";
 import ImageFromDb from "./ImageFromDb";
 
 export const SortableGrid = props => {

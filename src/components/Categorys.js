@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from "react";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import base from './Base';
 import Breadcrumbs from './Breadcrumbs'
-import {newCategory, newRecipie, deleteCategory} from "./DbActions";
+import {newCategory, newRecipie, deleteCategory, deleteRecipe, deleteComposition} from "./DbActions";
 import ImageUpload from "./ImageUpload";
-import ImageFromDb from "./ImageFromDb";
 import {SortableList} from "./SortableList";
 import {SortableGrid} from "./SortableGrid";
 
@@ -60,6 +59,15 @@ function Categorys(props) {
             setChildrens_cats(without_deleted)
         }
     };
+    const onDeleteRecipe = (id, name) => {
+        if (window.confirm(`Выхотите удалить рецепт ${name}?`)) {
+            deleteRecipe(id);
+            const compositions = props.composition.filter(it => it.rec_id == id);
+            compositions.length > 0 && compositions.forEach(it => deleteComposition(it.comp_id));
+            const without_deleted = childrens_recs.filter((d, i) => d.rec_id != id);
+            setChildrens_recs(without_deleted)
+        }
+    };
 
 
     return (
@@ -92,7 +100,9 @@ function Categorys(props) {
                     <ul>
                         {childrens_recs.length > 0 &&
                         <SortableList data={childrens_recs.sort((a, b) => a.order - b.order)}
-                                      url={props.match.url}/>
+                                      url={props.match.url}
+                                      admin={props.admin}
+                                      onDelete={(id,name)=>onDeleteRecipe(id,name)}/>
                         }
                         {props.admin && <li><input
                             value={recName}

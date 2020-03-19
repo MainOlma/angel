@@ -28,6 +28,10 @@ export function updateRec(id, recData) {
     updateDb(updates)
 }
 
+export function deleteRecipe(id) {
+    base.database().ref().child('recipies/' + id).remove();
+}
+
 export function updateComposition(chagedIngridient) {
     const {rec_id, ing_id, comp_id, quantity} = chagedIngridient;
     const composition = {

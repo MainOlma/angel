@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {ReactSortable} from "react-sortablejs";
 import {updateRec} from "./DbActions";
-import {Link, useParams} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 export const SortableList = props => {
     const [state, setState] = useState(props.data);
@@ -31,7 +31,17 @@ export const SortableList = props => {
                         to={{
                             pathname: `${props.url}/recipe/${item.rec_id}`,
                             state: {recipe: true}
-                        }}>{item.name}</Link>
+                        }}>{item.name}
+                        {props.admin &&
+                        <button className={'delete'}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    props.onDelete(item.rec_id, item.name)
+                                }
+                                }>
+                            -
+                        </button>}
+                    </Link>
                 </li>
             ))}
         </ReactSortable>
