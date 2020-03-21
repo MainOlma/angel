@@ -92,11 +92,13 @@ export function newIngridient(newIngridient) {
     updateDb(updates);
 }
 
-export function newImage(file, path) {
+export function newImage(file, path, callback) {
     const storageRef = base.storage().ref();
     const imagesRef = storageRef.child(path);
     imagesRef.put(file).then(function (snapshot) {
-        console.log('Uploaded file!', imagesRef.fullPath);
+        callback && imagesRef.getDownloadURL().then(function (url) {
+            callback(url)
+        })
     });
 }
 
@@ -111,6 +113,30 @@ export  function savePageContent(id, content) {
     const updates = {};
     updates['/pages/' + id] = content;
     updateDb(updates);
+}
+
+export  function deleteImage(url, callback) {
+    const ref = base.storage().refFromURL(url);
+    ref.delete().then(function() {
+        callback(url)
+    }).catch(function(error) {
+        // error occurred
+    });
+}
+
+export function getImagesForRecipe(recipeId, callback) {
+    const storageRef = base.storage().ref();
+    const listRef = storageRef.child('images/' + recipeId + '/');
+    listRef.listAll().then(function (res) {
+        res.items.forEach(function (itemRef) {
+            // All the items under listRef.
+            itemRef.getDownloadURL().then(function (url) {
+                callback(url)
+            })
+        });
+    }).catch(function (error) {
+        // Uh-oh, an error occurred!
+    });
 }
 
 function updateDb(updates) {

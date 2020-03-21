@@ -67,9 +67,19 @@ body, html {
     display: flex;
     flex-direction: column;
 
-    .image img{
-      width: 100%;
+    .image{
+      position: relative;
+      .delete{
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      img{
+         width: 100%;
+      }
     }
+
+
   }
 
   .howTo {

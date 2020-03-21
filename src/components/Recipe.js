@@ -144,15 +144,15 @@ export default function Recipe(props) {
                     </div>
 
                     <div className={'imageList second'}>
-                        <ImageList recipeId={recipeId}/>
+                        <ImageList recipeId={recipeId} admin={props.admin}/>
                         {
-                            recipieImages && recipieImages.map((img, i) => {
+                            /*recipieImages && recipieImages.map((img, i) => {
                                 return (
                                     <div className={'image'} key={i}>
                                         <img src={basename + img.src}/>
                                     </div>
                                 )
-                            })
+                            })*/
                         }
                     </div>
 
@@ -186,7 +186,7 @@ export default function Recipe(props) {
                         <Button className={'update'} onClick={onUpdateRec}>Сохранить</Button>
                         <ETable ingridients={ings} allIngridients={props.ingridients} currentRec={ID} needUpdate={needUpdate}/>
                         <Link to={'/ingridients'}>База ингридиентов</Link>
-                        <ImageUpload recipeId={ID}/>
+
 
                     </div>}
                 </div>

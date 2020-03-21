@@ -14,7 +14,8 @@ class ImageUpload extends React.Component {
             files.forEach(file => {
                 let path = 'images/'+this.props.recipeId+'/'+file.name;
                 if (this.props.categoryId) path = 'images/categories/'+this.props.categoryId+'/'+this.props.categoryId;
-                newImage(file, path);
+                newImage(file, path, (url)=>this.props.onUpload(url));
+
             })
         }
     };
@@ -28,7 +29,6 @@ class ImageUpload extends React.Component {
         // File Reader for Each file and and update state arrays
         files.forEach((file, i) => {
             let reader = new FileReader();
-
             reader.onloadend = () => {
                 this.setState(prevState => ({
                     files: this.props.categoryId != undefined ? [file] : [...prevState.files, file],
@@ -46,7 +46,7 @@ class ImageUpload extends React.Component {
         const label = this.props.categoryId ?  'Выбрать картинку для этой категории ' : 'Выбрать картинки для этого рецепта '
 
         return (
-            <div>
+            <div className={'image'}>
                 <form onSubmit={this._handleSubmit}>
                     <label
                         className="btn btn-default btn-sm"

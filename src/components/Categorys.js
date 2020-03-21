@@ -74,7 +74,7 @@ function Categorys(props) {
         <div className={'catalog'}>
             <Breadcrumbs tree={props.tree} id={id}/>
             {id != 0 && <h1>{currentCategoryName}</h1>}
-            {props.admin && <ImageUpload key={id} categoryId={id}/>}
+            {props.admin && <ImageUpload key={id} categoryId={id} onUpload={()=>{}}/>}
             <div>
                 <div className={'categoriesList'}>
                     <h2>Cats</h2>
