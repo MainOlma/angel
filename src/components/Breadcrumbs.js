@@ -1,18 +1,15 @@
 import React from "react";
-import {
-    Link,
-} from "react-router-dom";
-
+import {Link} from "react-router-dom";
 import withBreadcrumbs from "react-router-breadcrumbs-hoc";
 import firebase from '../components/Base'
 
 const routes = [
-    {path: '/recipes*/:id', breadcrumb: 'mmm'},
+    {path: '/recipes*/:id', breadcrumb: 'without this wont working'},
 ];
 
-const Breadcrumbs =  withBreadcrumbs(routes)(({tree,id, breadcrumbs}) => {
+const Breadcrumbs =  withBreadcrumbs(routes)(({categories,id, breadcrumbs}) => {
 
-    const name = (key) => tree.find(cat => cat.cat_id == key)?.name;
+    const name = (key) => categories.find(cat => cat.cat_id == key)?.name;
     const basename= process.env.NODE_ENV=='production' ? '/angel' : '';
 
     return (

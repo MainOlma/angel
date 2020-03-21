@@ -103,7 +103,7 @@ export default function Recipe(props) {
 
     return (
         <div>
-            {!props.second && <Breadcrumbs tree={props.tree}/>}
+            {!props.second && <Breadcrumbs categories={props.categories}/>}
             <div className='recipe'>
                 {props.second && <div className='close' onClick={HideIng}>Close</div>}
                 <div className={second ? 'main half' : 'main full'}>

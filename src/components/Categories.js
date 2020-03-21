@@ -8,7 +8,7 @@ import {SortableList} from "./SortableList";
 import {SortableGrid} from "./SortableGrid";
 
 
-function Categorys(props) {
+function Categories(props) {
     let {id} = useParams();
     let [childrens_cats, setChildrens_cats] = useState([]);
     let [childrens_recs, setChildrens_recs] = useState([]);
@@ -18,12 +18,12 @@ function Categorys(props) {
     const basename = process.env.NODE_ENV == 'production' ? '/angel' : '';
 
     useEffect(() => {
-        setChildrens_cats(props.tree.filter(cat => cat.parent_category == id));
+        setChildrens_cats(props.categories.filter(cat => cat.parent_category == id));
         setChildrens_recs(props.recs.filter(rec => rec.cat_id == id));
     }, [id]);
 
     useEffect(() => {
-        setCurrentCategoryName(props.tree.find(cat => cat.cat_id == id)?.name || '')
+        setCurrentCategoryName(props.categories.find(cat => cat.cat_id == id)?.name || '')
     });
 
     const onAddRecipe = () => {
@@ -72,7 +72,7 @@ function Categorys(props) {
 
     return (
         <div className={'catalog'}>
-            <Breadcrumbs tree={props.tree} id={id}/>
+            <Breadcrumbs categories={props.categories} id={id}/>
             {id != 0 && <h1>{currentCategoryName}</h1>}
             {props.admin && <ImageUpload key={id} categoryId={id} onUpload={()=>{}}/>}
             <div>
@@ -119,4 +119,4 @@ function Categorys(props) {
         </div>);
 }
 
-export default Categorys;
+export default Categories;

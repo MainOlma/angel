@@ -7,7 +7,7 @@ import {
     Route,
 } from "react-router-dom";
 
-import Categorys from "./components/Categorys";
+import Categories from "./components/Categories";
 import LoginPage from "./components/LoginPage";
 import firebase from './components/Base'
 import Recipe from "./components/Recipe";
@@ -15,7 +15,6 @@ import Ingredients from "./components/Ingredients";
 import Rules from "./components/Rules";
 
 function HelloMessage(props) {
-    const [url, setUrl] = useState(null);
     const [categories, setCategories] = useState(null);
     const [images, setImages] = useState(null);
     const [recipieImages, setRecipieImages] = useState(null);
@@ -26,26 +25,16 @@ function HelloMessage(props) {
     const [admin, setAdmin] = useState(null);
     const state = [0];
 
-    function isAdmin(email) {
-        let role = false
-        firebase.database().ref().once('value').then(function (snapshot) {
-            const users = Object.values(snapshot.child('users').val());
-            role = users.find(user => user.email == email);
-        });
-        return role ? role.admin : false
-    }
-
     useEffect(() => {
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-
                 setUser(firebase.auth().currentUser);
                 // User is signed in.
                 firebase.database().ref('/').on('value',
                     (snapshot) => {
 
-                        const cats = Object.values(snapshot.child('recipie_categories').val()) || 'Anonymous';
+                        const categories = Object.values(snapshot.child('recipie_categories').val()) || 'Anonymous';
                         const recipes = Object.values(snapshot.child('recipies').val());
                         const ingredients = Object.values(snapshot.child('recipie_ingridients').val());
                         const composition = Object.values(snapshot.child('recipie_composition').val());
@@ -54,14 +43,14 @@ function HelloMessage(props) {
                         const users = Object.values(snapshot.child('users').val());
                         const role = users.find(u => u.email == user.email);
 
-                        localStorage.setItem('recipie_categories', JSON.stringify(cats));
+                        localStorage.setItem('recipie_categories', JSON.stringify(categories));
                         localStorage.setItem('recipes', JSON.stringify(recipes));
                         localStorage.setItem('recipie_ingredients', JSON.stringify(ingredients));
                         localStorage.setItem('recipie_composition', JSON.stringify(composition));
                         localStorage.setItem('images', JSON.stringify(images));
                         localStorage.setItem('recipieImages', JSON.stringify(recipieImages));
 
-                        setCategories(cats /*|| localStorage.recipie_categories*/);
+                        setCategories(categories /*|| localStorage.recipie_categories*/);
                         setRecipes(recipes);
                         setIngridients(ingredients);
                         setComposition(composition);
@@ -90,7 +79,7 @@ function HelloMessage(props) {
                         <Route path={`/recipes*/:id/recipe/:recipeId`}
                                render={(props) => <Recipe {...props}
                                                           admin={admin}
-                                                          tree={categories}
+                                                          categories={categories}
                                                           recs={recipes}
                                                           ingredients={ingredients}
                                                           composition={composition}
@@ -98,14 +87,14 @@ function HelloMessage(props) {
                                                           recipieImages={recipieImages}/>}/>
 
                         <Route path={`/recipes*/:id`}
-                               render={(props) => <Categorys {...props}
-                                                             admin={admin}
-                                                             tree={categories}
-                                                             recs={recipes}
-                                                             ingredients={ingredients}
-                                                             composition={composition}
-                                                             images={images}
-                                                             recipieImages={recipieImages}
+                               render={(props) => <Categories {...props}
+                                                              admin={admin}
+                                                              categories={categories}
+                                                              recs={recipes}
+                                                              ingredients={ingredients}
+                                                              composition={composition}
+                                                              images={images}
+                                                              recipieImages={recipieImages}
                                />}
                         />
 
