@@ -17,14 +17,14 @@ import Command from "./Command"
 
 
 export default function ETable(props) {
-    const [rows, setRows] = useState(props.ingridients);
+    const [rows, setRows] = useState(props.ingredients);
     const [addIngId, setAddIngId] = useState(null);
     const [booleanColumns] = useState(['ing_id']);
     const [editingStateColumnExtensions] = useState([
         { columnName: 'units', editingEnabled: false },
     ]);
     useEffect(() => {
-        setRows(props.ingridients)
+        setRows(props.ingredients)
     });
 
     const BooleanEditor = ({ value, onValueChange }) => (

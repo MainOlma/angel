@@ -12,7 +12,7 @@ import ImageList from "./ImageList";
 export default function Recipe(props) {
     let {id, recipeId} = useParams();
     let {path, url} = useRouteMatch();
-    let rec, cat, ingridientsIds, ingridients = [], imagesIds, recipieImages;
+    let rec, cat, ingredientsIds, ingredients = [], imagesIds, recipieImages;
     const [second, setSecond] = useState(null);
     const [ID, setID] = useState(props.second || recipeId);
     const [CAT, setCAT] = useState('');
@@ -44,11 +44,11 @@ export default function Recipe(props) {
     };
 
     const getIngridients =()=>{
-        const ingridientsIds = props.composition.filter(ing => ing.rec_id == ID);
-        return  ingridientsIds
-            .filter (ing => props.ingridients.find(i => i.ing_id == ing.ing_id))
+        const ingredientsIds = props.composition.filter(ing => ing.rec_id == ID);
+        return  ingredientsIds
+            .filter (ing => props.ingredients.find(i => i.ing_id == ing.ing_id))
             .map(ing => {
-            const details = props.ingridients.find(i => i.ing_id === ing.ing_id)
+            const details = props.ingredients.find(i => i.ing_id === ing.ing_id)
             return ({
                 ing_id: ing.ing_id,
                 comp_id: ing.comp_id,
@@ -85,7 +85,7 @@ export default function Recipe(props) {
             setCAT(cat);
             setDesc(rec.desc);
             imagesIds = props.recipieImages.filter(img => img.rec_id == ID);
-            ingridients = getIngridients();
+            ingredients = getIngridients();
             recipieImages = imagesIds.map(id => props.images.find(img => img.img_id == id.img_id))
         }
         setRecName(rec.name);
@@ -112,7 +112,7 @@ export default function Recipe(props) {
 
                         {ings.length > 0 &&
                         <div>
-                            <div className='ingridients'>
+                            <div className='ingredients'>
                                 <span>Потери {loss}</span>
                                 <span>Выход <input placeholder={summary} value={summaryNew}
                                                    onChange={e => {
@@ -184,8 +184,8 @@ export default function Recipe(props) {
                             }}
                         />}
                         <Button className={'update'} onClick={onUpdateRec}>Сохранить</Button>
-                        <ETable ingridients={ings} allIngridients={props.ingridients} currentRec={ID} needUpdate={needUpdate}/>
-                        <Link to={'/ingridients'}>База ингридиентов</Link>
+                        <ETable ingredients={ings} allIngridients={props.ingredients} currentRec={ID} needUpdate={needUpdate}/>
+                        <Link to={'/ingredients'}>База ингридиентов</Link>
 
 
                     </div>}

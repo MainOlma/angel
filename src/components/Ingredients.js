@@ -14,8 +14,8 @@ import {
 import {updateIngridient, deleteIngridient, newIngridient} from "./DbActions"
 import Command from "./Command"
 
-export default function Ingridients(props) {
-    const [rows, setRows] = useState(props.ingridients);
+export default function Ingredients(props) {
+    const [rows, setRows] = useState(props.ingredients);
     const [recs, setRecs] = useState(props.recipes);
     const [booleanColumns] = useState(['rec_id']);
     const [editingStateColumnExtensions] = useState([
@@ -23,7 +23,7 @@ export default function Ingridients(props) {
     ]);
 
     useEffect(() => {
-        setRows(props.ingridients);
+        setRows(props.ingredients);
         setRecs(props.recipes);
     });
 
