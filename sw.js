@@ -1,5 +1,5 @@
-var APP_PREFIX = 'ApplicationName_'     // Identifier for this app (this needs to be consistent across every cache update)
-var VERSION = 'version_01'              // Version of the off-line cache (change this value everytime you want to update cache)
+var APP_PREFIX = 'AngelCake' ;    // Identifier for this app (this needs to be consistent across every cache update)
+var VERSION = '03';              // Version of the off-line cache (change this value everytime you want to update cache)
 var CACHE_NAME = APP_PREFIX + VERSION
 var URLS = [                            // Add URL you want to cache in this list.
     '/angel/',                     // If you have separate JS/CSS files,
@@ -21,6 +21,10 @@ self.addEventListener('fetch', function (e) {
                 return request
             } else {       // if there are no cache, try fetching request
                 console.log('file is not cached, fetching : ' + e.request.url)
+                caches.open(CACHE_NAME).then( (cache) =>{
+                    //console.log('force cache : ', e.request.url )
+                    //cache.add(e.request.url)
+                })
                 return fetch(e.request)
             }
 
