@@ -9,7 +9,7 @@ export const SortableGrid = props => {
 
     useEffect(() => {
         setState(props.data)
-    }, [props.data.length]);
+    }, [props.data.map(el => el.name).join(',')]);
 
     useEffect(() => {
         const changedList = state.map((row, i) => (i != row.order ? {...row, order: i} : row));

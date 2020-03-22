@@ -6,12 +6,14 @@ import {newCategory, newRecipie, deleteCategory, deleteRecipe, deleteComposition
 import ImageUpload from "./ImageUpload";
 import {SortableList} from "./SortableList";
 import {SortableGrid} from "./SortableGrid";
+import SelectParent from "./SelectParent";
 
 
 function Categories(props) {
     let {id} = useParams();
     let [childrens_cats, setChildrens_cats] = useState([]);
     let [childrens_recs, setChildrens_recs] = useState([]);
+    let [category, setCategory] = useState({});
     const [catName, setCatName] = useState('');
     const [currentCategoryName, setCurrentCategoryName] = useState('');
     const [recName, setRecName] = useState('');
@@ -20,6 +22,7 @@ function Categories(props) {
     useEffect(() => {
         setChildrens_cats(props.categories.filter(cat => cat.parent_category == id));
         setChildrens_recs(props.recs.filter(rec => rec.cat_id == id));
+        setCategory(props.categories.find(cat => cat.cat_id == id))
     }, [id]);
 
     useEffect(() => {
@@ -74,7 +77,19 @@ function Categories(props) {
         <div className={'catalog'}>
             <Breadcrumbs categories={props.categories} id={id}/>
             {id != 0 && <h1>{currentCategoryName}</h1>}
-            {props.admin && <ImageUpload key={id} categoryId={id} onUpload={()=>{}}/>}
+
+            {props.admin &&
+                <SelectParent
+                    for={'category'}
+                    id={id}
+                    data={category}
+                    categories={props.categories}/>
+            }
+
+            <br/><br/>
+
+            {props.admin && <ImageUpload key={id} categoryId={id} onUpload={() => {}}/>}
+
             <div>
                 <div className={'categoriesList'}>
                     <h2>Cats</h2>

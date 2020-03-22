@@ -30,8 +30,8 @@ export default function ImageList(props) {
 
     return (<div>
             {images.map((img, i) =>
-                <div className={'image'}>
-                    <img key={i} src={img}/>
+                <div key={i} className={'image'}>
+                    <img src={img}/>
                     {props.admin && <button className={'delete'} onClick={() => onDeleteImage(img)}>Delete</button>}
                 </div>)
             }

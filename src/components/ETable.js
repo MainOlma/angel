@@ -18,7 +18,6 @@ import Command from "./Command"
 
 export default function ETable(props) {
     const [rows, setRows] = useState(props.ingredients);
-    const [addIngId, setAddIngId] = useState(null);
     const [booleanColumns] = useState(['ing_id']);
     const [editingStateColumnExtensions] = useState([
         { columnName: 'units', editingEnabled: false },
@@ -31,19 +30,19 @@ export default function ETable(props) {
         <Select
             input={<Input />}
             value={value!=undefined ? value : ''}
-            onChange={event => {console.log("EVENT _________",event);onValueChange(event.target.value); setAddIngId(event.currentTarget.dataset.tag)}}
+            onChange={event => onValueChange(event.target.value)}
             style={{ width: '100%' }}
             disabled = {value!=undefined ? true : false}
         >
             {
-                props.allIngridients.map(((ing, i) =>  (<MenuItem key ={i} data-tag={ing.ing_id} value={ing.ing_id} name={ing.name}>
+                props.allIngredients.map(((ing, i) =>  (<MenuItem key ={i} data-tag={ing.ing_id} value={ing.ing_id} name={ing.name}>
                         {ing.name}
                 </MenuItem>)))
             }
 
         </Select>
     );
-    const BooleanFormatter = ({ value }) => <span>{props.allIngridients.find(ing => ing.ing_id==value).name}</span>;
+    const BooleanFormatter = ({ value }) => <span>{props.allIngredients.find(ing => ing.ing_id == value).name}</span>;
 
     const BooleanTypeProvider = props => (
         <DataTypeProvider
@@ -60,8 +59,8 @@ export default function ETable(props) {
                 ...rows,
                 ...added.map((row, index) => ({
                     //id: startingAddedId + index,
-                    name: props.allIngridients.find(ing => ing.ing_id==row.ing_id).name,
-                    units: props.allIngridients.find(ing => ing.ing_id==row.ing_id).units,
+                    name: props.allIngredients.find(ing => ing.ing_id == row.ing_id).name,
+                    units: props.allIngredients.find(ing => ing.ing_id == row.ing_id).units,
 
                     ...row,
                 })),
@@ -77,14 +76,14 @@ export default function ETable(props) {
         if (changed) {
 
             changedRows = rows.map((row,i) => (changed[i] ? { ...row, ...changed[i] } : row));
-            const chagedIngridient = changedRows.find((row,i) => (changed[i]!=undefined  ? { ...row, ...changed[i] } : null))
+            const chagedIngridient = changedRows.find((row,i) => (changed[i] != undefined  ? { ...row, ...changed[i] } : null))
             updateComposition(chagedIngridient)
 
         }
         if (deleted) {
             const deletedSet = new Set(deleted);
             changedRows = rows.filter((row,i) => !deletedSet.has(i));
-            const deletedRow =  rows[deleted[0]].comp_id
+            const deletedRow =  rows[deleted[0]].comp_id;
             deleteComposition(deletedRow)
 
         }

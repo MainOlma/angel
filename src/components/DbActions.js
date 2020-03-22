@@ -10,10 +10,10 @@ export function deleteCategory(id) {
     base.database().ref().child('recipie_categories/' + id).remove();
 }
 
-export function updateCategory(id, catData) {
+export function updateCategory(id, catData, callback) {
     const updates = {};
     updates['/recipie_categories/' + id] = catData;
-    updateDb(updates)
+    updateDb(updates, callback)
 }
 
 export function newRecipie(id, recData) {
@@ -22,10 +22,10 @@ export function newRecipie(id, recData) {
     updateDb(updates)
 }
 
-export function updateRec(id, recData) {
+export function updateRec(id, recData, callback) {
     const updates = {};
     updates['/recipies/' + id] = recData;
-    updateDb(updates)
+    updateDb(updates, callback)
 }
 
 export function deleteRecipe(id) {
@@ -139,12 +139,13 @@ export function getImagesForRecipe(recipeId, callback) {
     });
 }
 
-function updateDb(updates) {
+function updateDb(updates, callback) {
     return base.database().ref().update(updates, function (error) {
         if (error) {
             // The write failed...
             console.log('failed', error)
         } else {
+            callback && callback();
             console.log('successfully')
             // Data saved successfully!
         }

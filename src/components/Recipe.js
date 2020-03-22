@@ -6,15 +6,15 @@ import CKEditor from 'ckeditor4-react';
 import Button from '@material-ui/core/Button';
 import {updateRec} from "./DbActions";
 import ETable from "./ETable";
-import ImageUpload from "./ImageUpload";
 import ImageList from "./ImageList";
+import SelectParent from "./SelectParent";
 
 export default function Recipe(props) {
-    let {id, recipeId} = useParams();
-    let {path, url} = useRouteMatch();
-    let rec, cat, ingredientsIds, ingredients = [], imagesIds, recipieImages;
+    let {recipeId} = useParams();
+    let rec, cat, ingredients = [], imagesIds, recipieImages;
     const [second, setSecond] = useState(null);
     const [ID, setID] = useState(props.second || recipeId);
+    const [recipe, setRecipe] = useState({});
     const [CAT, setCAT] = useState('');
     const [DESC, setDesc] = useState('');
     const basename = process.env.NODE_ENV == 'production' ? '/angel' : '';
@@ -39,26 +39,26 @@ export default function Recipe(props) {
         setLoss(loss);
         setRecHowTo(recHowTo);
     };
-    const needUpdate=(changedRows)=>{
+    const needUpdate = changedRows => {
         setIngs(changedRows)
     };
 
-    const getIngridients =()=>{
+    const getIngridients = () => {
         const ingredientsIds = props.composition.filter(ing => ing.rec_id == ID);
-        return  ingredientsIds
-            .filter (ing => props.ingredients.find(i => i.ing_id == ing.ing_id))
+        return ingredientsIds
+            .filter(ing => props.ingredients.find(i => i.ing_id == ing.ing_id))
             .map(ing => {
-            const details = props.ingredients.find(i => i.ing_id === ing.ing_id)
-            return ({
-                ing_id: ing.ing_id,
-                comp_id: ing.comp_id,
-                ing_rec_id: details.rec_id,
-                rec_id: ing.rec_id,
-                name: details.name,
-                quantity: +ing.quantity
-            })
+                const details = props.ingredients.find(i => i.ing_id === ing.ing_id)
+                return ({
+                    ing_id: ing.ing_id,
+                    comp_id: ing.comp_id,
+                    ing_rec_id: details.rec_id,
+                    rec_id: ing.rec_id,
+                    name: details.name,
+                    quantity: +ing.quantity
+                })
 
-        });
+            });
     };
 
     function ShowIng(id) {
@@ -75,13 +75,14 @@ export default function Recipe(props) {
 
     useEffect(() => {
         props.second && setID(props.second)
-    },[props.second]);
+    }, [props.second]);
 
     useEffect(() => {
         if (props.recs) {
-            if (props.second) recipeId = props.second
+            if (props.second) recipeId = props.second;
             rec = props.recs.find(rec => rec.rec_id == ID);
-            cat = rec.cat_id
+            setRecipe(rec);
+            cat = rec.cat_id;
             setCAT(cat);
             setDesc(rec.desc);
             imagesIds = props.recipieImages.filter(img => img.rec_id == ID);
@@ -98,7 +99,7 @@ export default function Recipe(props) {
         const sum = (ings.reduce((acc, val) => +acc + val.quantity, 0) * (1 - loss / 100)).toFixed(1);
         setSummary(sum);
         setNewSummary(sum);
-    }, [ings.map(d => d.name+d.quantity).join(','),loss]);
+    }, [ings.map(d => d.name + d.quantity).join(','), loss]);
 
 
     return (
@@ -109,6 +110,13 @@ export default function Recipe(props) {
                 <div className={second ? 'main half' : 'main full'}>
                     <div className={'first'}>
                         <h1>{recName}</h1>
+                        {props.admin &&
+                            <SelectParent
+                                for={'recipe'}
+                                id={recipeId}
+                                data={recipe}
+                                categories={props.categories}/>
+                        }
 
                         {ings.length > 0 &&
                         <div>
@@ -118,7 +126,7 @@ export default function Recipe(props) {
                                                    onChange={e => {
                                                        const val = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
                                                        setNewSummary(val);
-                                }}/></span>
+                                                   }}/></span>
                                 {ings.map((ing, i) => {
                                         return (
                                             <div className='ingridient' key={i}>
@@ -129,7 +137,8 @@ export default function Recipe(props) {
                                                     : <div className='name'>{ing.name}</div>
                                                 }
                                                 <div
-                                                    className='quantity'>{(ing.quantity * summaryNew / summary).toFixed(1)} г.</div>
+                                                    className='quantity'>{(ing.quantity * summaryNew / summary).toFixed(1)} г.
+                                                </div>
                                             </div>
                                         )
                                     }
@@ -173,9 +182,9 @@ export default function Recipe(props) {
                             placeholder={loss}
                             onChange={e => {
                                 let val = parseInt(e.target.value);
-                                val = val<0 ?  0 : val;
-                                val = val>=100 ?  99 : val;
-                                setLoss((typeof val == 'number' &&  val<=100 && val>=0) ? val : '');
+                                val = val < 0 ? 0 : val;
+                                val = val >= 100 ? 99 : val;
+                                setLoss((typeof val == 'number' && val <= 100 && val >= 0) ? val : '');
                             }}/>
                         {recHowTo && <CKEditor
                             data={recHowTo}
@@ -184,7 +193,8 @@ export default function Recipe(props) {
                             }}
                         />}
                         <Button className={'update'} onClick={onUpdateRec}>Сохранить</Button>
-                        <ETable ingredients={ings} allIngridients={props.ingredients} currentRec={ID} needUpdate={needUpdate}/>
+                        <ETable ingredients={ings} allIngredients={props.ingredients} currentRec={ID}
+                                needUpdate={needUpdate}/>
                         <Link to={'/ingredients'}>База ингридиентов</Link>
 
 
