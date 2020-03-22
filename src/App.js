@@ -31,6 +31,14 @@ function HelloMessage(props) {
             if (user) {
                 setUser(firebase.auth().currentUser);
                 // User is signed in.
+                firebase.firestore().enablePersistence() // enable cache from firestore
+                    .catch(function(err) {
+                        if (err.code == 'failed-precondition') {
+                            console.log('Multiple tabs open, persistence can only be enabled in one tab at a a time.')
+                        } else if (err.code == 'unimplemented') {
+                            console.log('The current browser does not support all of the features required to enable persistence')
+                        }
+                    });
                 firebase.database().ref('/').on('value',
                     (snapshot) => {
 

@@ -7,7 +7,8 @@ var URLS = [                            // Add URL you want to cache in this lis
     '/angel/App.f684dadd.js',
     '/angel/logo.cabda74f.svg',
     '/angel/App.f684dadd.css',
-    '/angel/img/'
+    '/angel/img/',
+
 ]
 
 // Respond with cached resources
