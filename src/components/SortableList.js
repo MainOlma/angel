@@ -18,23 +18,22 @@ export const SortableList = props => {
 
     function updateOrder(list) {
         list.forEach(row => {
-            updateRec(row.rec_id, row)
+                updateRec(row.rec_id, row)
             }
         )
     }
 
-    return (
-        <ReactSortable list={state}
-                       setList={setState}
-                       sort={props.admin ? true : false}>
-            {state.map(item => (
-                <li key={item.rec_id}>
-                    <Link
-                        to={{
-                            pathname: `${props.url}/recipe/${item.rec_id}`,
-                            state: {recipe: true}
-                        }}>{item.name}
-                        {props.admin &&
+    const list = () =>
+        (state.map(item => (
+            <li key={item.rec_id}>
+                <Link
+                    to={{
+                        pathname: `${props.url}/recipe/${item.rec_id}`,
+                        state: {recipe: true}
+                    }}>
+                    {item.name}
+
+                    {props.admin &&
                         <button className={'delete'}
                                 onClick={(e) => {
                                     e.preventDefault();
@@ -42,10 +41,18 @@ export const SortableList = props => {
                                 }
                                 }>
                             -
-                        </button>}
-                    </Link>
-                </li>
-            ))}
-        </ReactSortable>
+                        </button>
+                    }
+                </Link>
+            </li>
+        )));
+
+
+    return (
+        props.admin ?
+            <ReactSortable list={state} setList={setState}>
+               {list()}
+            </ReactSortable>
+            : list()
     );
 };

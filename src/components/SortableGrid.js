@@ -19,22 +19,19 @@ export const SortableGrid = props => {
 
     function updateOrder(list) {
         list.forEach(row => {
-            updateCategory(row.cat_id, row)
+                updateCategory(row.cat_id, row)
             }
         )
     }
 
-    return (
-        <ReactSortable list={state}
-                       setList={setState}
-                       className={'categories'}
-                       sort={props.admin ? true : false}>
-            {state.map(item => (
-                <div className={'category'} key={item.cat_id}>
-                    <Link to={`${props.url}/${item.cat_id}`}>
-                        <ImageFromDb categoryId={item.cat_id} default={props.basename + '/img/default_cat.png'}/>
-                        <span className={'name'}>{item.name}</span>
-                        {props.admin &&
+    const grid = () => (
+        state.map(item => (
+            <div className={'category'} key={item.cat_id}>
+                <Link to={`${props.url}/${item.cat_id}`}>
+                    <ImageFromDb categoryId={item.cat_id} default={props.basename + '/img/default_cat.png'}/>
+                    <span className={'name'}>{item.name}</span>
+
+                    {props.admin &&
                         <button className={'delete'}
                                 onClick={(e) => {
                                     e.preventDefault();
@@ -42,10 +39,20 @@ export const SortableGrid = props => {
                                 }
                                 }>
                             Delete
-                        </button>}
-                    </Link>
-                </div>
-            ))}
-        </ReactSortable>
+                        </button>
+                    }
+                </Link>
+            </div>
+        ))
+    );
+
+    return (
+        props.admin ?
+            <ReactSortable list={state}
+                           setList={setState}
+                           className={'categories'}>
+                {grid()}
+            </ReactSortable>
+            : <div className={'categories'}>{grid()}</div>
     );
 };
