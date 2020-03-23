@@ -35,7 +35,12 @@ export default function ImageList(props) {
                     {props.admin && <button className={'delete'} onClick={() => onDeleteImage(img)}>Delete</button>}
                 </div>)
             }
-            <ImageUpload recipeId={props.recipeId} onUpload={onUpload}/>
+            {props.admin &&
+                <ImageUpload
+                    recipeId={props.recipeId}
+                    onUpload={onUpload}
+                />
+            }
         </div>
     )
 }
