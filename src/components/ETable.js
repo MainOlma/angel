@@ -51,6 +51,24 @@ export default function ETable(props) {
             {...props}
         />
     );
+
+    const NumberFormatter = ({ value, onValueChange }) => (
+        <Input
+            value={value}
+            onChange={event => {
+                const val = parseInt(event.target.value);
+                onValueChange(val >= 0 ? val : '')
+            }}
+        />
+    );
+
+    const NumberTypeProvider = props => (
+        <DataTypeProvider
+            editorComponent={NumberFormatter}
+            {...props}
+        />
+    );
+
     const commitChanges = ({ added, changed, deleted }) => {
         let changedRows;
         if (added) {
@@ -101,6 +119,9 @@ export default function ETable(props) {
             ]}>
             <BooleanTypeProvider
                 for={booleanColumns}
+            />
+            <NumberTypeProvider
+                for = {['quantity']}
             />
             <EditingState
                 onCommitChanges={commitChanges}
