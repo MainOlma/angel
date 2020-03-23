@@ -1,32 +1,33 @@
-import React, {useState, useEffect} from "react";
-import ReactDOM from "react-dom";
-import './style/main.scss';
+import React, {useState, useEffect} from 'react';
+import ReactDOM from 'react-dom';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import Categories from "./components/Categories";
-import LoginPage from "./components/LoginPage";
+import Categories from './components/Categories';
+import LoginPage from './components/LoginPage';
 import firebase from './components/Base'
-import Recipe from "./components/Recipe";
-import Ingredients from "./components/Ingredients";
-import Rules from "./components/Rules";
+import Recipe from './components/Recipe';
+import Ingredients from './components/Ingredients';
+import Rules from './components/Rules';
+import routes from './constants/routes';
+
+import './style/main.scss';
 
 function HelloMessage(props) {
     const [categories, setCategories] = useState(null);
     const [images, setImages] = useState(null);
     const [recipieImages, setRecipieImages] = useState(null);
     const [recipes, setRecipes] = useState(null);
-    const [ingredients, setIngridients] = useState(null);
+    const [ingredients, setIngredients] = useState(null);
     const [composition, setComposition] = useState(null);
     const [user, setUser] = useState(null);
     const [admin, setAdmin] = useState(null);
     const state = [0];
 
     useEffect(() => {
-
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 setUser(firebase.auth().currentUser);
@@ -41,7 +42,6 @@ function HelloMessage(props) {
                     });
                 firebase.database().ref('/').on('value',
                     (snapshot) => {
-
                         const categories = Object.values(snapshot.child('recipie_categories').val()) || 'Anonymous';
                         const recipes = Object.values(snapshot.child('recipies').val());
                         const ingredients = Object.values(snapshot.child('recipie_ingridients').val());
@@ -60,7 +60,7 @@ function HelloMessage(props) {
 
                         setCategories(categories /*|| localStorage.recipie_categories*/);
                         setRecipes(recipes);
-                        setIngridients(ingredients);
+                        setIngredients(ingredients);
                         setComposition(composition);
                         setImages(images);
                         setRecipieImages(recipieImages);
@@ -72,47 +72,44 @@ function HelloMessage(props) {
                 // No user is signed in.
             }
         });
-
     }, [state.length]);
 
     return (
-        <Router basename={process.env.NODE_ENV == 'production' ? '/angel' : ''}>
-            <div>
-                <Route path='/' exact render={() => <LoginPage user={user}/>}/>
-                <Route path={'/ingredients'} render={() => <Ingredients ingredients={ingredients} recipes={recipes}/>}/>
-                <Route path={'/rules'} render={() => <Rules admin={admin}/>}/>
-                {categories && recipes && ingredients && composition && user && admin!=null && images && recipieImages ?
-                    <Switch>
+        <Router basename={routes.baseUrl()}>
+            <Route path='/' exact render={() => <LoginPage user={user}/>}/>
+            <Route path={routes.INGREDIENTS_URL} render={() => <Ingredients ingredients={ingredients} recipes={recipes}/>}/>
+            <Route path={routes.RULES_URL} render={() => <Rules admin={admin}/>}/>
+            {categories && recipes && ingredients && composition && user && admin!=null && images && recipieImages ?
+                <Switch>
+                    <Route path={`/recipes*/:id/recipe/:recipeId`}
+                           render={(props) => <Recipe {...props}
+                                                      admin={admin}
+                                                      categories={categories}
+                                                      recs={recipes}
+                                                      ingredients={ingredients}
+                                                      composition={composition}
+                                                      images={images}
+                                                      recipieImages={recipieImages}/>}/>
 
-                        <Route path={`/recipes*/:id/recipe/:recipeId`}
-                               render={(props) => <Recipe {...props}
+                    <Route path={`/recipes*/:id`}
+                           render={(props) => <Categories {...props}
                                                           admin={admin}
                                                           categories={categories}
                                                           recs={recipes}
                                                           ingredients={ingredients}
                                                           composition={composition}
                                                           images={images}
-                                                          recipieImages={recipieImages}/>}/>
+                                                          recipieImages={recipieImages}
+                           />}
+                    />
 
-                        <Route path={`/recipes*/:id`}
-                               render={(props) => <Categories {...props}
-                                                              admin={admin}
-                                                              categories={categories}
-                                                              recs={recipes}
-                                                              ingredients={ingredients}
-                                                              composition={composition}
-                                                              images={images}
-                                                              recipieImages={recipieImages}
-                               />}
-                        />
-
-                    </Switch> : null}
-            </div>
+                </Switch> : null
+             }
         </Router>
     );
 }
 
 ReactDOM.render(
-    <HelloMessage name="Angelos"/>,
+    <HelloMessage name='Angelos'/>,
     document.getElementById('root')
 );

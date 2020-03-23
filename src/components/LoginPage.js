@@ -3,10 +3,10 @@ import Logo from "../img/logo.svg";
 import Auth from "./Auth";
 import {Link} from "react-router-dom";
 import firebase from "./Base";
+import routes from '../constants/routes';
 
 
 export default function LoginPage(props) {
-    const basename = process.env.NODE_ENV == 'production' ? '' : '/angel';
     const [user, setUser] = useState(false)
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) { setUser(user)} else setUser(false)});
@@ -20,8 +20,8 @@ export default function LoginPage(props) {
                 user &&
 
                 <div>
-                    <Link to={basename +'/recipes/0'}>Рецепты</Link><br/>
-                    <Link to={basename +'/rules'}>Правила</Link>
+                    <Link to={`${routes.baseUrl()}${routes.RECIPE_URL}`}>Рецепты</Link><br/>
+                    <Link to={`${routes.baseUrl()}${routes.RULES_URL}`}>Правила</Link>
                 </div>
             }
 

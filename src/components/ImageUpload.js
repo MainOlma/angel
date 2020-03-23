@@ -12,9 +12,11 @@ class ImageUpload extends React.Component {
         const files = this.state.files;
         if (files.length > 0){
             files.forEach(file => {
-                let path = 'images/'+this.props.recipeId+'/'+file.name;
-                if (this.props.categoryId) path = 'images/categories/'+this.props.categoryId+'/'+this.props.categoryId;
-                newImage(file, path, (url)=>this.props.onUpload(url));
+                let path = `images/${this.props.recipeId}/${file.name}`;
+                if (this.props.categoryId) {
+                    path = `images/categories/${this.props.categoryId}/${this.props.categoryId}`;
+                }
+                newImage(file, path, (url) => this.props.onUpload(url));
 
             })
         }
@@ -32,8 +34,8 @@ class ImageUpload extends React.Component {
             reader.onloadend = () => {
                 this.setState(prevState => ({
                     files: this.props.categoryId != undefined ? [file] : [...prevState.files, file],
-                    imagesPreviewUrls: this.props.categoryId != undefined ?
-                        [reader.result]
+                    imagesPreviewUrls: this.props.categoryId != undefined
+                        ? [reader.result]
                         :[...prevState.imagesPreviewUrls, reader.result]
                 }));
             }

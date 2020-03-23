@@ -7,6 +7,7 @@ import ImageUpload from "./ImageUpload";
 import {SortableList} from "./SortableList";
 import {SortableGrid} from "./SortableGrid";
 import SelectParent from "./SelectParent";
+import routes from '../constants/routes';
 
 
 function Categories(props) {
@@ -17,7 +18,6 @@ function Categories(props) {
     const [catName, setCatName] = useState('');
     const [currentCategoryName, setCurrentCategoryName] = useState('');
     const [recName, setRecName] = useState('');
-    const basename = process.env.NODE_ENV == 'production' ? '/angel' : '';
 
     useEffect(() => {
         setChildrens_cats(props.categories.filter(cat => cat.parent_category == id));
@@ -96,7 +96,7 @@ function Categories(props) {
                         {childrens_cats.length > 0 &&
                         <SortableGrid data={childrens_cats.sort((a, b) => a.order - b.order)}
                                       url={props.match.url}
-                                      basename={basename}
+                                      basename={routes.baseUrl()}
                                       admin={props.admin}
                                       onDelete={(id,name)=>onDeleteCategory(id,name)}/>
                         }

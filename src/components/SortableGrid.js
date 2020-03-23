@@ -28,7 +28,7 @@ export const SortableGrid = props => {
         state.map(item => (
             <div className={'category'} key={item.cat_id}>
                 <Link to={`${props.url}/${item.cat_id}`}>
-                    <ImageFromDb categoryId={item.cat_id} default={props.basename + '/img/default_cat.png'}/>
+                    <ImageFromDb categoryId={item.cat_id} default={`${props.basename}/img/default_cat.png`}/>
                     <span className={'name'}>{item.name}</span>
 
                     {props.admin &&

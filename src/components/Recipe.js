@@ -8,6 +8,7 @@ import {updateRec} from "./DbActions";
 import ETable from "./ETable";
 import ImageList from "./ImageList";
 import SelectParent from "./SelectParent";
+import routes from '../constants/routes';
 
 export default function Recipe(props) {
     let {recipeId} = useParams();
@@ -17,7 +18,6 @@ export default function Recipe(props) {
     const [recipe, setRecipe] = useState({});
     const [CAT, setCAT] = useState('');
     const [DESC, setDesc] = useState('');
-    const basename = process.env.NODE_ENV == 'production' ? '/angel' : '';
     const [recName, setRecName] = useState('');
     const [summary, setSummary] = useState(0);
     const [summaryNew, setNewSummary] = useState(0);
@@ -158,7 +158,7 @@ export default function Recipe(props) {
                             /*recipieImages && recipieImages.map((img, i) => {
                                 return (
                                     <div className={'image'} key={i}>
-                                        <img src={basename + img.src}/>
+                                        <img src={routes.baseUrl() + img.src}/>
                                     </div>
                                 )
                             })*/
@@ -195,7 +195,7 @@ export default function Recipe(props) {
                         <Button className={'update'} onClick={onUpdateRec}>Сохранить</Button>
                         <ETable ingredients={ings} allIngredients={props.ingredients} currentRec={ID}
                                 needUpdate={needUpdate}/>
-                        <Link to={'/ingredients'}>База ингридиентов</Link>
+                        <Link to={routes.INGREDIENTS_URL}>База ингридиентов</Link>
 
 
                     </div>}
