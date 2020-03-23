@@ -21,11 +21,29 @@ export default function Ingredients(props) {
     const [editingStateColumnExtensions] = useState([
         { columnName: 'ing_id', editingEnabled: false },
     ]);
+    let path = [];
 
     useEffect(() => {
         setRows(props.ingredients);
         setRecs(props.recipes);
     });
+
+    const getCategoryById = id => {
+        const element = props.categories.find(el => el.cat_id == id);
+        element != undefined && path.push(element.name);
+        if (element && element.parent_category != "0") {
+            getCategoryById(element.parent_category)
+        }
+        return path
+    };
+
+    const getRecipeWithPath = recipe => {
+        const start_category = recipe.cat_id;
+        path = [recipe.name];
+        const arr = getCategoryById(start_category);
+        return arr.reverse().join(' / ')
+
+    }
 
     const BooleanEditor = ({ value, onValueChange }) => (
         <Select
@@ -36,13 +54,21 @@ export default function Ingredients(props) {
         >
             {
                 props.recipes.map(((rec, i) =>  (<MenuItem key ={i} value={rec.rec_id} name={rec.name}>
-                    {rec.name}
+                    {getRecipeWithPath(rec)}
                 </MenuItem>)))
             }
 
         </Select>
     );
-    const BooleanFormatter = ({ value }) => <span>{props.recipes.find(rec => rec.rec_id==value)?.name}</span>;
+    const BooleanFormatter = ({ value }) => {
+        let recipeWithPath = '';
+        if (value){
+            const recipe = props.recipes.find(rec => rec.rec_id == value);
+            recipeWithPath = getRecipeWithPath(recipe);
+
+        }
+        return (<span>{recipeWithPath}</span>)
+    };
 
     const BooleanTypeProvider = props => (
         <DataTypeProvider

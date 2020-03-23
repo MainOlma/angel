@@ -96,7 +96,7 @@ export default function ETable(props) {
         <Paper><Grid
             rows={rows}
             columns={[
-                {name: 'ing_id', title: 'Ингридиент'},
+                {name: 'ing_id', title: 'Ингредиент'},
                 {name: 'quantity', title: 'Кол-во'}
             ]}>
             <BooleanTypeProvider

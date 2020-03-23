@@ -195,7 +195,7 @@ export default function Recipe(props) {
                         <Button className={'update'} onClick={onUpdateRec}>Сохранить</Button>
                         <ETable ingredients={ings} allIngredients={props.ingredients} currentRec={ID}
                                 needUpdate={needUpdate}/>
-                        <Link to={routes.INGREDIENTS_URL}>База ингридиентов</Link>
+                        <Link to={routes.INGREDIENTS_URL}>База ингредиентов</Link>
 
 
                     </div>}

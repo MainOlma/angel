@@ -77,7 +77,7 @@ function HelloMessage(props) {
     return (
         <Router basename={routes.baseUrl()}>
             <Route path='/' exact render={() => <LoginPage user={user}/>}/>
-            <Route path={routes.INGREDIENTS_URL} render={() => <Ingredients ingredients={ingredients} recipes={recipes}/>}/>
+            <Route path={routes.INGREDIENTS_URL} render={() => <Ingredients ingredients={ingredients} recipes={recipes} categories={categories}/>}/>
             <Route path={routes.RULES_URL} render={() => <Rules admin={admin}/>}/>
             {categories && recipes && ingredients && composition && user && admin!=null && images && recipieImages ?
                 <Switch>
