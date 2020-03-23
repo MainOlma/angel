@@ -6,5 +6,5 @@ export default {
   RULES_URL: '/rules',
   INGREDIENTS_URL: '/ingredients',
 
-  baseUrl: () => process.env.NODE_ENV == 'production' ? ROOT_URL : '',
+  baseUrl: () => process.env.NODE_ENV == 'production' ? '/angel' : '',
 };
