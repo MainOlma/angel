@@ -24,7 +24,7 @@ export default function Ingredients(props) {
     let path = [];
 
     useEffect(() => {
-        setRows(props.ingredients);
+        setRows(props.ingredients && props.ingredients.sort((a, b) => a.name.localeCompare(b.name)));
         setRecs(props.recipes);
     });
 

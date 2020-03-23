@@ -35,7 +35,9 @@ export default function ETable(props) {
             disabled = {value!=undefined ? true : false}
         >
             {
-                props.allIngredients.map(((ing, i) =>  (<MenuItem key ={i} data-tag={ing.ing_id} value={ing.ing_id} name={ing.name}>
+                props.allIngredients
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map(((ing, i) =>  (<MenuItem key ={i} data-tag={ing.ing_id} value={ing.ing_id} name={ing.name}>
                         {ing.name}
                 </MenuItem>)))
             }
