@@ -78,7 +78,7 @@ function Categories(props) {
             <Breadcrumbs categories={props.categories} id={id}/>
             {id != 0 && <h1>{currentCategoryName}</h1>}
 
-            {props.admin &&
+            {(props.admin && id != 0) &&
                 <SelectParent
                     for={'category'}
                     id={id}

@@ -6,7 +6,8 @@ export default function SelectParent(props) {
     const [parentId, setParentId] = useState('');
     const [categories, setCategories] = useState([]);
     const target = props.for;
-    const parentField = target === 'recipe' ? 'cat_id' : "parent_category";
+    const parentField = target === 'recipe' ? 'cat_id' : 'parent_category';
+    const idField = target === 'recipe' ? 'rec_id' : 'cat_id';
     let path = [];
 
     const onSuccessfulUpdate = () => alert('Категория изменена');
@@ -26,7 +27,9 @@ export default function SelectParent(props) {
 
 
     useEffect(() => {
-        const hierarchy = (props.categories.map(d => {
+        const hierarchy = (props.categories
+            .filter(d => d.cat_id != props.data[idField])
+            .map(d => {
             path = [];
             return getCategoryById(d.cat_id);
         }));
