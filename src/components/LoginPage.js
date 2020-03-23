@@ -2,13 +2,12 @@ import React, { useState, useEffect }  from "react";
 import Logo from "../img/logo.svg";
 import Auth from "./Auth";
 import {Link} from "react-router-dom";
-import firebase from "./Base";
 import routes from '../constants/routes';
-
+import { db } from '../lib/firebase';
 
 export default function LoginPage(props) {
     const [user, setUser] = useState(false)
-    firebase.auth().onAuthStateChanged(function (user) {
+    db.auth().onAuthStateChanged(function (user) {
         if (user) { setUser(user)} else setUser(false)});
     return (
         <div className='greetings'>

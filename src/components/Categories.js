@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
-import base from './Base';
 import Breadcrumbs from './Breadcrumbs'
 import {newCategory, newRecipie, deleteCategory, deleteRecipe, deleteComposition} from "./DbActions";
 import ImageUpload from "./ImageUpload";
@@ -8,6 +7,7 @@ import {SortableList} from "./SortableList";
 import {SortableGrid} from "./SortableGrid";
 import SelectParent from "./SelectParent";
 import routes from '../constants/routes';
+import { db } from '../lib/firebase';
 
 
 function Categories(props) {
@@ -30,7 +30,7 @@ function Categories(props) {
     });
 
     const onAddRecipe = () => {
-        const newKey = base.database().ref().child('recipies').push().key;
+        const newKey = db.database().ref().child('recipies').push().key;
         const recData = {
             rec_id: newKey,
             howto: "Empty How To",
@@ -44,7 +44,7 @@ function Categories(props) {
     };
 
     const onAddCategory = () => {
-        const newKey = base.database().ref().child('recipie_categories').push().key;
+        const newKey = db.database().ref().child('recipie_categories').push().key;
         const catData = {
             cat_id: newKey,
             img: "/img/cats/default.png",

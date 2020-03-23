@@ -1,8 +1,8 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import withBreadcrumbs from "react-router-breadcrumbs-hoc";
-import firebase from '../components/Base';
 import routes from '../constants/routes';
+import { db } from '../lib/firebase';
 
 const localRoutes = [
     { path: '/recipes*/:id', breadcrumb: "without this won't work" },
@@ -24,7 +24,7 @@ const Breadcrumbs =  withBreadcrumbs(localRoutes)(({ categories,id, breadcrumbs 
             {filteredBreadcrumbs.map(({ breadcrumb, key, match }, i) => (
                 <span key={i}> → <Link to={key} >{name(match.params.id)}</Link>&nbsp;</span>
             ))}
-            <Link to='/' onClick={() => firebase.auth().signOut().then(function() {
+            <Link to='/' onClick={() => db.auth().signOut().then(function() {
                 // Sign-out successful.
             }).catch(function(error) {
                 // An error happened.

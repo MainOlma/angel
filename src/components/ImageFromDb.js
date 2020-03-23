@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import base from "./Base";
+import { db } from '../lib/firebase';
 
 export default function ImageFromDb(props) {
-    const storageRef = base.storage().ref();
+    const storageRef = db.storage().ref();
     const listRef = storageRef.child('images/categories/' + props.categoryId +'/');
     let imgs = [];
     const [images, setImages] = useState([]);

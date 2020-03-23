@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from "react";
 import * as firebaseui from "firebaseui";
-import base from './Base';
 import 'firebase/auth';
 import routes from '../constants/routes';
-import * as firebase from 'firebase';
+import { firebase, db } from '../lib/firebase';
 
 export default function Auth() {
     useEffect(() => {
-        const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(base.auth());
+        const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(db.auth());
         const uiConfig = {
             callbacks: {
                 signInSuccessWithAuthResult: function (authResult, redirectUrl) {

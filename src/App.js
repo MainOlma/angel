@@ -8,11 +8,11 @@ import {
 
 import Categories from './components/Categories';
 import LoginPage from './components/LoginPage';
-import firebase from './components/Base'
 import Recipe from './components/Recipe';
 import Ingredients from './components/Ingredients';
 import Rules from './components/Rules';
 import routes from './constants/routes';
+import { db } from './lib/firebase';
 
 import './style/main.scss';
 
@@ -28,11 +28,11 @@ function HelloMessage(props) {
     const state = [0];
 
     useEffect(() => {
-        firebase.auth().onAuthStateChanged(function (user) {
+        db.auth().onAuthStateChanged(function (user) {
             if (user) {
-                setUser(firebase.auth().currentUser);
+                setUser(db.auth().currentUser);
                 // User is signed in.
-                firebase.firestore().enablePersistence() // enable cache from firestore
+                db.firestore().enablePersistence() // enable cache from firestore
                     .catch(function(err) {
                         if (err.code == 'failed-precondition') {
                             console.log('Multiple tabs open, persistence can only be enabled in one tab at a a time.')
@@ -40,7 +40,7 @@ function HelloMessage(props) {
                             console.log('The current browser does not support all of the features required to enable persistence')
                         }
                     });
-                firebase.database().ref('/').on('value',
+                db.database().ref('/').on('value',
                     (snapshot) => {
                         const categories = Object.values(snapshot.child('recipie_categories').val()) || 'Anonymous';
                         const recipes = Object.values(snapshot.child('recipies').val());
