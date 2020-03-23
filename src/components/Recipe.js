@@ -137,7 +137,7 @@ export default function Recipe(props) {
                                                     : <div className='name'>{ing.name}</div>
                                                 }
                                                 <div
-                                                    className='quantity'>{(ing.quantity * summaryNew / summary).toFixed(1)} г.
+                                                    className='quantity'>{(ing.quantity * summaryNew / summary).toFixed(0)} г.
                                                 </div>
                                             </div>
                                         )
