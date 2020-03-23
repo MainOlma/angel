@@ -8,6 +8,19 @@ const localRoutes = [
     { path: '/recipes*/:id', breadcrumb: "without this won't work" },
 ];
 
+const onLogOutClick = (e) => {
+    if (window.confirm(`Вы уверены что хотите выйти?`)) {
+        db.auth().signOut().then(function() {
+            // Sign-out successful.
+        }).catch(function(error) {
+            // An error happened.
+        })
+    }else {
+        e.preventDefault();
+    }
+
+};
+
 const Breadcrumbs =  withBreadcrumbs(localRoutes)(({ categories,id, breadcrumbs }) => {
     const name = (key) => categories.find(cat => cat.cat_id == key)?.name;
     const filteredBreadcrumbs = breadcrumbs
@@ -24,11 +37,7 @@ const Breadcrumbs =  withBreadcrumbs(localRoutes)(({ categories,id, breadcrumbs 
             {filteredBreadcrumbs.map(({ breadcrumb, key, match }, i) => (
                 <span key={i}> → <Link to={key} >{name(match.params.id)}</Link>&nbsp;</span>
             ))}
-            <Link to='/' onClick={() => db.auth().signOut().then(function() {
-                // Sign-out successful.
-            }).catch(function(error) {
-                // An error happened.
-            })}>Выйти</Link>
+            <Link to='/' onClick={onLogOutClick}>Выйти</Link>
         </div>
     )
 });
