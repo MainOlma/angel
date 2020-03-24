@@ -10,8 +10,8 @@ export default function ImageList(props) {
         getImagesForRecipe(props.recipeId, onGetImagesFromDb)
     }, []);
 
-    const onGetImagesFromDb = (url) => {
-        imgs = [...imgs, url];
+    const onGetImagesFromDb = (url, i) => {
+        imgs = [...imgs, {url:url,i:i}];//imgs.splice(i, 0, url);
         setImages(imgs)
     }
 
@@ -29,10 +29,10 @@ export default function ImageList(props) {
     }
 
     return (<div>
-            {images.map((img, i) =>
+            {images.sort((a,b) => a.i-b.i).map((img, i) =>
                 <div key={i} className={'image'}>
-                    <img src={img}/>
-                    {props.admin && <button className={'delete'} onClick={() => onDeleteImage(img)}>Delete</button>}
+                    <img src={img.url}/>
+                    {props.admin && <button className={'delete'} onClick={() => onDeleteImage(img.url)}>Delete</button>}
                 </div>)
             }
             {props.admin &&

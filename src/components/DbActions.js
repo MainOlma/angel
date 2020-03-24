@@ -128,10 +128,10 @@ export function getImagesForRecipe(recipeId, callback) {
     const storageRef = db.storage().ref();
     const listRef = storageRef.child('images/' + recipeId + '/');
     listRef.listAll().then(function (res) {
-        res.items.forEach(function (itemRef) {
+        res.items.forEach(function (itemRef,i) {
             // All the items under listRef.
             itemRef.getDownloadURL().then(function (url) {
-                callback(url)
+                callback(url,i)
             })
         });
     }).catch(function (error) {
