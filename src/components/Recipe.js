@@ -191,6 +191,10 @@ export default function Recipe(props) {
                             onChange={e => {
                                 setRecHowTo(e.editor.getData());
                             }}
+                            config={ {
+                                extraPlugins: 'embed,autoembed,image2',
+                                embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
+                            } }
                         />}
                         <Button className={'update'} onClick={onUpdateRec}>Сохранить</Button>
                         <ETable ingredients={ings} allIngredients={props.ingredients} currentRec={ID}
