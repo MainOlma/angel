@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {ReactSortable} from "react-sortablejs";
 import {updateRec} from "./DbActions";
 import {Link} from "react-router-dom";
+import routes from '../constants/routes';
 
 export const SortableRecipes = props => {
     const [state, setState] = useState(props.data);
@@ -32,15 +33,17 @@ export const SortableRecipes = props => {
                     state: {recipe: true}
                 }}
             >
-                <span>{item.name}</span>
+                <img
+                    src={`${routes.baseUrl()}/img/default_cat.png`}
+                    className='categories-recipe-image'
+                />
+                <span className='categories-recipe-name'>{item.name}</span>
 
                 {props.admin &&
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            props.onDelete(item.rec_id, item.name);
-                        }}
-                    >Delete</button>
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        props.onDelete(item.rec_id, item.name);
+                    }}>Delete</button>
                 }
             </Link>
         )));
