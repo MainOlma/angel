@@ -15,7 +15,7 @@ const onLogOutClick = (e) => {
 
 };
 
-const Header =  Breadcrumbs()(({ categories, id, breadcrumbs }) => {
+const Header =  Breadcrumbs()(({ categories, breadcrumbs }) => {
     const name = (key) => categories.find(cat => cat.cat_id == key)?.name;
 
     // hide first two and current page breadcrumbs and filter by avaliable titles

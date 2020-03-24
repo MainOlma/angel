@@ -48,7 +48,7 @@ class ImageUpload extends React.Component {
         const label = this.props.categoryId ?  'Выбрать картинку для этой категории ' : 'Выбрать картинки для этого рецепта '
 
         return (
-            <div className={'image'}>
+            <div className={'image'} style={{ marginBottom: '20px' }}>
                 <form onSubmit={this._handleSubmit}>
                     <label
                         className="btn btn-default btn-sm"

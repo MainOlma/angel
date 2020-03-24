@@ -15,6 +15,7 @@ $sm: 768px;
 $white: #ffffff;
 $black: #000000;
 $dark-grey: #040807;
+$grey: #c4c4c4;
 
 body, html {
   width: 100%;
@@ -136,13 +137,14 @@ body, html {
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
-
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px 30px;
   font-size: 1.15em;
   background: $white;
+  border-bottom: 1px solid $grey;
 
   a {
     text-decoration: none;
@@ -174,6 +176,85 @@ body, html {
 
   .header-logout {
     margin-left: auto;
+  }
+}
+
+.categories {
+  padding: 24px 30px;
+
+  h1 {
+    margin: 0;
+    margin-bottom: 0.6em;
+    font-size: 1.6em;
+  }
+
+  .categories-list {
+    .categories-grid {
+      width: calc(100% + 16px);
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      a {
+        width: calc(50% - 16px);
+        margin: 0 16px 16px 0;
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+        background: $black;
+        font-size: 1.4em;
+
+        &:before {
+          content: '';
+          display: block;
+          margin-top: 50%;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          object-fit: cover;
+        }
+
+        span {
+          position: absolute;
+          width: 100%;
+          top: 0;
+          left: 0;
+          padding: 8px 10px;
+          color: $white;
+          background: rgba($black, 0.7);
+        }
+
+        button {
+          position: absolute;
+          bottom: 4px;
+          left: 4px;
+          background: $white;
+          padding: 6px 10px;
+          border: none;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .categories-recipes-list {
+    .categories-recipe-item {
+      display: block;
+    }
+  }
+
+  .categories-edit-name {
+    display: flex;
+    align-items: center;
+
+    div {
+      font-size: 0.5em;
+    }
   }
 }
 
@@ -308,42 +389,6 @@ body, html {
       padding: 5px 0;
     }
 
-  }
-
-  .categories {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    .category {
-      width: 50%;
-      position: relative;
-      overflow: hidden;
-
-      img {
-        background: black;
-      }
-
-      span.name {
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-size: 43px;
-        line-height: 51px;
-      }
-
-      button.delete {
-        position: absolute;
-        bottom: 2px;
-        left: 0;
-        font-size: 43px;
-        line-height: 51px;
-      }
-
-      a {
-        color: white;
-      }
-    }
   }
 }
 

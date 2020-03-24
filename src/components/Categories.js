@@ -1,137 +1,146 @@
-import React, {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import {
+    newCategory, deleteCategory,
+    newRecipie, deleteRecipe,
+    deleteComposition,
+} from './DbActions';
 import Header from './Header'
-import {newCategory, newRecipie, deleteCategory, deleteRecipe, deleteComposition} from "./DbActions";
-import ImageUpload from "./ImageUpload";
-import {SortableList} from "./SortableList";
-import {SortableGrid} from "./SortableGrid";
-import SelectParent from "./SelectParent";
+import ImageUpload from './ImageUpload';
+import { SortableRecipes } from './SortableRecipes';
+import { SortableCategories } from './SortableCategories';
+import SelectParent from './SelectParent';
 import routes from '../constants/routes';
 import { db } from '../lib/firebase';
 
-
 function Categories(props) {
-    let {id} = useParams();
-    let [childrens_cats, setChildrens_cats] = useState([]);
-    let [childrens_recs, setChildrens_recs] = useState([]);
-    let [category, setCategory] = useState({});
-    const [catName, setCatName] = useState('');
+    const { id } = useParams();
+    const [childrenCats, setChildrenCats] = useState([]);
+    const [childrenRecs, setChildrenRecs] = useState([]);
+    const [category, setCategory] = useState({});
+
+    const [categoryName, setCategoryName] = useState('');
     const [currentCategoryName, setCurrentCategoryName] = useState('');
-    const [recName, setRecName] = useState('');
+    const [recipeName, setRecipeName] = useState('');
 
     useEffect(() => {
-        setChildrens_cats(props.categories.filter(cat => cat.parent_category == id));
-        setChildrens_recs(props.recs.filter(rec => rec.cat_id == id));
-        setCategory(props.categories.find(cat => cat.cat_id == id))
+        setChildrenCats(props.categories.filter(cat => cat.parent_category == id));
+        setChildrenRecs(props.recs.filter(rec => rec.cat_id == id));
+        setCategory(props.categories.find(cat => cat.cat_id == id));
+        setCurrentCategoryName(props.categories.find(cat => cat.cat_id == id)?.name || 'Рецепты');
     }, [id]);
-
-    useEffect(() => {
-        setCurrentCategoryName(props.categories.find(cat => cat.cat_id == id)?.name || '')
-    });
 
     const onAddRecipe = () => {
         const newKey = db.database().ref().child('recipies').push().key;
         const recData = {
             rec_id: newKey,
-            howto: "Empty How To",
+            howto: 'Empty How To',
             cat_id: id,
-            desc: "Empty Description",
-            name: recName,
-            loss: "0"
+            desc: 'Empty Description',
+            name: recipeName,
+            loss: '0'
         };
         newRecipie(newKey, recData);
-        setChildrens_recs([...childrens_recs, recData]);
+        setChildrenRecs([...childrenRecs, recData]);
     };
 
     const onAddCategory = () => {
         const newKey = db.database().ref().child('recipie_categories').push().key;
         const catData = {
             cat_id: newKey,
-            img: "/img/cats/default.png",
+            img: '/img/cats/default.png',
             parent_category: id,
-            name: catName
+            name: categoryName
         };
         newCategory(newKey, catData);
-        setChildrens_cats([...childrens_cats, catData]);
+        setChildrenCats([...childrenCats, catData]);
     };
 
     const onDeleteCategory = (id, name) => {
         if (window.confirm(`Выхотите удалить категорию ${name}?`)) {
             deleteCategory(id);
-            const without_deleted = childrens_cats.filter((d, i) => d.cat_id != id);
-            setChildrens_cats(without_deleted)
+            const without_deleted = childrenCats.filter((d, i) => d.cat_id != id);
+            setChildrenCats(without_deleted)
         }
     };
+
     const onDeleteRecipe = (id, name) => {
         if (window.confirm(`Выхотите удалить рецепт ${name}?`)) {
             deleteRecipe(id);
             const compositions = props.composition.filter(it => it.rec_id == id);
             compositions.length > 0 && compositions.forEach(it => deleteComposition(it.comp_id));
-            const without_deleted = childrens_recs.filter((d, i) => d.rec_id != id);
-            setChildrens_recs(without_deleted)
+            const without_deleted = childrenRecs.filter((d, i) => d.rec_id != id);
+            setChildrenRecs(without_deleted)
         }
     };
 
-
     return (
-        <div className={'catalog'}>
-            <Header categories={props.categories} id={id}/>
-            {id != 0 && <h1>{currentCategoryName}</h1>}
+        <div>
+            <Header categories={props.categories} />
 
-            {(props.admin && id != 0) &&
-                <SelectParent
-                    for={'category'}
-                    id={id}
-                    data={category}
-                    categories={props.categories}/>
-            }
+            <div className='categories'>
+                <h1>{currentCategoryName}</h1>
 
-            <br/><br/>
+                {props.admin && id != 0 &&
+                    <SelectParent
+                        for={'category'}
+                        id={id}
+                        data={category}
+                        categories={props.categories}
+                    />
+                }
 
-            {props.admin && <ImageUpload key={id} categoryId={id} onUpload={() => {}}/>}
+                {props.admin &&
+                    <ImageUpload key={id} categoryId={id} onUpload={() => {}} />
+                }
 
-            <div>
-                <div className={'categoriesList'}>
-                    <h2>Cats</h2>
-                        {childrens_cats.length > 0 &&
-                        <SortableGrid data={childrens_cats.sort((a, b) => a.order - b.order)}
-                                      url={props.match.url}
-                                      basename={routes.baseUrl()}
-                                      admin={props.admin}
-                                      onDelete={(id,name)=>onDeleteCategory(id,name)}/>
-                        }
+                <div className={'categories-list'}>
+                    {childrenCats.length > 0 &&
+                        <SortableCategories
+                            data={childrenCats.sort((a, b) => a.order - b.order)}
+                            url={props.match.url}
+                            basename={routes.baseUrl()}
+                            admin={props.admin}
+                            onDelete={onDeleteCategory}
+                         />
+                    }
 
-                        {props.admin && <div className={'category'}><input
-                            value={catName}
-                            onChange={e => {
-                                setCatName(e.target.value);
-                            }}/>
+                    {props.admin &&
+                        <div className={'categories-edit-name'}>
+                            <span>Добавить новую категорию&nbsp;&nbsp;</span>
+                            <input
+                                value={categoryName}
+                                onChange={e => setCategoryName(e.target.value)}
+                            />
                             <button onClick={onAddCategory}>+</button>
-                        </div>}
+                        </div>
+                    }
                 </div>
 
-                <div className={'recipesList'}>
-                    <h2>Recs</h2>
-                    <ul>
-                        {childrens_recs.length > 0 &&
-                        <SortableList data={childrens_recs.sort((a, b) => a.order - b.order)}
-                                      url={props.match.url}
-                                      admin={props.admin}
-                                      onDelete={(id,name)=>onDeleteRecipe(id,name)}/>
-                        }
-                        {props.admin && <li><input
-                            value={recName}
-                            onChange={e => {
-                                setRecName(e.target.value);
-                            }}/>
+                <div className={'categories-recipes-list'}>
+                    {childrenRecs.length > 0 &&
+                        <SortableRecipes
+                            data={childrenRecs.sort((a, b) => a.order - b.order)}
+                            url={props.match.url}
+                            admin={props.admin}
+                            onDelete={onDeleteRecipe}
+                        />
+                    }
+
+                    {props.admin &&
+                        <div className={'categories-edit-name'}>
+                            <span>Добавить новый рецепт категорию&nbsp;&nbsp;</span>
+                            <input
+                                value={recipeName}
+                                onChange={e => setRecipeName(e.target.value)}
+                            />
                             <button onClick={onAddRecipe}>+</button>
-                        </li>}
-                    </ul>
+                        </div>
+                    }
                 </div>
-
             </div>
-
-        </div>);
-}
+        </div>
+    );
+};
 
 export default Categories;

@@ -54,7 +54,7 @@ export default function SelectParent(props) {
     };
 
     return (
-        <FormControl style={{'minWidth':'300px'}}>
+        <FormControl style={{ width: '100%', marginBottom: '20px' }}>
             <InputLabel id="select-label">Изменить родительскую категорию</InputLabel>
             <Select value={parentId}
                     labelId="select-label"

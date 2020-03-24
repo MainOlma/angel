@@ -21,11 +21,12 @@ import './style/main.scss';
 // TODO: проверить сохранение юзера в системе после выхода из приложения
 // TODO: редиректить все страницы на логин, если нет пользователя
 
+// TODO: SortableCategories и SortableRecipes почти одинаковые — можно попробовать объединить
 // TODO: убрать лычки в package.json
 
 const loginRedirects = (user) => {
   if (user) {
-    return <Redirect path='*' to={routes.baseUrl() + routes.RECIPE_URL} />;
+    return <Redirect path='*' to={routes.RECIPE_URL} />;
   }
   return <LoginPage />;
 };
