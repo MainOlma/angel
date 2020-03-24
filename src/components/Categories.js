@@ -28,7 +28,7 @@ function Categories(props) {
         setChildrenRecs(props.recs.filter(rec => rec.cat_id == id));
         setCategory(props.categories.find(cat => cat.cat_id == id));
         setCurrentCategoryName(props.categories.find(cat => cat.cat_id == id)?.name || 'Рецепты');
-    }, [id]);
+    }, [props.categories.length, , id]);
 
     const onAddRecipe = () => {
         const newKey = db.database().ref().child('recipies').push().key;
@@ -81,7 +81,7 @@ function Categories(props) {
             <div className='categories'>
                 <h1>{currentCategoryName}</h1>
 
-                {props.admin && id != 0 &&
+                {props.admin && id != 0 && category &&
                     <SelectParent
                         for={'category'}
                         id={id}
