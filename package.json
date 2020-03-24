@@ -22,7 +22,6 @@
     "context": "0.0.1",
     "core-js": "^3.6.4",
     "firebase": "^7.8.2",
-    "firebaseui": "^4.4.0",
     "images": "^3.0.2",
     "myfirebase": "^0.4.4",
     "parcel-bundler": "^1.12.4",

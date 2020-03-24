@@ -1,35 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import Auth from './Auth';
-import {Link} from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+
 import routes from '../constants/routes';
 import { db } from '../lib/firebase';
+import logo from '../img/logo.svg';
 
 // TODO: если есть юзер, то нужно сразу перенаправлять на страницу рецептов
-// `${routes.baseUrl()}${routes.RECIPE_URL}`
+// TODO: показывать ошибку при логине
+// TODO: показывать лоадер при запросе
 
 export default function LoginPage(props) {
-    const [user, setUser] = useState(false);
+    const mailRef = useRef(null);
+    const passRef = useRef(null);
 
-    db.auth().onAuthStateChanged((user) => {
-        if (user) setUser(user);
-        else setUser(false);
-    });
+    const onSumbitForm = event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        db.auth().signInWithEmailAndPassword(mailRef.current.value, passRef.current.value)
+            .then(() => { window.location.href = routes.baseUrl() + routes.RECIPE_URL; })
+            .catch((err) => {});
+    };
 
     return (
         <div className='login-page'>
             <img
                 className='login-page-logo'
-                src={`${routes.baseUrl()}/img/logo.svg`}
+                src={logo}
             />
             <div>Хей гайз 🤚 </div>
             <div>Чтобы войти, введи почту и пароль</div>
 
-            <Auth />
+            <form className='login-page-form' onSubmit={onSumbitForm}>
+                <div className='input-container username'>
+                    <input ref={mailRef} type='email' placeholder='почта'></input>
+                </div>
+                <div className='input-container password'>
+                    <input ref={passRef} type='password' placeholder='пароль'></input>
+                </div>
+                <div className='input-container submit'>
+                    <input type='submit' value='Поехали!'></input>
+                </div>
+            </form>
 
             <div className='login-page-note'>
                 Сервис работает только для своих.<br/>
                 Если вы свой, но забыли пароль, напишите в телеграм @ivan_dianov.
             </div>
         </div>
-    )
+    );
 }

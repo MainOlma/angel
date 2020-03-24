@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import {
     BrowserRouter as Router,
@@ -12,27 +12,35 @@ import Recipe from './components/Recipe';
 import Ingredients from './components/Ingredients';
 import Rules from './components/Rules';
 import routes from './constants/routes';
-import { db } from './lib/firebase';
+import { firebase, db } from './lib/firebase';
 
 import './style/main.scss';
+
+// TODO: можно использовать localStorage для кеширования данных
+// TODO: проверить сохранение юзера в системе после выхода из приложения
+// TODO: редиректить все страницы на логин, если нет пользователя
+
+// TODO: убрать лычки в package.json
 
 function HelloMessage(props) {
     const [categories, setCategories] = useState(null);
     const [images, setImages] = useState(null);
-    const [recipieImages, setRecipieImages] = useState(null);
+    const [recipeImages, setRecipeImages] = useState(null);
     const [recipes, setRecipes] = useState(null);
     const [ingredients, setIngredients] = useState(null);
     const [composition, setComposition] = useState(null);
     const [user, setUser] = useState(null);
     const [admin, setAdmin] = useState(null);
-    const state = [0];
 
     useEffect(() => {
-        db.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                setUser(db.auth().currentUser);
-                // User is signed in.
-                db.firestore().enablePersistence() // enable cache from firestore
+        firebase.auth().onAuthStateChanged(() => {
+            const { currentUser } = db.auth();
+
+            if (currentUser) {
+                setUser(currentUser);
+
+                // user is signed in - enable cache from firestore
+                db.firestore().enablePersistence()
                     .catch(function(err) {
                         if (err.code == 'failed-precondition') {
                             console.log('Multiple tabs open, persistence can only be enabled in one tab at a a time.')
@@ -40,46 +48,36 @@ function HelloMessage(props) {
                             console.log('The current browser does not support all of the features required to enable persistence')
                         }
                     });
-                db.database().ref('/').on('value',
-                    (snapshot) => {
-                        const categories = Object.values(snapshot.child('recipie_categories').val()) || 'Anonymous';
-                        const recipes = Object.values(snapshot.child('recipies').val());
-                        const ingredients = Object.values(snapshot.child('recipie_ingridients').val());
-                        const composition = Object.values(snapshot.child('recipie_composition').val());
-                        const images = Object.values(snapshot.child('images').val());
-                        const recipieImages = Object.values(snapshot.child('recipie_images').val());
-                        const users = Object.values(snapshot.child('users').val());
-                        const role = users.find(u => u.email == user.email);
 
-                        localStorage.setItem('recipie_categories', JSON.stringify(categories));
-                        localStorage.setItem('recipes', JSON.stringify(recipes));
-                        localStorage.setItem('recipie_ingredients', JSON.stringify(ingredients));
-                        localStorage.setItem('recipie_composition', JSON.stringify(composition));
-                        localStorage.setItem('images', JSON.stringify(images));
-                        localStorage.setItem('recipieImages', JSON.stringify(recipieImages));
+                db.database().ref('/').once('value').then((snapshot) => {
+                    const data = snapshot.val();
+                    const categories = Object.values(data['recipie_categories']) || 'Anonymous';
+                    const recipes = Object.values(data['recipies']);
+                    const ingredients = Object.values(data['recipie_ingridients']);
+                    const composition = Object.values(data['recipie_composition']);
+                    const images = Object.values(data['images']);
+                    const recipeImages = Object.values(data['recipie_images']);
+                    const users = Object.values(data['users']);
+                    const role = users.find(u => u.email == currentUser.email);
 
-                        setCategories(categories /*|| localStorage.recipie_categories*/);
-                        setRecipes(recipes);
-                        setIngredients(ingredients);
-                        setComposition(composition);
-                        setImages(images);
-                        setRecipieImages(recipieImages);
-                        setAdmin(role && role.admin);
-                        state.push(1)
-                    });
-
-            } else {
-                // No user is signed in.
+                    setCategories(categories);
+                    setRecipes(recipes);
+                    setIngredients(ingredients);
+                    setComposition(composition);
+                    setImages(images);
+                    setRecipeImages(recipeImages);
+                    setAdmin(role && role.admin);
+                });
             }
         });
-    }, [state.length]);
+    }, []);
 
     return (
         <Router basename={routes.baseUrl()}>
-            <Route path='/' exact render={() => <LoginPage user={user}/>}/>
+            <Route path='/' exact render={() => <LoginPage />}/>
             <Route path={routes.INGREDIENTS_URL} render={() => <Ingredients ingredients={ingredients} recipes={recipes} categories={categories}/>}/>
             <Route path={routes.RULES_URL} render={() => <Rules admin={admin}/>}/>
-            {categories && recipes && ingredients && composition && user && admin!=null && images && recipieImages ?
+            {categories && recipes && ingredients && composition && user && admin != null && images && recipeImages &&
                 <Switch>
                     <Route path={`/recipes*/:id/recipe/:recipeId`}
                            render={(props) => <Recipe {...props}
@@ -89,7 +87,7 @@ function HelloMessage(props) {
                                                       ingredients={ingredients}
                                                       composition={composition}
                                                       images={images}
-                                                      recipieImages={recipieImages}/>}/>
+                                                      recipieImages={recipeImages}/>}/>
 
                     <Route path={`/recipes*/:id`}
                            render={(props) => <Categories {...props}
@@ -99,11 +97,10 @@ function HelloMessage(props) {
                                                           ingredients={ingredients}
                                                           composition={composition}
                                                           images={images}
-                                                          recipieImages={recipieImages}
+                                                          recipieImages={recipeImages}
                            />}
                     />
-
-                </Switch> : null
+                </Switch>
              }
         </Router>
     );

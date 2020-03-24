@@ -53,31 +53,68 @@ body, html {
     flex-wrap: wrap;
     justify-content: center;
 
-    input {
+    .input-container {
+      position: relative;
       margin: 4px 8px;
-      padding: 8px 10px 10px;
-      font-size: 1.2em;
-      border: 2px solid #040807;
-      border-radius: 4px;
-      outline: none;
-    }
 
-    input.username {
-      width: 30%;
-      max-width: 350px;
-      min-width: 300px;
-    }
-    input.password {
-      width: 25%;
-      max-width: 250px;
-      min-width: 250px;
-    }
-    input.submit {
-      width: 25%;
-      max-width: 250px;
-      min-width: 250px;
-      background: #040807;
-      color: #fff;
+      input {
+        width: 100%;
+        padding: 6px 10px 12px;
+        border: 2px solid #040807;
+        font-size: 1.2em;
+        border-radius: 4px;
+        outline: none;
+
+        &::-webkit-input-placeholder { opacity: 0.4; }
+        &:-ms-input-placeholder { opacity: 0.4; }
+        &::placeholder { opacity: 0.4; }
+      }
+
+      &.username, &.password {
+        input {
+          padding-left: 54px;
+        }
+
+        &:before {
+          position: absolute;
+          left: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 1.2em;
+        }
+      }
+
+      &.username {
+        width: 30%;
+        max-width: 350px;
+        min-width: 300px;
+
+        &:before {
+          content: '✉️';
+        }
+      }
+
+      &.password {
+        width: 25%;
+        max-width: 250px;
+        min-width: 250px;
+
+        &:before {
+          content: '🔑';
+        }
+      }
+
+      &.submit {
+        width: 25%;
+        max-width: 250px;
+        min-width: 250px;
+
+        input {
+          background: #040807;
+          color: #fff;
+          cursor: pointer;
+        }
+      }
     }
   }
 
