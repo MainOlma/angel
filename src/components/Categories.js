@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
     newCategory, deleteCategory,
     newRecipie, deleteRecipe,
     deleteComposition,
 } from './DbActions';
-import Header from './Header'
+import Header from './Header';
 import ImageUpload from './ImageUpload';
 import { SortableRecipes } from './SortableRecipes';
 import { SortableCategories } from './SortableCategories';
@@ -78,7 +79,7 @@ function Categories(props) {
         <div>
             <Header categories={props.categories} />
 
-            <div className='categories'>
+            <div className='page-content categories'>
                 <h1>{currentCategoryName}</h1>
 
                 {props.admin && id != 0 && category &&
@@ -94,7 +95,7 @@ function Categories(props) {
                     <ImageUpload key={id} categoryId={id} onUpload={() => {}} />
                 }
 
-                <div className={'categories-list'}>
+                <div className='categories-list'>
                     {childrenCats.length > 0 &&
                         <SortableCategories
                             data={childrenCats.sort((a, b) => a.order - b.order)}
@@ -117,7 +118,7 @@ function Categories(props) {
                     }
                 </div>
 
-                <div className={'categories-recipes-list'}>
+                <div className='categories-recipes-list'>
                     {childrenRecs.length > 0 &&
                         <SortableRecipes
                             data={childrenRecs.sort((a, b) => a.order - b.order)}
@@ -138,6 +139,13 @@ function Categories(props) {
                         </div>
                     }
                 </div>
+
+                <Link
+                    className='categories-rules-link'
+                    to={routes.RULES_URL}
+                >
+                    Правила и безопасность
+                </Link>
             </div>
         </div>
     );
