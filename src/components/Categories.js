@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
-import Breadcrumbs from './Breadcrumbs'
+import Header from './Header'
 import {newCategory, newRecipie, deleteCategory, deleteRecipe, deleteComposition} from "./DbActions";
 import ImageUpload from "./ImageUpload";
 import {SortableList} from "./SortableList";
@@ -75,7 +75,7 @@ function Categories(props) {
 
     return (
         <div className={'catalog'}>
-            <Breadcrumbs categories={props.categories} id={id}/>
+            <Header categories={props.categories} id={id}/>
             {id != 0 && <h1>{currentCategoryName}</h1>}
 
             {(props.admin && id != 0) &&

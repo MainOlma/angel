@@ -5,7 +5,6 @@ import routes from '../constants/routes';
 import { db } from '../lib/firebase';
 import logo from '../img/logo.svg';
 
-// TODO: если есть юзер, то нужно сразу перенаправлять на страницу рецептов
 // TODO: показывать ошибку при логине
 // TODO: показывать лоадер при запросе
 

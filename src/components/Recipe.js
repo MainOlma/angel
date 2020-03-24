@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {useParams, Link, useRouteMatch} from "react-router-dom";
 import Markdown from 'react-markdown';
-import Breadcrumbs from "./Breadcrumbs";
+import Header from "./Header";
 import CKEditor from 'ckeditor4-react';
 import Button from '@material-ui/core/Button';
 import {updateRec} from "./DbActions";
@@ -104,7 +104,7 @@ export default function Recipe(props) {
 
     return (
         <div>
-            {!props.second && <Breadcrumbs categories={props.categories}/>}
+            {!props.second && <Header categories={props.categories}/>}
             <div className='recipe'>
                 {props.second && <div className='close' onClick={HideIng}>Close</div>}
                 <div className={second ? 'main half' : 'main full'}>
