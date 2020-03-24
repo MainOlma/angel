@@ -57,7 +57,7 @@ function HelloMessage(props) {
                         }
                     });
 
-                db.database().ref('/').once('value').then((snapshot) => {
+                db.database().ref('/').on('value',(snapshot) => {
                     const data = snapshot.val();
                     const categories = Object.values(data['recipie_categories']) || 'Anonymous';
                     const recipes = Object.values(data['recipies']);

@@ -23,7 +23,7 @@ function Categories(props) {
         setChildrens_cats(props.categories.filter(cat => cat.parent_category == id));
         setChildrens_recs(props.recs.filter(rec => rec.cat_id == id));
         setCategory(props.categories.find(cat => cat.cat_id == id))
-    }, [id]);
+    }, [props.categories.length, id]);
 
     useEffect(() => {
         setCurrentCategoryName(props.categories.find(cat => cat.cat_id == id)?.name || '')
@@ -78,7 +78,7 @@ function Categories(props) {
             <Header categories={props.categories} id={id}/>
             {id != 0 && <h1>{currentCategoryName}</h1>}
 
-            {(props.admin && id != 0) &&
+            {(props.admin && id != 0 && category) &&
                 <SelectParent
                     for={'category'}
                     id={id}

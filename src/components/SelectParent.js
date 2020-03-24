@@ -28,7 +28,7 @@ export default function SelectParent(props) {
 
     useEffect(() => {
         const hierarchy = (props.categories
-            .filter(d => d.cat_id != props.data[idField])
+            .filter(d => d.cat_id != props.id)
             .map(d => {
             path = [];
             return getCategoryById(d.cat_id);
