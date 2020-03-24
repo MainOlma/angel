@@ -21,7 +21,7 @@ export default function Recipe(props) {
     const [recName, setRecName] = useState('');
     const [summary, setSummary] = useState(0);
     const [summaryNew, setNewSummary] = useState(0);
-    const [recHowTo, setRecHowTo] = useState('');
+    const [recHowTo, setRecHowTo] = useState('initialState');
     const [ings, setIngs] = useState([]);
     const [loss, setLoss] = useState(rec?.loss);
 
@@ -186,7 +186,7 @@ export default function Recipe(props) {
                                 val = val >= 100 ? 99 : val;
                                 setLoss((typeof val == 'number' && val <= 100 && val >= 0) ? val : '');
                             }}/>
-                        {recHowTo && <CKEditor
+                        {recHowTo!='initialState' && <CKEditor
                             data={recHowTo}
                             onChange={e => {
                                 setRecHowTo(e.editor.getData());
