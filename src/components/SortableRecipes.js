@@ -13,7 +13,7 @@ const RecipeImage = props => {
 
     const onGetImagesFromDb = url => {
         if (!image) {
-            setImage(url || `${routes.baseUrl()}/img/default_cat.png`);
+            setImage(url || `${routes.baseUrl()}/img/default_rec.jpeg`);
         }
     };
 

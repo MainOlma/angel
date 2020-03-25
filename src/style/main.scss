@@ -291,8 +291,10 @@ body, html {
       }
 
       .categories-recipe-name {
+        max-width: 100%;
         color: $black;
         font-size: 1.2em;
+        overflow: hidden;
       }
 
       button {
