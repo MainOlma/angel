@@ -5,15 +5,15 @@ import { updateRec, getImagesForRecipe } from './DbActions';
 import routes from '../constants/routes';
 
 const RecipeImage = props => {
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState(`${routes.baseUrl()}/img/default_rec.jpeg`);
 
     useEffect(() => {
         getImagesForRecipe(props.recipeId, onGetImagesFromDb);
     }, []);
 
-    const onGetImagesFromDb = url => {
-        if (!image) {
-            setImage(url || `${routes.baseUrl()}/img/default_rec.jpeg`);
+    const onGetImagesFromDb = (url,i) => {
+        if (i === 0) {
+            setImage(url);
         }
     };
 
