@@ -9,6 +9,7 @@ const onLogOutClick = (e) => {
             .then(() => {})
             .catch(() => {});
     }
+    else e.preventDefault();
 };
 
 const Footer = () => {
