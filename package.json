@@ -28,7 +28,6 @@
     "parcel-plugin-static-files-copy": "^2.3.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-markdown": "^4.3.1",
     "react-router-breadcrumbs-hoc": "^3.2.5",
     "react-router-dom": "^5.1.2",
     "react-sortablejs": "^2.0.11",

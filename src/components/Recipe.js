@@ -1,19 +1,17 @@
-import React, {useState, useEffect} from "react";
-import {useParams, Link, useRouteMatch} from "react-router-dom";
-import Markdown from 'react-markdown';
-import Header from "./Header";
+import React, { useState, useEffect } from 'react';
+import { useParams, Link, useRouteMatch } from 'react-router-dom';
+import Header from './Header';
 import CKEditor from 'ckeditor4-react';
 import Button from '@material-ui/core/Button';
-import {updateRec} from "./DbActions";
-import ETable from "./ETable";
-import ImageList from "./ImageList";
-import SelectParent from "./SelectParent";
+import {updateRec} from './DbActions';
+import ETable from './ETable';
+import ImageList from './ImageList';
+import SelectParent from './SelectParent';
 import routes from '../constants/routes';
 
-export default function Recipe(props) {
+function RecipeColumn(props) {
     let {recipeId} = useParams();
     let rec, cat, ingredients = [], imagesIds, recipieImages;
-    const [second, setSecond] = useState(null);
     const [ID, setID] = useState(props.second || recipeId);
     const [recipe, setRecipe] = useState({});
     const [CAT, setCAT] = useState('');
@@ -61,18 +59,6 @@ export default function Recipe(props) {
             });
     };
 
-    function ShowIng(id) {
-        setSecond(id)
-    }
-
-    function HideIng() {
-        props.parentCallback("Close second recipe!")
-    }
-
-    function callbackFunction(childData) {
-        setSecond(null)
-    }
-
     useEffect(() => {
         props.second && setID(props.second)
     }, [props.second]);
@@ -101,116 +87,132 @@ export default function Recipe(props) {
         setNewSummary(sum);
     }, [ings.map(d => d.name + d.quantity).join(','), loss]);
 
+    return (
+        <div className={props.hasSecond || props.second ? 'recipe-column half' : 'recipe-column full'}>
+            <h1>{recName}</h1>
+
+            <div className='recipe-info'>
+                {props.admin &&
+                    <SelectParent
+                        for={'recipe'}
+                        id={recipeId}
+                        data={recipe}
+                        categories={props.categories}/>
+                }
+
+                {ings.length > 0 &&
+                    <table className='recipe-ingredients'>
+                        <tbody>
+                            <tr className='recipe-ingredient'>
+                                <td className='recipe-ingredient-name bold'>Выход</td>
+                                <td className='recipe-ingredient-value'>
+                                    <input
+                                        placeholder={summary}
+                                        value={summaryNew}
+                                        onChange={e => setNewSummary(e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'))}
+                                    />
+                                </td>
+                            </tr>
+                            <tr className='recipe-ingredient'>
+                                <td className='recipe-ingredient-name'>Потери</td>
+                                <td className='recipe-ingredient-value'>{loss}</td>
+                            </tr>
+
+                            {ings.map((ing, i) => (
+                                <tr key={i} className='recipe-ingredient'>
+                                    <td
+                                        className={ing.ing_rec_id ? 'recipe-ingredient-name active' : 'recipe-ingredient-name'}
+                                        onClick={() => props.onShowIng(ing.ing_rec_id)}
+                                    >
+                                        <span>{ing.name}</span>
+                                    </td>
+                                    <td className='recipe-ingredient-value'>
+                                        {(ing.quantity * summaryNew / summary).toFixed(0)} г.
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                }
+                <div
+                    className={'recipe-rules'}
+                    dangerouslySetInnerHTML={{ __html: recHowTo }}
+                />
+            </div>
+
+            <div className='recipe-images'>
+                <ImageList recipeId={props.second || recipeId} admin={props.admin}/>
+            </div>
+
+
+            {props.admin && <div className={'edit'}>
+                <label htmlFor='name'>Название: </label>
+                <input
+                    name={'name'}
+                    value={recName}
+                    placeholder={recName}
+                    onChange={e => {
+                        setRecName(e.target.value);
+                    }}/>
+                <label htmlFor='loss'>Потери (%): </label>
+                <input
+                    name={'loss'}
+                    value={loss}
+                    placeholder={loss}
+                    onChange={e => {
+                        let val = parseInt(e.target.value);
+                        val = val < 0 ? 0 : val;
+                        val = val >= 100 ? 99 : val;
+                        setLoss((typeof val == 'number' && val <= 100 && val >= 0) ? val : '');
+                    }}/>
+                {recHowTo!='initialState' && <CKEditor
+                    data={recHowTo}
+                    onChange={e => {
+                        setRecHowTo(e.editor.getData());
+                    }}
+                    config={ {
+                        extraPlugins: 'embed,autoembed,image2',
+                        embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
+                    } }
+                />}
+                <Button className={'update'} onClick={onUpdateRec}>Сохранить</Button>
+                <ETable ingredients={ings} allIngredients={props.ingredients} currentRec={ID}
+                        needUpdate={needUpdate}/>
+                <Link to={routes.INGREDIENTS_URL}>База ингредиентов</Link>
+            </div>}
+        </div>
+    );
+}
+
+
+export default function Recipe(props) {
+    const [second, setSecond] = useState(null);
+
+    function onShowIng(id) {
+        if (id) {
+            setSecond(id);
+        }
+    }
+
+    function onHideIng() {
+        setSecond(null);
+    }
 
     return (
         <div>
-            {!props.second && <Header categories={props.categories}/>}
-            <div className='recipe'>
-                {props.second && <div className='close' onClick={HideIng}>Close</div>}
-                <div className={second ? 'main half' : 'main full'}>
-                    <div className={'first'}>
-                        <h1>{recName}</h1>
-                        {props.admin &&
-                            <SelectParent
-                                for={'recipe'}
-                                id={recipeId}
-                                data={recipe}
-                                categories={props.categories}/>
-                        }
+            <Header categories={props.categories}/>
+            <div className='page-content recipe'>
+                {second &&
+                    <div className='recipe-close' onClick={onHideIng}>✕</div>
+                }
 
-                        {ings.length > 0 &&
-                        <div>
-                            <div className='ingredients'>
-                                <span>Потери {loss}</span>
-                                <span>Выход <input placeholder={summary} value={summaryNew}
-                                                   onChange={e => {
-                                                       const val = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
-                                                       setNewSummary(val);
-                                                   }}/></span>
-                                {ings.map((ing, i) => {
-                                        return (
-                                            <div className='ingridient' key={i}>
-                                                {ing.ing_rec_id ?
-                                                    <div className='name link'
-                                                         onClick={() => ShowIng(ing.ing_rec_id)}><span>{ing.name}</span>
-                                                    </div>
-                                                    : <div className='name'>{ing.name}</div>
-                                                }
-                                                <div
-                                                    className='quantity'>{(ing.quantity * summaryNew / summary).toFixed(0)} г.
-                                                </div>
-                                            </div>
-                                        )
-                                    }
-                                )}
-                            </div>
-                        </div>
-                        }
-
-                        <div className={'howTo'}><Markdown escapeHtml={false}
-                                                           source={recHowTo}/></div>
-
-                    </div>
-
-                    <div className={'imageList second'}>
-                        <ImageList recipeId={recipeId} admin={props.admin}/>
-                        {
-                            /*recipieImages && recipieImages.map((img, i) => {
-                                return (
-                                    <div className={'image'} key={i}>
-                                        <img src={routes.baseUrl() + img.src}/>
-                                    </div>
-                                )
-                            })*/
-                        }
-                    </div>
-
-
-                    {props.admin && <div className={'edit'}>
-                        <label htmlFor="name">Название: </label>
-                        <input
-                            name={'name'}
-                            value={recName}
-                            placeholder={recName}
-                            onChange={e => {
-                                setRecName(e.target.value);
-                            }}/>
-                        <label htmlFor="loss">Потери (%): </label>
-                        <input
-                            name={'loss'}
-                            value={loss}
-                            placeholder={loss}
-                            onChange={e => {
-                                let val = parseInt(e.target.value);
-                                val = val < 0 ? 0 : val;
-                                val = val >= 100 ? 99 : val;
-                                setLoss((typeof val == 'number' && val <= 100 && val >= 0) ? val : '');
-                            }}/>
-                        {recHowTo!='initialState' && <CKEditor
-                            data={recHowTo}
-                            onChange={e => {
-                                setRecHowTo(e.editor.getData());
-                            }}
-                            config={ {
-                                extraPlugins: 'embed,autoembed,image2',
-                                embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
-                            } }
-                        />}
-                        <Button className={'update'} onClick={onUpdateRec}>Сохранить</Button>
-                        <ETable ingredients={ings} allIngredients={props.ingredients} currentRec={ID}
-                                needUpdate={needUpdate}/>
-                        <Link to={routes.INGREDIENTS_URL}>База ингредиентов</Link>
-
-
-                    </div>}
-                </div>
+                <RecipeColumn {...props} hasSecond={second} onShowIng={onShowIng} />
 
 
                 {second &&
-                <div className='sub'><Recipe {...props} second={second} parentCallback={callbackFunction}/></div>}
-
+                    <RecipeColumn {...props} second={second} />
+                }
             </div>
         </div>
-    )
-
+    );
 }
