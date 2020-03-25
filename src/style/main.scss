@@ -150,14 +150,10 @@ body, html {
   z-index: 1000;
   display: flex;
   align-items: center;
-  padding: 10px 30px;
+  padding: 1.4vh 30px;
   font-size: 1.15em;
   background: $white;
   border-bottom: 1px solid $grey;
-
-  @media (min-width: $sm) {
-    padding: 20px 30px;
-  }
 
   a {
     text-decoration: none;
