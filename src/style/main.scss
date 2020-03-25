@@ -180,11 +180,16 @@ body, html {
   }
 
   .header-breadcrumbs {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
     white-space: nowrap;
     overflow: auto;
-    padding-bottom: 10px;
-    margin-bottom: -10px;
     margin-right: 20px;
+
+    span {
+      margin: 0 8px;
+    }
   }
 
   .header-logout {

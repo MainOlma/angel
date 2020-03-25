@@ -109,7 +109,7 @@ function Categories(props) {
 
                     {props.admin &&
                         <div className={'categories-edit-name'}>
-                            <span>Добавить новую категорию&nbsp;&nbsp;</span>
+                            <span>Добавить категорию&nbsp;&nbsp;</span>
                             <input
                                 value={categoryName}
                                 onChange={e => setCategoryName(e.target.value)}
@@ -131,7 +131,7 @@ function Categories(props) {
 
                     {props.admin &&
                         <div className={'categories-edit-name'}>
-                            <span>Добавить новый рецепт категорию&nbsp;&nbsp;</span>
+                            <span>Добавить рецепт категорию&nbsp;&nbsp;</span>
                             <input
                                 value={recipeName}
                                 onChange={e => setRecipeName(e.target.value)}

@@ -6,9 +6,9 @@ import routes from '../constants/routes';
 const Header =  Breadcrumbs()(({ categories, breadcrumbs }) => {
     const name = (key) => categories.find(cat => cat.cat_id == key)?.name;
 
-    // hide first two and current page breadcrumbs and filter by avaliable titles
+    // hide first three and current page breadcrumbs and filter by avaliable titles
     const filteredBreadcrumbs = breadcrumbs
-        .slice(2, breadcrumbs.length - 1)
+        .slice(3, breadcrumbs.length - 1)
         .map(b => {
             const rts = b.key.split('/');
             const title = name(rts[rts.length - 1]);
@@ -24,7 +24,10 @@ const Header =  Breadcrumbs()(({ categories, breadcrumbs }) => {
             </Link>
             <div className='header-breadcrumbs'>
                 {filteredBreadcrumbs.map(({ key, title, path }) => (
-                    <span key={path}> → <Link to={path}>{title}</Link>&nbsp;</span>
+                    <div key={path}>
+                        <span>→</span>
+                        <Link to={path}>{title}</Link>
+                    </div>
                 ))}
             </div>
         </div>
