@@ -166,11 +166,11 @@ body, html {
     margin-bottom: -4px;
 
     img {
-      width: 100px;
+      height: 38px;
       object-fit: contain;
 
       @media (min-width: $sm) {
-        width: 150px;
+        height: 56px;
       }
     }
   }
