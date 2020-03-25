@@ -365,6 +365,7 @@ body, html {
     }
 
     .recipe-info {
+      position: relative;
       width: 100%;
 
       .recipe-ingredients {
@@ -412,6 +413,17 @@ body, html {
       .recipe-rules {
         margin-top: 12px;
         line-height: 1.3em;
+        overflow: auto;
+
+        &:after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          width: 20px;
+          background-image: linear-gradient(to right, rgba($white, 0.01), $white);
+        }
 
         ul, ol {
           padding: 0;
@@ -419,6 +431,22 @@ body, html {
 
           li {
             margin-bottom: 6px;
+          }
+        }
+
+        table {
+          width: max-content;
+          border: none;
+
+          tr {
+            padding-bottom: 6px;
+          }
+
+          td {
+            padding: 0 4px;
+            border: none;
+            border-bottom: 1px solid $black;
+            border-right: 1px solid $black;
           }
         }
 
