@@ -11,6 +11,7 @@ export default function ImageList(props) {
     }, []);
 
     const onGetImagesFromDb = (url, i) => {
+        if (!url) { return; }
         imgs = [...imgs, {url:url,i:i}];//imgs.splice(i, 0, url);
         setImages(imgs)
     }

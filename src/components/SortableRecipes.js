@@ -1,8 +1,24 @@
-import React, {useEffect, useState} from "react";
-import {ReactSortable} from "react-sortablejs";
-import {updateRec} from "./DbActions";
-import {Link} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { ReactSortable } from 'react-sortablejs';
+import { Link } from 'react-router-dom';
+import { updateRec, getImagesForRecipe } from './DbActions';
 import routes from '../constants/routes';
+
+const RecipeImage = props => {
+    const [image, setImage] = useState(null);
+
+    useEffect(() => {
+        getImagesForRecipe(props.recipeId, onGetImagesFromDb);
+    }, []);
+
+    const onGetImagesFromDb = url => {
+        if (!image) {
+            setImage(url || `${routes.baseUrl()}/img/default_cat.png`);
+        }
+    };
+
+    return (<img className='categories-recipe-image' src={image} />);
+}
 
 export const SortableRecipes = props => {
     const [state, setState] = useState(props.data);
@@ -15,7 +31,7 @@ export const SortableRecipes = props => {
         const changedList = state.map((row, i) => (i != row.order ? {...row, order: i} : row));
         setState(changedList);
         updateOrder(changedList)
-    }, [state.map(it => it.rec_id).join(",")]);
+    }, [state.map(it => it.rec_id).join(',')]);
 
     const updateOrder = (list) => {
         list.forEach(row => {
@@ -33,10 +49,7 @@ export const SortableRecipes = props => {
                     state: {recipe: true}
                 }}
             >
-                <img
-                    src={`${routes.baseUrl()}/img/default_cat.png`}
-                    className='categories-recipe-image'
-                />
+                <RecipeImage recipeId={item.rec_id} />
                 <span className='categories-recipe-name'>{item.name}</span>
 
                 {props.admin &&

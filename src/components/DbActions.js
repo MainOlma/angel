@@ -131,9 +131,12 @@ export function getImagesForRecipe(recipeId, callback) {
         res.items.forEach(function (itemRef,i) {
             // All the items under listRef.
             itemRef.getDownloadURL().then(function (url) {
-                callback(url,i)
+                callback(url,i);
             })
         });
+        if (!res.items.length) {
+            callback();
+        }
     }).catch(function (error) {
         // Uh-oh, an error occurred!
     });
