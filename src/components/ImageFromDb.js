@@ -18,11 +18,11 @@ export default function ImageFromDb(props) {
                 })
             });
             if (res.items.length === 0) {
-                setImages([props.default])
+                //setImages([props.default])
             }
         }).catch(function (error) {
             // Uh-oh, an error occurred!
         });
     }, []);
-    return images.map((img, i) => <img key={i} src={img} />);
+    return images && images.map((img, i) => <img key={i} src={img} />);
 }
