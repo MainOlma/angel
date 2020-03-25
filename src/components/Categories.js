@@ -7,6 +7,7 @@ import {
     deleteComposition,
 } from './DbActions';
 import Header from './Header';
+import Footer from './Footer';
 import ImageUpload from './ImageUpload';
 import { SortableRecipes } from './SortableRecipes';
 import { SortableCategories } from './SortableCategories';
@@ -139,14 +140,9 @@ function Categories(props) {
                         </div>
                     }
                 </div>
-
-                <Link
-                    className='categories-rules-link'
-                    to={routes.RULES_URL}
-                >
-                    Правила и безопасность
-                </Link>
             </div>
+
+            <Footer />
         </div>
     );
 };

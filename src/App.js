@@ -4,7 +4,6 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Redirect,
 } from 'react-router-dom';
 
 import Categories from './components/Categories';
@@ -19,17 +18,10 @@ import './style/main.scss';
 
 // TODO: можно использовать localStorage для кеширования данных
 // TODO: проверить сохранение юзера в системе после выхода из приложения
-// TODO: редиректить все страницы на логин, если нет пользователя
+// TODO: редиректить логин на рецепты, если есть пользователь
 
 // TODO: SortableCategories и SortableRecipes почти одинаковые — можно попробовать объединить
 // TODO: убрать лычки в package.json
-
-const loginRedirects = (user) => {
-  if (user) {
-    return <Redirect path='*' to={routes.RECIPE_URL} />;
-  }
-  return <LoginPage />;
-};
 
 function HelloMessage(props) {
     const [categories, setCategories] = useState(null);
@@ -83,9 +75,7 @@ function HelloMessage(props) {
 
     return (
         <Router basename={routes.baseUrl()}>
-            <Route path='/' exact>
-              {loginRedirects(user)}
-            </Route>
+            <Route path='/' exact render={() => <LoginPage />} />
             <Route path={routes.INGREDIENTS_URL} render={() => <Ingredients ingredients={ingredients} recipes={recipes} categories={categories}/>}/>
             <Route path={routes.RULES_URL} render={() => <Rules admin={admin}/>}/>
             {categories && recipes && ingredients && composition && user && admin != null && images && recipeImages &&

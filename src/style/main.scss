@@ -150,11 +150,14 @@ body, html {
   z-index: 1000;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 20px 30px;
+  padding: 10px 30px;
   font-size: 1.15em;
   background: $white;
   border-bottom: 1px solid $grey;
+
+  @media (min-width: $sm) {
+    padding: 20px 30px;
+  }
 
   a {
     text-decoration: none;
@@ -186,6 +189,22 @@ body, html {
 
   .header-logout {
     margin-left: auto;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 36px 30px 24px 30px;
+
+  a { text-decoration: none; }
+
+  .footer-rules-link {
+    display: inline-block;
+    color: $black;
+    border-bottom: 1px solid $black;
   }
 }
 
@@ -299,14 +318,6 @@ body, html {
     div {
       font-size: 0.5em;
     }
-  }
-
-  .categories-rules-link {
-    display: inline-block;
-    margin-top: 60px;
-    text-decoration: none;
-    color: $black;
-    border-bottom: 1px solid $black;
   }
 }
 

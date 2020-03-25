@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import routes from '../constants/routes';
@@ -12,7 +12,7 @@ export default function LoginPage(props) {
     const mailRef = useRef(null);
     const passRef = useRef(null);
 
-    const onSumbitForm = event => {
+   const onSumbitForm = event => {
         event.preventDefault();
         event.stopPropagation();
 

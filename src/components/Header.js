@@ -2,18 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Breadcrumbs from 'react-router-breadcrumbs-hoc';
 import routes from '../constants/routes';
-import { db } from '../lib/firebase';
-
-const onLogOutClick = (e) => {
-    if (window.confirm(`Вы уверены что хотите выйти?`)) {
-        db.auth().signOut()
-            .then(() => {})
-            .catch(() => {});
-    } else {
-        e.preventDefault();
-    }
-
-};
 
 const Header =  Breadcrumbs()(({ categories, breadcrumbs }) => {
     const name = (key) => categories.find(cat => cat.cat_id == key)?.name;
@@ -39,13 +27,6 @@ const Header =  Breadcrumbs()(({ categories, breadcrumbs }) => {
                     <span key={path}> → <Link to={path}>{title}</Link>&nbsp;</span>
                 ))}
             </div>
-            <Link
-                className='header-logout'
-                to='/'
-                onClick={onLogOutClick}
-            >
-                Выйти
-            </Link>
         </div>
     )
 });
