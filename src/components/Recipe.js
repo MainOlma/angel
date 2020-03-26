@@ -79,7 +79,7 @@ function RecipeColumn(props) {
         setLoss(rec.loss);
         setRecHowTo(rec.howto);
         setIngs(getIngridients());
-    }, [ID]);
+    }, [ID, props.needUpdate]);
 
     useEffect(() => {
         const sum = (ings.reduce((acc, val) => +acc + val.quantity, 0) * (1 - loss / 100)).toFixed(1);

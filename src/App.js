@@ -77,7 +77,7 @@ function HelloMessage(props) {
 
     return (
         <Router basename={routes.baseUrl()}>
-            <Route path='/'  render={() => user ? <Redirect to={routes.RECIPE_URL}/> : <LoginPage />} />
+            <Route path='/'  render={() => user ? <Redirect to={window.location.pathname == routes.baseUrl()+'/' ? routes.RECIPE_URL : window.location.pathname}/> : <LoginPage />} />
             <Route path={routes.INGREDIENTS_URL} render={() => <Ingredients ingredients={ingredients} recipes={recipes} categories={categories}/>}/>
             <Route path={routes.RULES_URL} render={() => <Rules admin={admin}/>}/>
             {categories && recipes && ingredients && composition && user && admin != null && images && recipeImages &&
@@ -90,7 +90,8 @@ function HelloMessage(props) {
                                                       ingredients={ingredients}
                                                       composition={composition}
                                                       images={images}
-                                                      recipieImages={recipeImages}/>}/>
+                                                      recipieImages={recipeImages}
+                                                      needUpdate={Date.now()}/>}/>
 
                     <Route path={`/recipes*/:id`}
                            render={(props) => <Categories {...props}
