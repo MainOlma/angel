@@ -16,7 +16,9 @@ function IngredientValue(props) {
 
     return (
         <span>
-            {floorValue}.<span className={decimalValue ? '' : 'grey'}>{decimalValue}</span>&nbsp;г
+            {floorValue},
+            <span className={decimalValue ? '' : 'grey'}>{decimalValue}</span>
+            &nbsp;<span className='grey'>г</span>
         </span>
     );
 }
