@@ -370,22 +370,17 @@ body, html {
   width: 100%;
   padding: 0;
 
-  &:after {
-    content: '';
-    position: fixed;
-    z-index: 999;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 1px;
-    background: $white;
-  }
-
   .recipe-column {
-    padding: 24px 30px 100px 30px;
     display: flex;
     flex-wrap: wrap;
+    height: calc(97.2vh - 38px);
+    padding: 24px 30px 100px 30px;
     background: $white;
+    overflow-y: auto;
+
+    @media (min-width: $sm) {
+      height: calc(97.2vh - 56px);
+    }
 
     &.shadow {
       position: relative;
@@ -394,7 +389,6 @@ body, html {
 
     &.full {
       width: 100%;
-      flex-direction: column;
 
       .recipe-info, .recipe-images {
         width: 100%;
@@ -403,7 +397,6 @@ body, html {
 
     &.half {
       width: 100%;
-      flex-direction: column;
       position: absolute;
       right: 0;
     }
@@ -411,6 +404,7 @@ body, html {
     @media (min-width: $sm) {
       &.full {
         width: 100%;
+        flex-direction: row;
 
         .recipe-info, .recipe-images {
           width: 50%;
@@ -420,6 +414,11 @@ body, html {
       &.half {
         width: 50%;
         position: relative;
+        flex-direction: row;
+
+        .recipe-info, .recipe-images {
+          width: 100%;
+        }
       }
     }
 
@@ -549,11 +548,12 @@ body, html {
     z-index: 9999;
     top: 0;
     right: 0;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1.6em;
   }
 }
 
