@@ -210,7 +210,7 @@ export default function Recipe(props) {
 
 
                 {second &&
-                    <RecipeColumn {...props} second={second} />
+                    <RecipeColumn {...props} second={second}  onShowIng={onShowIng} />
                 }
             </div>
         </div>
