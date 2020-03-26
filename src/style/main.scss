@@ -28,6 +28,9 @@ body, html {
 #root {
   width: 100%;
   height: 100%;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .page-content {
@@ -189,7 +192,8 @@ body, html {
     align-items: center;
     flex-wrap: nowrap;
     white-space: nowrap;
-    overflow: auto hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
 
     div {
       height: 100%;
@@ -369,7 +373,6 @@ body, html {
   display: flex;
   width: 100%;
   padding: 0;
-  -webkit-overflow-scrolling: touch;
 
   .recipe-column {
     display: flex;
