@@ -88,7 +88,7 @@ function RecipeColumn(props) {
     }, [ings.map(d => d.name + d.quantity).join(','), loss]);
 
     return (
-        <div className={props.hasSecond || props.second ? 'recipe-column half' : 'recipe-column full'}>
+        <div className={`recipe-column ${props.hasSecond || props.second ? 'half' : 'full'} ${props.second ? 'shadow' : ''}`}>
             <h1>{recName}</h1>
 
             <div className='recipe-info'>
@@ -113,9 +113,9 @@ function RecipeColumn(props) {
                                     />
                                 </td>
                             </tr>
-                            <tr className='recipe-ingredient'>
+                            <tr className='recipe-ingredient grey'>
                                 <td className='recipe-ingredient-name'>Потери</td>
-                                <td className='recipe-ingredient-value'>{loss}</td>
+                                <td className='recipe-ingredient-value'>{loss}&nbsp;%</td>
                             </tr>
 
                             {ings.map((ing, i) => (
@@ -127,7 +127,7 @@ function RecipeColumn(props) {
                                         <span>{ing.name}</span>
                                     </td>
                                     <td className='recipe-ingredient-value'>
-                                        {(ing.quantity * summaryNew / summary).toFixed(0)} г.
+                                        {(ing.quantity * summaryNew / summary).toFixed(0)} г
                                     </td>
                                 </tr>
                             ))}

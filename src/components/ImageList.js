@@ -8,7 +8,7 @@ export default function ImageList(props) {
 
     useEffect(() => {
         getImagesForRecipe(props.recipeId, onGetImagesFromDb)
-    }, []);
+    }, [props.recipeId]);
 
     const onGetImagesFromDb = (url, i) => {
         if (!url) { return; }
