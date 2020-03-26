@@ -369,6 +369,7 @@ body, html {
   display: flex;
   width: 100%;
   padding: 0;
+  -webkit-overflow-scrolling: touch;
 
   .recipe-column {
     display: flex;
@@ -445,6 +446,7 @@ body, html {
         .recipe-ingredient {
           .recipe-ingredient-name {
             overflow: hidden;
+            max-width: 320px;
             padding-right: 10px;
             padding-bottom: 12px;
 
@@ -459,14 +461,14 @@ body, html {
           }
 
           .recipe-ingredient-value {
-            max-width: 230px;
+            max-width: 240px;
             text-align: right;
             padding-bottom: 1px;
 
             input {
               height: 100%;
               width: 100%;
-              max-width: 150px;
+              max-width: 160px;
               padding: 8px 9px;
               margin-top: -5px;
               margin-right: -9px;
@@ -579,112 +581,6 @@ body, html {
     font-size: 1.6em;
   }
 }
-
-
-.recipe-old {
-  display: flex;
-  flex-direction: row;
-  font-size: 28px;
-  line-height: 33px;
-  overflow: hidden;
-
-  h1, h2 {
-    padding: 0;
-    margin: 0em 0 0.5em;
-    font-size: 44px;
-    line-height: 53px;
-  }
-
-  p {
-    padding: 0;
-    margin: 0;
-  }
-
-  .main, .sub {
-    padding: 5px;
-    flex: 1 1 0px
-  }
-
-  .main.half {
-    width: 50%;
-  }
-
-  .close {
-    cursor: pointer;
-    position: absolute;
-    right: 40px;
-  }
-
-  table {
-    border-collapse: collapse;
-    border-spacing: 0;
-    text-align: left;
-  }
-
-  table tr {
-    border-bottom: 1px solid #5f4239;
-  }
-
-  .howTo {
-    margin-bottom: 1em;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .main {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding-top: 1em;
-
-    .first {
-      width: 100%;
-    }
-
-
-    .second {
-      flex-basis: 50%;
-    }
-  }
-
-  .full .first {
-    width: 50%;
-  }
-
-  .sub {
-    .recipe {
-      flex-direction: column;
-    }
-  }
-
-  .ingridients {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.5em;
-    margin: 1em 2em 1em 0;
-
-    .ingridient {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .name {
-
-      span {
-        border-bottom: 1px solid black;
-        cursor: pointer;
-      }
-    }
-
-    .quantity {
-      flex-grow: 2;
-      flex-shrink: 2;
-      text-align: right;
-    }
-  }
-}
-
 
 
 
