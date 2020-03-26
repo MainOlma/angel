@@ -482,9 +482,25 @@ body, html {
       }
 
       .recipe-rules {
+        width: calc(100% + 30px);
+        padding-right: 20px;
         margin-bottom: 0.9em;
         line-height: 1.3em;
         overflow: auto;
+
+        & > * {
+          padding-right: 20px;
+        }
+
+        &:after {
+          content: '';
+          position: absolute;
+          top: 0;
+          right: -10px;
+          height: 100%;
+          width: 20px;
+          background-image: linear-gradient(to right, rgba($white, 0.1), $white);
+        }
 
         ul, ol {
           li {
