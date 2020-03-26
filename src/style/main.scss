@@ -438,6 +438,10 @@ body, html {
         max-width: 500px;
         margin-bottom: 0.8em;
 
+        .grey {
+          opacity: 0.4;
+        }
+
         .recipe-ingredient {
           .recipe-ingredient-name {
             overflow: hidden;
@@ -454,22 +458,23 @@ body, html {
             }
           }
 
-          &.grey {
-            opacity: 0.4;
-          }
-
           .recipe-ingredient-value {
-            width: 25%;
-            max-width: 120px;
             text-align: right;
             padding-bottom: 1px;
 
             input {
               height: 100%;
               width: 100%;
+              padding: 8px 9px;
+              margin-top: -5px;
+              margin-right: -9px;
               font-size: 1em;
               font-weight: bold;
+              font-family: inherit;
               text-align: right;
+              border: none;
+              border-radius: 8px;
+              background: rgba($black, 0.1);
             }
           }
         }

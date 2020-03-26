@@ -9,6 +9,18 @@ import ImageList from './ImageList';
 import SelectParent from './SelectParent';
 import routes from '../constants/routes';
 
+function IngredientValue(props) {
+    const roundedValue = Math.round(props.value * 10) / 10;
+    const floorValue = Math.floor(roundedValue);
+    const decimalValue = Math.round((roundedValue - floorValue) * 10);
+
+    return (
+        <span>
+            {floorValue}.<span className={decimalValue ? '' : 'grey'}>{decimalValue}</span>&nbsp;г
+        </span>
+    );
+}
+
 function RecipeColumn(props) {
     let {recipeId} = useParams();
     let rec, cat, ingredients = [], imagesIds, recipieImages;
@@ -127,7 +139,7 @@ function RecipeColumn(props) {
                                         <span>{ing.name}</span>
                                     </td>
                                     <td className='recipe-ingredient-value'>
-                                        {(ing.quantity * summaryNew / summary).toFixed(0)}&nbsp;г
+                                        <IngredientValue value={ing.quantity * summaryNew / summary} />
                                     </td>
                                 </tr>
                             ))}
