@@ -28,17 +28,22 @@ export default function SelectParent(props) {
 
     useEffect(() => {
         const hierarchy = (props.categories
-            .filter(d => d.cat_id != props.id)
+            .filter(d => d.cat_id != props.id) // Нельзя переносить категорию в саму себя
             .map(d => {
             path = [];
             return getCategoryById(d.cat_id);
         }));
-        const strings = hierarchy.map(el => {
-            return {
-                id: el[0].cat_id,
-                name: el.reverse().map(d => d.name).join(' / ')
+        const strings = [];
+        hierarchy.forEach(el => {
+            //нельзя переносить категорию в дочерние категории
+            if ((target === 'category' && el.every(e => e[parentField] != props.id))
+                || target === 'recipe'){
+                const part =  {
+                    id: el[0].cat_id,
+                    name: el.reverse().map(d => d.name).join(' / ')
+                };
+                strings.push(part)
             }
-
         });
         setParentId(props.data[parentField]);
         setCategories(strings);
