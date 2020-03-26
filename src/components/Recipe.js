@@ -127,7 +127,7 @@ function RecipeColumn(props) {
                                         <span>{ing.name}</span>
                                     </td>
                                     <td className='recipe-ingredient-value'>
-                                        {(ing.quantity * summaryNew / summary).toFixed(0)} г
+                                        {(ing.quantity * summaryNew / summary).toFixed(0)}&nbsp;г
                                     </td>
                                 </tr>
                             ))}

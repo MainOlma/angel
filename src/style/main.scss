@@ -394,6 +394,7 @@ body, html {
     h1 {
       width: calc(100% - 100px);
       overflow: hidden;
+      margin-bottom: 0.8em;
     }
 
     .recipe-info {
@@ -412,21 +413,15 @@ body, html {
       }
 
       .recipe-ingredients {
-        width: 100%;
+        width: fit-content;
         max-width: 500px;
-        margin-bottom: 16px;
+        margin-bottom: 0.8em;
 
         .recipe-ingredient {
-          display: flex;
-          justify-content: flex-start;
-          margin-bottom: 12px;
-
           .recipe-ingredient-name {
-            width: 70%;
-            max-width: 350px;
             overflow: hidden;
             padding-right: 10px;
-            padding-bottom: 1px;
+            padding-bottom: 12px;
 
             &.bold {
               font-weight: bold;
@@ -460,17 +455,22 @@ body, html {
       }
 
       .recipe-rules {
-        margin-bottom: 20px;
+        margin-bottom: 0.9em;
         line-height: 1.3em;
         overflow: auto;
 
         ul {
           padding: 0;
+          margin: 0;
           list-style-type: none;
 
           li {
             margin-bottom: 6px;
           }
+        }
+
+        ol {
+          margin-top: 0;
         }
 
         table {
