@@ -72,12 +72,14 @@ function HelloMessage(props) {
                 });
             }
             else setUser(null)
+
         });
+        //console.log("------------->",location.pathname, routes.baseUrl(), routes.RECIPE_URL)
     }, []);
 
     return (
         <Router basename={routes.baseUrl()}>
-            <Route path='/'  render={() => user ? <Redirect to={window.location.pathname == routes.baseUrl()+'/' ? routes.RECIPE_URL : window.location.pathname}/> : <LoginPage />} />
+            <Route path='/'  render={() => user ? <Redirect to={location.pathname==routes.baseUrl()+'/' ? routes.RECIPE_URL : location.pathname.replace('/angel','')}/> : <LoginPage />} />
             <Route path={routes.INGREDIENTS_URL} render={() => <Ingredients ingredients={ingredients} recipes={recipes} categories={categories}/>}/>
             <Route path={routes.RULES_URL} render={() => <Rules admin={admin}/>}/>
             {categories && recipes && ingredients && composition && user && admin != null && images && recipeImages &&
