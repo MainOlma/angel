@@ -385,10 +385,42 @@ body, html {
     padding: 24px 30px 100px 30px;
     display: flex;
     flex-wrap: wrap;
+    background: $white;
 
     &.shadow {
       position: relative;
       box-shadow: 0px 4px 8px rgba($black, 0.2);
+    }
+
+    &.full {
+      width: 100%;
+      flex-direction: column;
+
+      .recipe-info, .recipe-images {
+        width: 100%;
+      }
+    }
+
+    &.half {
+      width: 100%;
+      flex-direction: column;
+      position: absolute;
+      right: 0;
+    }
+
+    @media (min-width: $sm) {
+      &.full {
+        width: 100%;
+
+        .recipe-info, .recipe-images {
+          width: 50%;
+        }
+      }
+
+      &.half {
+        width: 50%;
+        position: relative;
+      }
     }
 
     h1 {
@@ -401,16 +433,6 @@ body, html {
       position: relative;
       padding-right: 20px;
       width: 100%;
-
-      &:after {
-        content: '';
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        width: 20px;
-        background-image: linear-gradient(to right, rgba($white, 0.01), $white);
-      }
 
       .recipe-ingredients {
         width: fit-content;
@@ -518,25 +540,6 @@ body, html {
           top: 0;
           left: 0;
         }
-      }
-    }
-
-    @media (min-width: $sm) {
-      &.full {
-        width: 100%;
-
-        .recipe-info {
-          width: 50%;
-        }
-
-        .recipe-images {
-          width: 50%;
-        }
-      }
-
-      &.half {
-        width: 50%;
-        flex-direction: column;
       }
     }
   }
