@@ -4,6 +4,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Redirect
 } from 'react-router-dom';
 
 import Categories from './components/Categories';
@@ -70,12 +71,13 @@ function HelloMessage(props) {
                     setAdmin(role && role.admin);
                 });
             }
+            else setUser(null)
         });
     }, []);
 
     return (
         <Router basename={routes.baseUrl()}>
-            <Route path='/' exact render={() => <LoginPage />} />
+            <Route path='/'  render={() => user ? <Redirect to={routes.RECIPE_URL}/> : <LoginPage />} />
             <Route path={routes.INGREDIENTS_URL} render={() => <Ingredients ingredients={ingredients} recipes={recipes} categories={categories}/>}/>
             <Route path={routes.RULES_URL} render={() => <Rules admin={admin}/>}/>
             {categories && recipes && ingredients && composition && user && admin != null && images && recipeImages &&
