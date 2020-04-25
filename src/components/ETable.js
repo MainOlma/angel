@@ -58,8 +58,8 @@ export default function ETable(props) {
         <Input
             value={value}
             onChange={event => {
-                const val = parseInt(event.target.value);
-                onValueChange(val >= 0 ? val : '')
+                const value = event.target.value.replace(/,/g, '.').replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+                onValueChange(value)
             }}
         />
     );

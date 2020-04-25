@@ -96,7 +96,7 @@ function RecipeColumn(props) {
     }, [ID, props.needUpdate]);
 
     useEffect(() => {
-        const sum = (ings.reduce((acc, val) => +acc + val.quantity, 0) * (1 - loss / 100)).toFixed(1);
+        const sum = (ings.reduce((acc, val) => +acc + parseFloat(val.quantity), 0) * (1 - loss / 100)).toFixed(1);
         setSummary(sum);
         setNewSummary(sum);
     }, [ings.map(d => d.name + d.quantity).join(','), loss]);
@@ -141,7 +141,7 @@ function RecipeColumn(props) {
                                         <span>{ing.name}</span>
                                     </td>
                                     <td className='recipe-ingredient-value'>
-                                        <IngredientValue value={ing.quantity * summaryNew / summary} />
+                                        <IngredientValue value={+ing.quantity * summaryNew / summary} />
                                     </td>
                                 </tr>
                             ))}
