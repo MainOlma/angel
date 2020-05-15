@@ -38,6 +38,7 @@ export default function Ingredients(props) {
     };
 
     const getRecipeWithPath = recipe => {
+        if (recipe === undefined) return "! Рецепт был удалён !";
         const start_category = recipe.cat_id;
         path = [recipe.name];
         const arr = getCategoryById(start_category);
