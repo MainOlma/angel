@@ -44,7 +44,7 @@ export default function LoginPage(props) {
 
             <div className='login-page-note'>
                 Сервис работает только для своих.<br/>
-                Если вы свой, но забыли пароль, напишите в телеграм @ivan_dianov.
+                Если вы свой, но забыли пароль, напишите в телеграм @elizabeth_chuchulintseva.
             </div>
         </div>
     );
