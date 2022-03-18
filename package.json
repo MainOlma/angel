@@ -17,7 +17,7 @@
     "@material-ui/icons": "^4.9.1",
     "@types/react": "^16.9.23",
     "assets": "^3.0.1",
-    "ckeditor4": "^4.14.0",
+    "ckeditor4": "^4.18.0",
     "ckeditor4-react": "^1.1.0",
     "context": "0.0.1",
     "core-js": "^3.6.4",
